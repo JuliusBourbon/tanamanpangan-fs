@@ -1,11 +1,28 @@
-import Navbar from './pages/Navbar';
-import LandingPage from './pages/LandingPage';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { AuthProvider } from './context/AuthContext'
+import PrivateRoute from './components/PrivateRoute'
+import Login from './pages/Login'
+import Register from './pages/Register'
+import Dashboard from './pages/Dashboard'
 
 export default function App() {
   return (
-    <div className="flex flex-col min-h-screen">
-      <Navbar />
-      <LandingPage />
-    </div>
-  );
+    <BrowserRouter>
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route
+            path="/dashboard"
+            element={
+              <PrivateRoute>
+                <Dashboard />
+              </PrivateRoute>
+            }
+          />
+        </Routes>
+      </AuthProvider>
+    </BrowserRouter>
+  )
 }
