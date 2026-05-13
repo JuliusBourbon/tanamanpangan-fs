@@ -1,9 +1,20 @@
 const express = require('express')
+const authenticate = require('../middleware/auth')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const prisma = require('../config/prisma')
 
 const router = express.Router()
+
+// PROTECTED ROUTE
+// GET /auth/me
+router.get('/me', authenticate, async (req, res) => {
+  const user = await prisma.user.findUnique({
+    where: { id: req.user.userId },
+    select: { id: true, name: true, email: true, createdAt: true }
+  })
+  return res.status(200).json({ user })
+})
 
 // POST /auth/register
 router.post('/register', async (req, res) => {
