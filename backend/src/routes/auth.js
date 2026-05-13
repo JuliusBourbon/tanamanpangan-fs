@@ -5,18 +5,31 @@ const prisma = require('../config/prisma')
 
 const router = express.Router()
 
-// Register
+// POST /auth/register
 router.post('/register', async (req, res) => {
   try {
     const { name, email, password } = req.body
 
+    // Validasi field form
     if (!name || !email || !password) {
       return res.status(400).json({ message: 'Semua field wajib diisi' })
     }
 
+    // Validasi Email terdaftar
     const existingUser = await prisma.user.findUnique({ where: { email } })
     if (existingUser) {
       return res.status(409).json({ message: 'Email sudah terdaftar' })
+    }
+
+    // Validasi Email dengan format valid
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ message: 'Format email tidak valid' })
+    }
+
+    // Validasi panjang minimal karakter password
+    if (password.length < 8) {
+      return res.status(400).json({ message: 'Password minimal 8 karakter' })
     }
 
     const hashedPassword = await bcrypt.hash(password, 10)
@@ -44,7 +57,7 @@ router.post('/register', async (req, res) => {
   }
 })
 
-// Login
+// POST /auth/login
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body
