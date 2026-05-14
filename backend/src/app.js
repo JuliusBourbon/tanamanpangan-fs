@@ -5,6 +5,7 @@ const path = require('path')
 
 const authRoutes = require('./routes/auth')
 const classifyRoutes = require('./routes/classify')
+const diseaseRoutes = require('./routes/disease')
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -21,6 +22,7 @@ app.use('/uploads', express.static(path.join(__dirname, '../uploads')))
 // Routes
 app.use('/auth', authRoutes)
 app.use('/api/classify', classifyRoutes)
+app.use('/api/diseases', diseaseRoutes)
 
 app.get('/', (req, res) => {
   res.json({ message: 'WORKED!' })
