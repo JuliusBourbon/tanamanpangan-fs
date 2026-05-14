@@ -8,10 +8,36 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id              Int              @id @default(autoincrement())
+  name            String
+  email           String           @unique
+  password        String
+  classifications Classification[]
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+}
+
+model Disease {
+  id              Int              @id @default(autoincrement())
+  name            String           @unique
+  slug            String           @unique
+  scientificName  String?
+  description     String           @db.Text
+  symptoms        String           @db.Text // Gejala
+  treatment       String           @db.Text // Penanganan
+  imageUrl        String?
+  classifications Classification[]
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+}
+
+model Classification {
+  id              Int              @id @default(autoincrement())
+  userId          Int
+  user            User             @relation(fields: [userId], references: [id])
+  diseaseId       Int?
+  disease         Disease?         @relation(fields: [diseaseId], references: [id])
+  imageUrl        String
+  confidenceScore Float
+  createdAt       DateTime         @default(now())
 }
