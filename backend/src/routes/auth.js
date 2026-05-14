@@ -107,4 +107,48 @@ router.post('/login', async (req, res) => {
   }
 })
 
+// PUT /auth/change-password
+router.put('/change-password', authenticate, async (req, res) => {
+  try {
+    const { currentPassword, newPassword, confirmNewPassword } = req.body
+ 
+    if (!currentPassword || !newPassword || !confirmNewPassword) {
+      return res.status(400).json({ message: 'Semua field wajib diisi.' })
+    }
+ 
+    if (newPassword.length < 8) {
+      return res.status(400).json({ message: 'Password baru minimal 8 karakter.' })
+    }
+ 
+    if (newPassword !== confirmNewPassword) {
+      return res.status(400).json({ message: 'Konfirmasi password tidak cocok.' })
+    }
+ 
+    if (currentPassword === newPassword) {
+      return res.status(400).json({ message: 'Password baru tidak boleh sama dengan password lama.' })
+    }
+ 
+    const user = await prisma.user.findUnique({ where: { id: req.user.userId } })
+    if (!user) {
+      return res.status(404).json({ message: 'User tidak ditemukan.' })
+    }
+ 
+    const isCurrentPasswordValid = await bcrypt.compare(currentPassword, user.password)
+    if (!isCurrentPasswordValid) {
+      return res.status(401).json({ message: 'Password saat ini tidak valid.' })
+    }
+ 
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10)
+    await prisma.user.update({
+      where: { id: req.user.userId },
+      data: { password: hashedNewPassword },
+    })
+ 
+    return res.status(200).json({ message: 'Password berhasil diubah.' })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).json({ message: 'Terjadi kesalahan server.' })
+  }
+})
+
 module.exports = router
