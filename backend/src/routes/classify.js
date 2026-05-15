@@ -1,60 +1,62 @@
 const express = require('express')
-const path = require('path')
-const fs = require('fs')
+const { DeleteObjectCommand } = require('@aws-sdk/client-s3')
 const prisma = require('../config/prisma')
 const authenticate = require('../middleware/auth')
-const upload = require('../middleware/upload')
+const { upload, s3 } = require('../middleware/upload')
 
 const router = express.Router()
 
-// HELPER -> Deleting upload file when Error
-const deleteFile = (filePath) => {
-    if (filePath && fs.existsSync(filePath)) {
-        fs.unlinkSync(filePath)
+// HELPER: Delete file when Error
+const deleteFromS3 = async (imageUrl) => {
+    try {
+        const url = new URL(imageUrl)
+        const key = url.pathname.startsWith('/') ? url.pathname.slice(1) : url.pathname
+
+        await s3.send(new DeleteObjectCommand({
+            Bucket: process.env.AWS_S3_BUCKET,
+            Key: key,
+        }))
+    } catch (error) {
+        console.error('Failed to deleting file from S3:', error)
     }
 }
 
-// CLASSIFIER (Dummy)
-async function classifyImage(imagePath) {
+// DUMMY CLASSIFIER
+async function classifyImage(imageUrl) {
     const diseases = await prisma.disease.findMany({ select: { slug: true } })
     const random = diseases[Math.floor(Math.random() * diseases.length)]
     return {
         slug: random.slug,
-        confidenceScore: parseFloat((Math.random() * 0.4 + 0.6).toFixed(4)), // 0.6 – 1.0
+        confidenceScore: parseFloat((Math.random() * 0.4 + 0.6).toFixed(4)),
     }
 }
 
 // POST /api/classify
 router.post('/', authenticate, upload.single('image'), async (req, res) => {
-    // Validasi file
     if (!req.file) {
         return res.status(400).json({ message: 'Gambar wajib diunggah.' })
     }
 
-    const imagePath = req.file.path
+    const imageUrl = req.file.location
 
     try {
-        // Run classification
-        const { slug, confidenceScore } = await classifyImage(imagePath)
+        const { slug, confidenceScore } = await classifyImage(imageUrl)
 
-        // Find disease based on classification result
         const disease = await prisma.disease.findUnique({ where: { slug } })
         if (!disease) {
-            deleteFile(imagePath)
+            await deleteFromS3(imageUrl)
             return res.status(500).json({ message: 'Penyakit tidak ditemukan di database.' })
         }
 
-        // Save result
         const classification = await prisma.classification.create({
             data: {
                 userId: req.user.userId,
                 diseaseId: disease.id,
-                imageUrl: imagePath,
+                imageUrl,
                 confidenceScore,
             },
         })
 
-        // Client Response
         return res.status(201).json({
             message: 'Klasifikasi berhasil',
             result: {
@@ -68,12 +70,12 @@ router.post('/', authenticate, upload.single('image'), async (req, res) => {
                 treatment: disease.treatment,
                 },
                 confidenceScore,
-                imageUrl: imagePath,
+                imageUrl,
                 classifiedAt: classification.createdAt,
             },
         })
     } catch (error) {
-        deleteFile(imagePath)
+        await deleteFromS3(imageUrl)
         console.error('Error saat klasifikasi:', error)
         return res.status(500).json({ message: 'Terjadi kesalahan saat memproses gambar.' })
     }
@@ -89,21 +91,15 @@ router.get('/history', authenticate, async (req, res) => {
             prisma.classification.findMany({
                 where: { userId: req.user.userId },
                 include: {
-                    disease: {
-                        select: {
-                        name: true,
-                        slug: true,
-                        scientificName: true,
-                        },
-                    },
+                disease: {
+                    select: { name: true, slug: true, scientificName: true },
+                },
                 },
                 orderBy: { createdAt: 'desc' },
                 skip,
                 take: parseInt(limit),
             }),
-            prisma.classification.count({
-                where: { userId: req.user.userId },
-            }),
+            prisma.classification.count({ where: { userId: req.user.userId } }),
         ])
 
         return res.status(200).json({
@@ -157,9 +153,10 @@ router.delete('/history/:id', authenticate, async (req, res) => {
             return res.status(404).json({ message: 'Data klasifikasi tidak ditemukan.' })
         }
 
-        deleteFile(classification.imageUrl)
-
-        await prisma.classification.delete({ where: { id: classification.id } })
+        await Promise.all([
+            deleteFromS3(classification.imageUrl),
+            prisma.classification.delete({ where: { id: classification.id } }),
+        ])
 
         return res.status(200).json({ message: 'Riwayat klasifikasi berhasil dihapus.' })
     } catch (error) {
