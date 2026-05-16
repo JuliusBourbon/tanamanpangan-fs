@@ -19,11 +19,13 @@ const upload = multer({
         bucket: process.env.AWS_S3_BUCKET,
         contentType: multerS3.AUTO_CONTENT_TYPE,
         key: (req, file, cb) => {
-            // File Example: uploads/3_1718200000000.jpg
             const userId = req.user?.userId ?? 'unknown'
             const timestamp = Date.now()
             const ext = path.extname(file.originalname).toLowerCase()
-            cb(null, `uploads/${userId}_${timestamp}${ext}`)
+
+            // Selain dari /auth/ akan masuk ke uploads
+            const folder = req.baseUrl.includes('auth') ? 'profiles' : 'uploads'
+            cb(null, `${folder}/${userId}_${timestamp}${ext}`)
         },
     }),
     fileFilter: (req, file, cb) => {
@@ -35,7 +37,8 @@ const upload = multer({
         }
     },
     limits: {
-        fileSize: 5 * 1024 * 1024, // Max 5MB
+        // Max: 5MB
+        fileSize: 5 * 1024 * 1024,
     },
 })
  

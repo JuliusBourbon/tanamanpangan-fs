@@ -12,6 +12,7 @@ model User {
   name            String
   email           String           @unique
   password        String
+  profileImage    String?
   classifications Classification[]
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt

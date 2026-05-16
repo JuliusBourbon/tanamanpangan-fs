@@ -1,67 +1,64 @@
 const express = require('express')
-const authenticate = require('../middleware/auth')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const { DeleteObjectCommand } = require('@aws-sdk/client-s3')
 const prisma = require('../config/prisma')
+const authenticate = require('../middleware/auth')
+const { upload, s3 } = require('../middleware/upload')
 
 const router = express.Router()
 
-// PROTECTED ROUTE
-// GET /auth/me
-router.get('/me', authenticate, async (req, res) => {
-  const user = await prisma.user.findUnique({
-    where: { id: req.user.userId },
-    select: { id: true, name: true, email: true, createdAt: true }
-  })
-  return res.status(200).json({ user })
-})
+// HELPER: Detele File
+const deleteProfileImageFromS3 = async (imageUrl) => {
+  try {
+    const url = new URL(imageUrl)
+    const key = url.pathname.startsWith('/') ? url.pathname.slice(1) : url.pathname
+    await s3.send(new DeleteObjectCommand({
+      Bucket: process.env.AWS_S3_BUCKET,
+      Key: key,
+    }))
+  } catch (error) {
+    console.error('Gagal menghapus foto profil dari S3:', error)
+  }
+}
 
 // POST /auth/register
 router.post('/register', async (req, res) => {
   try {
     const { name, email, password } = req.body
 
-    // Validasi field form
     if (!name || !email || !password) {
       return res.status(400).json({ message: 'Semua field wajib diisi' })
     }
 
-    // Validasi Email terdaftar
-    const existingUser = await prisma.user.findUnique({ where: { email } })
-    if (existingUser) {
-      return res.status(409).json({ message: 'Email sudah terdaftar' })
-    }
-
-    // Validasi Email dengan format valid
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(email)) {
       return res.status(400).json({ message: 'Format email tidak valid' })
     }
 
-    // Validasi panjang minimal karakter password
     if (password.length < 8) {
       return res.status(400).json({ message: 'Password minimal 8 karakter' })
+    }
+
+    const existingUser = await prisma.user.findUnique({ where: { email } })
+    if (existingUser) {
+      return res.status(409).json({ message: 'Email sudah terdaftar' })
     }
 
     const hashedPassword = await bcrypt.hash(password, 10)
 
     const user = await prisma.user.create({
       data: { name, email, password: hashedPassword },
-      select: { id: true, name: true, email: true, createdAt: true }
+      select: { id: true, name: true, email: true, profileImage: true, createdAt: true }
     })
 
-    // JWT
     const token = jwt.sign(
       { userId: user.id, email: user.email },
       process.env.JWT_SECRET,
       { expiresIn: '7d' }
     )
 
-    return res.status(201).json({
-      message: 'Registrasi berhasil',
-      user,
-      token
-    })
+    return res.status(201).json({ message: 'Registrasi berhasil', user, token })
   } catch (error) {
     console.error(error)
     return res.status(500).json({ message: 'Terjadi kesalahan server' })
@@ -87,7 +84,6 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ message: 'Email atau password salah' })
     }
 
-    // JWT
     const token = jwt.sign(
       { userId: user.id, email: user.email },
       process.env.JWT_SECRET,
@@ -96,11 +92,21 @@ router.post('/login', async (req, res) => {
 
     const { password: _, ...userWithoutPassword } = user
 
-    return res.status(200).json({
-      message: 'Login berhasil',
-      user: userWithoutPassword,
-      token
+    return res.status(200).json({ message: 'Login berhasil', user: userWithoutPassword, token })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).json({ message: 'Terjadi kesalahan server' })
+  }
+})
+
+// GET /auth/me
+router.get('/me', authenticate, async (req, res) => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: req.user.userId },
+      select: { id: true, name: true, email: true, profileImage: true, createdAt: true }
     })
+    return res.status(200).json({ user })
   } catch (error) {
     console.error(error)
     return res.status(500).json({ message: 'Terjadi kesalahan server' })
@@ -111,42 +117,103 @@ router.post('/login', async (req, res) => {
 router.put('/change-password', authenticate, async (req, res) => {
   try {
     const { currentPassword, newPassword, confirmNewPassword } = req.body
- 
+
     if (!currentPassword || !newPassword || !confirmNewPassword) {
       return res.status(400).json({ message: 'Semua field wajib diisi.' })
     }
- 
+
     if (newPassword.length < 8) {
       return res.status(400).json({ message: 'Password baru minimal 8 karakter.' })
     }
- 
+
     if (newPassword !== confirmNewPassword) {
       return res.status(400).json({ message: 'Konfirmasi password tidak cocok.' })
     }
- 
+
     if (currentPassword === newPassword) {
       return res.status(400).json({ message: 'Password baru tidak boleh sama dengan password lama.' })
     }
- 
+
     const user = await prisma.user.findUnique({ where: { id: req.user.userId } })
     if (!user) {
       return res.status(404).json({ message: 'User tidak ditemukan.' })
     }
- 
+
     const isCurrentPasswordValid = await bcrypt.compare(currentPassword, user.password)
     if (!isCurrentPasswordValid) {
       return res.status(401).json({ message: 'Password saat ini tidak valid.' })
     }
- 
+
     const hashedNewPassword = await bcrypt.hash(newPassword, 10)
     await prisma.user.update({
       where: { id: req.user.userId },
       data: { password: hashedNewPassword },
     })
- 
+
     return res.status(200).json({ message: 'Password berhasil diubah.' })
   } catch (error) {
     console.error(error)
+    return res.status(500).json({ message: 'Terjadi kesalahan server.' })
+  }
+})
+
+// PUT /auth/profile/image
+router.put('/profile/image', authenticate, upload.single('image'), async (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ message: 'Foto profil wajib diunggah.' })
+  }
+
+  const newImageUrl = req.file.location
+
+  try {
+    const existingUser = await prisma.user.findUnique({
+      where: { id: req.user.userId },
+      select: { profileImage: true },
+    })
+
+    if (existingUser?.profileImage) {
+      await deleteProfileImageFromS3(existingUser.profileImage)
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: { id: req.user.userId },
+      data: { profileImage: newImageUrl },
+      select: { id: true, name: true, email: true, profileImage: true, createdAt: true },
+    })
+
+    return res.status(200).json({
+      message: 'Foto profil berhasil diperbarui.',
+      user: updatedUser,
+    })
+  } catch (error) {
+    console.error('Error saat upload foto profil:', error)
+    return res.status(500).json({ message: 'Terjadi kesalahan server.' })
+  }
+})
+
+// DELETE /auth/profile/image
+router.delete('/profile/image', authenticate, async (req, res) => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: req.user.userId },
+      select: { profileImage: true },
+    })
+
+    if (!user?.profileImage) {
+      return res.status(404).json({ message: 'Tidak ada foto profil yang tersimpan.' })
+    }
+
+    await Promise.all([
+      deleteProfileImageFromS3(user.profileImage),
+      prisma.user.update({
+        where: { id: req.user.userId },
+        data: { profileImage: null },
+      }),
+    ])
+
+    return res.status(200).json({ message: 'Foto profil berhasil dihapus.' })
+  } catch (error) {
+    console.error('Error saat menghapus foto profil:', error)
     return res.status(500).json({ message: 'Terjadi kesalahan server.' })
   }
 })
