@@ -1,12 +1,14 @@
 const express = require('express')
-const { DeleteObjectCommand } = require('@aws-sdk/client-s3')
+const { DeleteObjectCommand, GetObjectCommand } = require('@aws-sdk/client-s3')
+const { getSignedUrl } = require('@aws-sdk/s3-request-presigner')
 const prisma = require('../config/prisma')
 const authenticate = require('../middleware/auth')
 const { upload, s3 } = require('../middleware/upload')
+const axios = require('axios')
 
 const router = express.Router()
 
-// HELPER: Delete file when Error
+// HELPER: Delete S3 File
 const deleteFromS3 = async (imageUrl) => {
     try {
         const url = new URL(imageUrl)
@@ -21,13 +23,65 @@ const deleteFromS3 = async (imageUrl) => {
     }
 }
 
+const LABEL_TO_SLUG = {
+    'Bacterialblight':               'rice-bacterial-blight',
+    'Blast':                         'rice-blast',
+    'Brownspot':                     'rice-brown-spot',
+    'Tungro':                        'rice-tungro',
+    'tomato_bacterial_spot':         'tomato-bacterial-spot',
+    'tomato_early_blight':           'tomato-early-blight',
+    'tomato_healthy':                'tomato-healthy',
+    'tomato_late_blight':            'tomato-late-blight',
+    'tomato_leaf_mold':              'tomato-leaf-mold',
+    'tomato_septoria_leaf_spot':     'tomato-septoria-leaf-spot',
+    'tomato_spotted_spider_mite':    'tomato-spider-mites',
+    'tomato_target_spot':            'tomato-target-spot',
+    'tomato_yellow_leaf_curl_virus': 'tomato-yellow-leaf-curl-virus',
+}
+
 // DUMMY CLASSIFIER
+// async function classifyImage(imageUrl) {
+//     const diseases = await prisma.disease.findMany({ select: { slug: true } })
+//     const random = diseases[Math.floor(Math.random() * diseases.length)]
+//     return {
+//         slug: random.slug,
+//         confidenceScore: parseFloat((Math.random() * 0.4 + 0.6).toFixed(4)),
+//     }
+// }
+
+// HELPER: generate presigned S3 URL
+async function generatePresignedUrl(imageUrl) {
+    const url = new URL(imageUrl)
+    const key = url.pathname.startsWith('/') ? url.pathname.slice(1) : url.pathname
+    
+    const command = new GetObjectCommand({
+        Bucket: process.env.AWS_S3_BUCKET,
+        Key: key,
+    })
+    
+    // URL Expired in 60 sec
+    return getSignedUrl(s3, command, { expiresIn: 60 })
+}
+ 
 async function classifyImage(imageUrl) {
-    const diseases = await prisma.disease.findMany({ select: { slug: true } })
-    const random = diseases[Math.floor(Math.random() * diseases.length)]
+    const presignedUrl = await generatePresignedUrl(imageUrl)
+    
+    const response = await axios.post(
+        `${process.env.ML_SERVICE_URL}/predict`,
+        { imageUrl: presignedUrl },
+        { timeout: 30000 }
+    )
+    
+    const label = response.data.label
+    const slug = LABEL_TO_SLUG[label]
+    
+    if (!slug) {
+        throw new Error(`Label tidak dikenali dari model AI: ${label}`)
+    }
+    
     return {
-        slug: random.slug,
-        confidenceScore: parseFloat((Math.random() * 0.4 + 0.6).toFixed(4)),
+        slug,
+        confidenceScore: response.data.confidenceScore,
     }
 }
 
