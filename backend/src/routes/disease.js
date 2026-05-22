@@ -6,7 +6,19 @@ const router = express.Router()
 // GET /api/diseases
 router.get('/', async (req, res) => {
     try {
+        const { keyword } = req.query
+    
+        const where = keyword
+        ? {
+            OR: [
+                { name: { contains: keyword, mode: 'insensitive' } },
+                { scientificName: { contains: keyword, mode: 'insensitive' } },
+            ],
+            }
+        : {}
+    
         const diseases = await prisma.disease.findMany({
+            where,
             select: {
                 id: true,
                 name: true,
@@ -16,8 +28,14 @@ router.get('/', async (req, res) => {
             },
             orderBy: { name: 'asc' },
         })
-
-        return res.status(200).json({ data: diseases })
+    
+        return res.status(200).json({
+            data: diseases,
+            meta: {
+                total: diseases.length,
+                keyword: keyword ?? null,
+            },
+        })
     } catch (error) {
         console.error('Error saat mengambil daftar penyakit:', error)
         return res.status(500).json({ message: 'Terjadi kesalahan server.' })
