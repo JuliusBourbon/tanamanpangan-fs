@@ -23,6 +23,7 @@ model Disease {
   name            String           @unique
   slug            String           @unique
   scientificName  String?
+  cropType        String
   description     String           @db.Text
   symptoms        String           @db.Text // Gejala
   treatment       String           @db.Text // Penanganan
