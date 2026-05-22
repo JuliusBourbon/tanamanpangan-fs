@@ -119,6 +119,7 @@ router.post('/', authenticate, upload.single('image'), async (req, res) => {
                 name: disease.name,
                 slug: disease.slug,
                 scientificName: disease.scientificName,
+                cropType: disease.cropType,
                 description: disease.description,
                 symptoms: disease.symptoms,
                 treatment: disease.treatment,
