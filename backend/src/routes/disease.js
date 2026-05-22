@@ -6,16 +6,18 @@ const router = express.Router()
 // GET /api/diseases
 router.get('/', async (req, res) => {
     try {
-        const { keyword } = req.query
-    
-        const where = keyword
-        ? {
-            OR: [
-                { name: { contains: keyword, mode: 'insensitive' } },
-                { scientificName: { contains: keyword, mode: 'insensitive' } },
-            ],
-            }
-        : {}
+        const { keyword, crop_type } = req.query
+        const where = {
+            ...(keyword
+                ? {
+                    OR: [
+                    { name: { contains: keyword, mode: 'insensitive' } },
+                    { scientificName: { contains: keyword, mode: 'insensitive' } },
+                    ],
+                }
+                : {}),
+            ...(crop_type ? { cropType: crop_type } : {}),
+        }
     
         const diseases = await prisma.disease.findMany({
             where,
@@ -23,6 +25,7 @@ router.get('/', async (req, res) => {
                 id: true,
                 name: true,
                 slug: true,
+                cropType: true,
                 scientificName: true,
                 description: true,
             },
@@ -34,6 +37,7 @@ router.get('/', async (req, res) => {
             meta: {
                 total: diseases.length,
                 keyword: keyword ?? null,
+                crop_type: crop_type ?? null,
             },
         })
     } catch (error) {
@@ -54,6 +58,7 @@ router.get('/:slug', async (req, res) => {
             name: true,
             slug: true,
             scientificName: true,
+            cropType: true,
             description: true,
             symptoms: true,
             treatment: true,
