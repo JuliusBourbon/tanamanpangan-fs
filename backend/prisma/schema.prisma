@@ -35,7 +35,7 @@ model Disease {
 model Classification {
   id              Int              @id @default(autoincrement())
   userId          Int
-  user            User             @relation(fields: [userId], references: [id])
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   diseaseId       Int?
   disease         Disease?         @relation(fields: [diseaseId], references: [id])
   imageUrl        String
