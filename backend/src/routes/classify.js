@@ -219,4 +219,31 @@ router.delete('/history/:id', authenticate, async (req, res) => {
     }
 })
 
+// DELETE /api/classify/history
+router.delete('/history', authenticate, async (req, res) => {
+    try {
+        const allHistory = await prisma.classification.findMany({
+            where: { userId: req.user.userId },
+            select: { id: true, imageUrl: true },
+        })
+    
+        if (allHistory.length === 0) {
+            return res.status(404).json({ message: 'Tidak ada riwayat klasifikasi.' })
+        }
+    
+        await Promise.all(allHistory.map((item) => deleteFromS3(item.imageUrl)))
+    
+        await prisma.classification.deleteMany({
+            where: { userId: req.user.userId },
+        })
+    
+        return res.status(200).json({
+            message: `${allHistory.length} riwayat klasifikasi berhasil dihapus.`,
+        })
+    } catch (error) {
+        console.error('Error saat menghapus semua riwayat:', error)
+        return res.status(500).json({ message: 'Terjadi kesalahan server.' })
+    }
+})
+
 module.exports = router
