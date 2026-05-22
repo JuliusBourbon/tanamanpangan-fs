@@ -113,6 +113,74 @@ router.get('/me', authenticate, async (req, res) => {
   }
 })
 
+// PUT /auth/profile/name
+router.put('/profile/name', authenticate, async (req, res) => {
+  try {
+    const { name } = req.body
+ 
+    if (!name || name.trim() === '') {
+      return res.status(400).json({ message: 'Nama tidak boleh kosong.' })
+    }
+ 
+    if (name.trim().length < 3) {
+      return res.status(400).json({ message: 'Nama minimal 3 karakter.' })
+    }
+ 
+    const updatedUser = await prisma.user.update({
+      where: { id: req.user.userId },
+      data: { name: name.trim() },
+      select: { id: true, name: true, email: true, profileImage: true, createdAt: true },
+    })
+ 
+    return res.status(200).json({
+      message: 'Nama berhasil diperbarui.',
+      user: updatedUser,
+    })
+  } catch (error) {
+    console.error('Error saat mengubah nama:', error)
+    return res.status(500).json({ message: 'Terjadi kesalahan server.' })
+  }
+})
+
+// DELETE /auth/account
+// Deleting account will automatically delete all other related data 
+router.delete('/account', authenticate, async (req, res) => {
+  try {
+    const { password } = req.body
+ 
+    if (!password) {
+      return res.status(400).json({ message: 'Password wajib diisi untuk konfirmasi.' })
+    }
+ 
+    // Fetch User Data
+    const user = await prisma.user.findUnique({
+      where: { id: req.user.userId },
+      select: { password: true, profileImage: true },
+    })
+ 
+    if (!user) {
+      return res.status(404).json({ message: 'User tidak ditemukan.' })
+    }
+ 
+    const isPasswordValid = await bcrypt.compare(password, user.password)
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: 'Password tidak valid.' })
+    }
+ 
+    // Delete User Profile
+    if (user.profileImage) {
+      await deleteProfileImageFromS3(user.profileImage)
+    }
+ 
+    await prisma.user.delete({ where: { id: req.user.userId } })
+ 
+    return res.status(200).json({ message: 'Akun berhasil dihapus.' })
+  } catch (error) {
+    console.error('Error saat menghapus akun:', error)
+    return res.status(500).json({ message: 'Terjadi kesalahan server.' })
+  }
+})
+
 // PUT /auth/change-password
 router.put('/change-password', authenticate, async (req, res) => {
   try {
