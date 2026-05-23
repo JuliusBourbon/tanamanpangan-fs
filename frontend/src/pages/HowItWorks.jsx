@@ -10,7 +10,7 @@ export default function HowItWorks() {
     <div className="font-sans text-gray-800">
         <NavbarPublic />
 
-        {/* ── Hero section ── */}
+        {/* Hero section */}
         <section className="pt-28 pb-5 px-6 bg-gray-50 text-center">
           <div className="max-w-2xl mx-auto">
             <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
@@ -22,7 +22,7 @@ export default function HowItWorks() {
           </div>
         </section>
 
-        {/* ── Steps grid ── */}
+        {/* Steps grid */}
         <section className="py-8 px-6 bg-gray-50">
           <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
             {T.steps.map((step) => (
