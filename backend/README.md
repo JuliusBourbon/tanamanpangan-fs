@@ -194,6 +194,65 @@ Menghapus foto profil pengguna dari database dan S3.
 
 ---
 
+### `PUT /auth/profile/name`
+Memperbarui nama pengguna.
+
+🔒 **Requires Authentication**
+
+**Request Body (JSON):**
+| Field | Type | Required | Keterangan |
+|-------|------|----------|------------|
+| `name` | string | ✅ | Minimal 3 karakter |
+
+**Response:**
+```json
+// 200 OK
+{
+  "message": "Nama berhasil diperbarui.",
+  "user": {
+    "id": 1,
+    "name": "John Doe",
+    "email": "john@example.com",
+    "profileImage": "https://...",
+    "createdAt": "2025-01-01T00:00:00.000Z"
+  }
+}
+```
+**Error Responses:**
+| Status | Pesan |
+|--------|-------|
+| `400` | Nama tidak boleh kosong / Nama minimal 3 karakter |
+| `500` | Terjadi kesalahan server |
+
+---
+
+### `DELETE /auth/account`
+Menghapus akun pengguna beserta foto profilnya dari S3.
+
+🔒 **Requires Authentication**
+
+**Request Body (JSON):**
+| Field | Type | Required |
+|-------|------|----------|
+| `password` | string | ✅ |
+
+**Response:**
+```json
+// 200 OK
+{
+  "message": "Akun berhasil dihapus."
+}
+```
+**Error Responses:**
+| Status | Pesan |
+|--------|-------|
+| `400` | Password wajib diisi untuk konfirmasi |
+| `401` | Password tidak valid |
+| `401` | User tidak ditemukan |
+| `500` | Terjadi kesalahan server |
+
+---
+
 ## Classify Routes
 
 ### `POST /api/classify`
@@ -246,6 +305,9 @@ Mengambil riwayat klasifikasi milik pengguna dengan pagination.
 |-------|------|---------|------------|
 | `page` | number | `1` | Halaman saat ini |
 | `limit` | number | `10` | Jumlah item per halaman |
+| `keyword` | string | - | Filter berdasarkan nama atau slug |
+| `crop_type` | string | - | Filter berdasarkan jenis tanaman |
+| `sort` | string | newest | Filter Pengurutan (newest atau oldest) |
 
 **Response:**
 ```json
@@ -348,10 +410,35 @@ Menghapus satu riwayat klasifikasi beserta gambarnya dari S3.
 
 ---
 
+### `DELETE /api/classify/history`
+Menghapus seluruh riwayat klasifikasi milik pengguna beserta semua gambar terkait di S3.
+
+🔒 **Requires Authentication**
+
+**Response:**
+```json
+{
+  "message": "X riwayat klasifikasi berhasil dihapus."
+}
+```
+**Error Responses:**
+| Status | Pesan |
+|--------|-------|
+| `404` | Tidak ada riwayat klasifikasi |
+| `500` | Terjadi kesalahan server |
+
+---
+
 ## Disease Routes
 
 ### `GET /api/diseases`
 Mengambil seluruh daftar penyakit yang tersedia.
+
+**Query Parameters:**
+| Param | Type | Default | Keterangan |
+|-------|------|---------|------------|
+| `keyword` | string | - | Filter berdasarkan nama atau slug |
+| `crop_type` | string | - | Filter berdasarkan jenis tanaman |
 
 **Response:**
 ```json
