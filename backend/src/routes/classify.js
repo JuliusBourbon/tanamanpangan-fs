@@ -139,24 +139,43 @@ router.post('/', authenticate, upload.single('image'), async (req, res) => {
 // GET /api/classify/history
 router.get('/history', authenticate, async (req, res) => {
     try {
-        const { page = 1, limit = 10 } = req.query
+        const { page = 1, limit = 10, keyword, crop_type, sort = 'newest' } = req.query
         const skip = (parseInt(page) - 1) * parseInt(limit)
-
+    
+        const orderBy = sort === 'oldest' ? { createdAt: 'asc' } : { createdAt: 'desc' }
+    
+        const diseaseFilter = {
+            ...(keyword
+                ? {
+                    OR: [
+                    { name: { contains: keyword, mode: 'insensitive' } },
+                    { scientificName: { contains: keyword, mode: 'insensitive' } },
+                    ],
+                }
+                : {}),
+            ...(crop_type ? { cropType: crop_type } : {}),
+        }
+    
+        const where = {
+            userId: req.user.userId,
+            ...(Object.keys(diseaseFilter).length > 0 ? { disease: diseaseFilter } : {}),
+        }
+    
         const [history, total] = await Promise.all([
             prisma.classification.findMany({
-                where: { userId: req.user.userId },
+                where,
                 include: {
-                disease: {
-                    select: { name: true, slug: true, scientificName: true },
+                    disease: {
+                        select: { name: true, slug: true, cropType: true, scientificName: true },
+                    },
                 },
-                },
-                orderBy: { createdAt: 'desc' },
+                orderBy,
                 skip,
                 take: parseInt(limit),
             }),
-            prisma.classification.count({ where: { userId: req.user.userId } }),
+            prisma.classification.count({ where }),
         ])
-
+    
         return res.status(200).json({
             data: history,
             pagination: {
@@ -164,6 +183,11 @@ router.get('/history', authenticate, async (req, res) => {
                 limit: parseInt(limit),
                 total,
                 totalPages: Math.ceil(total / parseInt(limit)),
+            },
+            meta: {
+                keyword: keyword ?? null,
+                crop_type: crop_type ?? null,
+                sort,
             },
         })
     } catch (error) {
