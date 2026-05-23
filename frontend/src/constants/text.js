@@ -139,7 +139,31 @@ export const TEXT = {
 
   // About Us 
   about: {
-    
+    hero: {
+      badge: 'OUR MISSION',
+      heading: 'Empowering Sustainable Agriculture Through AI',
+      body: 'We believe every farmer deserves access to fast, accurate, and free plant disease diagnosis. Tanam Pangan is here to help Indonesian farmers detect paddy and tomato diseases early, so they can prevent crop losses.',
+    },
+    story: {
+      heading: 'Capstone Project Story',
+      paragraphs: [
+        'Tanam Pangan was born out of our concern for the challenges Indonesian farmers face in detecting plant diseases. As students, we saw that access to accurate agricultural information was still limited, especially in rural areas.',
+        'This project was developed as a Capstone Project within the Coding Camp program supported by DBS Bank. For several months, our team of six students with backgrounds in AI Engineering, FullStack Development, and Data Science collaborated to build this platform from scratch.',
+        'Mentored by Jason and Vivy Junita, we combined computer vision technology with plant disease research to deliver a truly beneficial solution.',
+      ],
+    },
+    team: {
+      heading: 'Meet The Capstone Team',
+      subheading: 'We are a multidisciplinary team of Coding Camp 2026 trainees passionate about bringing AI technology to help Indonesian farmers.',
+      members: [
+        { name: 'Zacky',   role: 'AI Engineering',       bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', instagram: '#', linkedin: '#', github: '#' },
+        { name: 'Mario',   role: 'AI Engineering',       bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', instagram: '#', linkedin: '#', github: '#' },
+        { name: 'Raihan',  role: 'FullStack Engineering', bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', instagram: '#', linkedin: '#', github: '#' },
+        { name: 'Rafhli',  role: 'FullStack Developer',  bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', instagram: '#', linkedin: '#', github: '#' },
+        { name: 'Tiara',   role: 'Data Science',         bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', instagram: '#', linkedin: '#', github: '#' },
+        { name: 'Katarina',role: 'Data Science',         bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', instagram: '#', linkedin: '#', github: '#' },
+      ],
+    },
   },
 
   // Terms of Service
