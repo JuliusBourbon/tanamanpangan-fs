@@ -3,7 +3,7 @@ import { AuthProvider, useAuth } from './context/AuthContext'
 import PrivateRoute from './components/PrivateRoute'
 
 // Public pages
-import LandingPage from './pages/LandingPage'
+import LandingPage from './pages/landing/LandingPage'
 import HowItWorks from './pages/HowItWorks'
 import AboutUs from './pages/AboutUs'
 import TermsOfService from './pages/TermsOfService'
@@ -40,139 +40,141 @@ function PublicOnlyRoute({ children }) {
 
 // AppRoutes dipisah dari App supaya bisa akses useAuth()
 function AppRoutes() {
-  <Routes>
-    {/* ── Public routes ── */}
-    <Route 
-      path="/"
-      element={
-        <PublicOnlyRoute>
-          <LandingPage />
-        </PublicOnlyRoute>
-      }
-    />
-    <Route path="/how-it-works" element={<HowItWorks />} />
-    <Route path="/about" element={<AboutUs />} />
-    <Route path="/terms" element={<TermsOfService />} />
-    <Route path="/encyclopedia" element={<EncyclopediaPublic />} />
-    <Route path="/encyclopedia/:slug" element={<EncyclopediaPublicDetail />} />
+  return(
+    <Routes>
+      {/* ── Public routes ── */}
+      <Route 
+        path="/"
+        element={
+          <PublicOnlyRoute>
+            <LandingPage />
+          </PublicOnlyRoute>
+        }
+      />
+      <Route path="/how-it-works" element={<HowItWorks />} />
+      <Route path="/about" element={<AboutUs />} />
+      <Route path="/terms" element={<TermsOfService />} />
+      <Route path="/encyclopedia" element={<EncyclopediaPublic />} />
+      <Route path="/encyclopedia/:slug" element={<EncyclopediaPublicDetail />} />
 
-    {/* ── Auth routes (hanya bisa diakses kalau belum login) ── */}
-    <Route
-      path="/login"
-      element={
-        <PublicOnlyRoute>
-          <Login />
-        </PublicOnlyRoute>
-      }
-    />
-    <Route
-      path="/register"
-      element={
-        <PublicOnlyRoute>
-          <Register />
-        </PublicOnlyRoute>
-      }
-    />
-    <Route
-      path="/forgot-password"
-      element={
-        <PublicOnlyRoute>
-          <ForgotPassword />
-        </PublicOnlyRoute>
-      }
-    />
+      {/* ── Auth routes (hanya bisa diakses kalau belum login) ── */}
+      <Route
+        path="/login"
+        element={
+          <PublicOnlyRoute>
+            <Login />
+          </PublicOnlyRoute>
+        }
+      />
+      <Route
+        path="/register"
+        element={
+          <PublicOnlyRoute>
+            <Register />
+          </PublicOnlyRoute>
+        }
+      />
+      <Route
+        path="/forgot-password"
+        element={
+          <PublicOnlyRoute>
+            <ForgotPassword />
+          </PublicOnlyRoute>
+        }
+      />
 
-    {/* /reset-password?token=xxx — token dibaca via useSearchParams di dalam page */}
-    <Route
-      path="/reset-password"
-      element={
-        <PublicOnlyRoute>
-          <ResetPassword />
-        </PublicOnlyRoute>
-      }
-    />
+      {/* /reset-password?token=xxx — token dibaca via useSearchParams di dalam page */}
+      <Route
+        path="/reset-password"
+        element={
+          <PublicOnlyRoute>
+            <ResetPassword />
+          </PublicOnlyRoute>
+        }
+      />
 
-    {/* ── Onboarding — protected, tapi terpisah dari layout dashboard ── */}
-    <Route
-      path="/onboarding"
-      element={
-        <PrivateRoute>
-          <Onboarding />
-        </PrivateRoute>
-      }
-    />
+      {/* ── Onboarding — protected, tapi terpisah dari layout dashboard ── */}
+      <Route
+        path="/onboarding"
+        element={
+          <PrivateRoute>
+            <Onboarding />
+          </PrivateRoute>
+        }
+      />
 
-    {/* ── Protected routes ── */}
-    <Route
-      path="/dashboard"
-      element={
-        <PrivateRoute>
-          <Dashboard />
-        </PrivateRoute>
-      }
-    />
-    <Route
-      path="/scan"
-      element={
-        <PrivateRoute>
-          <ScanPage />
-        </PrivateRoute>
-      }
-    />
+      {/* ── Protected routes ── */}
+      <Route
+        path="/dashboard"
+        element={
+          <PrivateRoute>
+            <Dashboard />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/scan"
+        element={
+          <PrivateRoute>
+            <ScanPage />
+          </PrivateRoute>
+        }
+      />
 
-    {/* /scan/result/:id — id dari classificationId response API */}
-    <Route
-      path="/scan/result/:id"
-      element={
-        <PrivateRoute>
-          <ScanResult />
-        </PrivateRoute>
-      }
-    />
-    <Route
-      path="/history"
-      element={
-        <PrivateRoute>
-          <ScanHistory />
-        </PrivateRoute>
-      }
-    />
-    <Route
-      path="/history/:id"
-      element={
-        <PrivateRoute>
-          <ScanResult />
-        </PrivateRoute>
-      }
-    />
-    <Route
-      path="/encyclopedia-app"
-      element={
-        <PrivateRoute>
-          <EncyclopediaUser />
-        </PrivateRoute>
-      }
-    />
-    <Route
-      path="/encyclopedia-app/:slug"
-      element={
-        <PrivateRoute>
-          <EncyclopediaUserDetail />
-        </PrivateRoute>
-      }
-    />
-    <Route
-      path="/profile"
-      element={
-        <PrivateRoute>
-          <UserProfile />
-        </PrivateRoute>
-      }
-    />
+      {/* /scan/result/:id — id dari classificationId response API */}
+      <Route
+        path="/scan/result/:id"
+        element={
+          <PrivateRoute>
+            <ScanResult />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/history"
+        element={
+          <PrivateRoute>
+            <ScanHistory />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/history/:id"
+        element={
+          <PrivateRoute>
+            <ScanResult />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/encyclopedia-app"
+        element={
+          <PrivateRoute>
+            <EncyclopediaUser />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/encyclopedia-app/:slug"
+        element={
+          <PrivateRoute>
+            <EncyclopediaUserDetail />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          <PrivateRoute>
+            <UserProfile />
+          </PrivateRoute>
+        }
+      />
 
-    {/* ── Fallback — semua route tidak dikenal ── */}
-    <Route path="*" element={<Navigate to="/" replace />} />
-  </Routes>
+      {/* ── Fallback — semua route tidak dikenal ── */}
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  )
 }
 
 export default function App() {
