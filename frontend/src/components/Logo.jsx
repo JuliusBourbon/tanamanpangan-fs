@@ -43,3 +43,14 @@ export function LogoBrand({ iconSize, textSize = 'text-xl' }) {
     </div>
   )
 }
+
+export function LogoBrandLight({ iconSize, textSize = 'text-lg' }) {
+  return (
+    <div className="flex items-center gap-2">
+      <LogoIcon className={iconSize} />
+      <span className={`text-white font-bold tracking-tight ${textSize}`}>
+        Tanam Pangan
+      </span>
+    </div>
+  )
+}

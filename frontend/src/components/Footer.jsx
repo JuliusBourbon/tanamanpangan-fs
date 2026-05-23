@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { TEXT } from '../constants/text'
-import { LogoBrand } from './Logo'
+import { LogoBrandLight } from './Logo'
 
 function SocialLinks() {
   // Isi href dengan link media sosial tim — saat ini placeholder kosong
@@ -71,7 +71,7 @@ export default function Footer() {
         {/* Brand */}
         <div>
           <div className="flex items-center gap-2 mb-3">
-            <LogoBrand iconSize="w-8 h-8" textSize="text-xl" />
+            <LogoBrandLight iconSize="w-8 h-8" textSize="text-xl" />
           </div>
           <p className="text-sm leading-relaxed max-w-xs">{footer.brandDesc}</p>
           <SocialLinks />
