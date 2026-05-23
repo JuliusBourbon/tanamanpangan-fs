@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { TEXT } from '../constants/text'
+import { LogoBrand } from './Logo'
 
 function SocialLinks() {
   // Isi href dengan link media sosial tim — saat ini placeholder kosong
@@ -65,17 +66,12 @@ export default function Footer() {
 
   return (
     <footer className="bg-gray-900 text-gray-400 py-14 px-6">
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-[3.3fr_1fr_1fr] gap-20">
+      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-[3.4fr_1fr_1fr] gap-20">
+        
         {/* Brand */}
         <div>
           <div className="flex items-center gap-2 mb-3">
-            <div className="bg-[#2a7a53] p-1.5 rounded-md">
-              <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                  d="M12 19V6m0 0l-3 3m3-3l3 3M6.5 12c-1.5-1.5-3-1.5-3-1.5s0 1.5 1.5 3c1.2.6 2.5.6 3.5.3M17.5 12c1.5-1.5 3-1.5 3-1.5s0 1.5-1.5 3c-1.2.6-2.5.6-3.5.3" />
-              </svg>
-            </div>
-            <span className="text-white font-bold text-lg">Tanam Pangan</span>
+            <LogoBrand iconSize="w-8 h-8" textSize="text-xl" />
           </div>
           <p className="text-sm leading-relaxed max-w-xs">{footer.brandDesc}</p>
           <SocialLinks />
@@ -106,6 +102,7 @@ export default function Footer() {
         </div>
       </div>
 
+      {/* Bottom bar */}
       <div className="max-w-6xl mx-auto mt-10 pt-6 border-t border-gray-800 flex flex-col md:flex-row items-center justify-between gap-2 text-xs text-gray-600">
         <span>{footer.copyright}</span>
         <span className="text-center">{footer.builtFor}</span>
