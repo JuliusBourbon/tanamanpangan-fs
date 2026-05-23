@@ -110,8 +110,31 @@ export const TEXT = {
   },
 
   // How It Works 
-  howItWorks: {
-    
+  howItWorks: {    
+    heading: 'How Tanam Pangan Works',
+    subheading: "Tanam Pangan uses computer vision technology to analyze plant photos and automatically detect diseases. Here's how our system works.",
+    steps: [
+      {
+        num: 1,
+        title: 'Capture or Upload Plant Photo',
+        desc: 'Upload a photo of the infected plant leaf from your gallery, or use the camera directly for a real-time scan. Make sure the photo is clear and well-lit for the best analysis results.',
+      },
+      {
+        num: 2,
+        title: 'AI Analysis',
+        desc: 'Our AI model processes the photo using computer vision to identify visual patterns of plant disease. The analysis process takes approximately 3–5 seconds.',
+      },
+      {
+        num: 3,
+        title: 'Diagnosis Results',
+        desc: 'The system displays the detected disease along with its confidence score and severity level. If the confidence level is low, the system will display several possible diseases.',
+      },
+      {
+        num: 4,
+        title: 'Treatment Recommendations',
+        desc: 'Get complete information on how to treat the detected disease, including treatment methods, dosages, and application times.',
+      },
+    ],
   },
 
   // About Us 
