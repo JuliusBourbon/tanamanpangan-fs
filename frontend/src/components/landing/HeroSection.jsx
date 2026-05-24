@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { TEXT } from '../../../constants/text'
+import { TEXT } from '../../constants/text'
 
 export default function HeroSection() {
   return (

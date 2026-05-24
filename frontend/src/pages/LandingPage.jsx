@@ -1,5 +1,5 @@
-import NavbarPublic from '../../components/navbar/NavbarPublic'
-import Footer from '../../components/Footer'
+import NavbarPublic from '../components/navbar/NavbarPublic'
+import Footer from '../components/Footer'
 import HeroSection from './sections/HeroSection'
 import DifferentSection from './sections/DifferentSection'
 import StepsSection from './sections/StepsSection'

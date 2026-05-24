@@ -1,4 +1,4 @@
-import { TEXT } from '../../../constants/text'
+import { TEXT } from '../../constants/text'
 
 const CARD_ICONS = [
   // <img src="/src/assets/nama-file.png" className="w-10 h-10" />

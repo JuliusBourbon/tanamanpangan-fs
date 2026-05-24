@@ -1,4 +1,4 @@
-import { TEXT } from '../../../constants/text'
+import { TEXT } from '../../constants/text'
 
 export default function StepsSection() {
   const { steps } = TEXT.landing
