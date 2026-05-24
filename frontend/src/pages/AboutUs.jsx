@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import NavbarPublic from '../components/navbar/NavbarPublic'
 import Footer from '../components/Footer'
-import CtaSection from './landing/sections/CtaSection'
+import CtaSection from '../components/CtaSection'
 import { TEXT } from '../constants/text'
 
 const { about: T } = TEXT

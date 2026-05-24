@@ -6,7 +6,7 @@ export default function HeroSection() {
     <section className="relative min-h-screen flex items-center justify-center text-center overflow-hidden pt-16">
       {/* Background image — ganti src dengan nama file aset kamu */}
       <img
-        src="/src/assets/lp-bg_section1.png"
+        src="src/assets/lp-bg_section1.png"
         alt="Background sawah"
         className="absolute inset-0 w-full h-full object-cover object-center"
       />

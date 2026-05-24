@@ -1,9 +1,9 @@
 import NavbarPublic from '../components/navbar/NavbarPublic'
 import Footer from '../components/Footer'
-import HeroSection from './sections/HeroSection'
-import DifferentSection from './sections/DifferentSection'
-import StepsSection from './sections/StepsSection'
-import CtaSection from './sections/CtaSection'
+import HeroSection from '../components/landing/HeroSection'
+import DifferentSection from '../components/landing/DifferentSection'
+import StepsSection from '../components/landing/StepsSection'
+import CtaSection from '../components/CtaSection'
 
 export default function LandingPage() {
   return (

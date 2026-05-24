@@ -3,7 +3,7 @@ import { AuthProvider, useAuth } from './context/AuthContext'
 import PrivateRoute from './components/PrivateRoute'
 
 // Public pages
-import LandingPage from './pages/landing/LandingPage'
+import LandingPage from './pages/LandingPage'
 import HowItWorks from './pages/HowItWorks'
 import AboutUs from './pages/AboutUs'
 import TermsOfService from './pages/TermsOfService'
