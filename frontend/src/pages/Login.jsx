@@ -1,65 +1,36 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
+import NavbarAuth from '../components/navbar/NavbarAuth'
+import LoginForm from '../components/auth/LoginForm'
+
+// Background dekoratif — dua blob gradien di sudut kiri bawah dan kanan bawah
+function BackgroundBlobs() {
+  return (
+    <>
+      {/* Blob kiri bawah — hijau */}
+      <div
+        className="absolute bottom-0 left-0 w-[45%] h-[45%] rounded-tr-[60%] pointer-events-none"
+        style={{ background: 'linear-gradient(135deg, #4ade80 0%, #34d399 100%)' }}
+      />
+
+      {/* Blob kanan bawah — kuning kehijauan */}
+      <div
+        className="absolute bottom-0 right-0 w-[40%] h-[40%] rounded-tl-[60%] pointer-events-none"
+        style={{ background: 'linear-gradient(225deg, #d9f99d 0%, #a3e635 100%)' }}
+      />
+    </>
+  )
+}
 
 export default function Login() {
-  const { login } = useAuth()
-  const [form, setForm] = useState({ email: '', password: '' })
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
-
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value })
-
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    setError('')
-    setLoading(true)
-    try {
-      await login(form.email, form.password)
-    } catch (err) {
-      setError(err.response?.data?.message || 'Login gagal. Coba lagi.')
-    } finally {
-      setLoading(false)
-    }
-  }
-
   return (
-    <div >
+    <div className="min-h-screen bg-gray-100 relative overflow-hidden flex flex-col">
+      <NavbarAuth />
 
-          <form onSubmit={handleSubmit} >
-            <label>Email</label><br />
-            <input
-                name="email"
-                type="email"
-                placeholder="nama@email.com"
-                value={form.email}
-                onChange={handleChange}
-                required
-            /> <br />
+      {/* Form ditengah halaman */}
+      <div className="flex-1 flex items-center justify-center px-4 py-20 relative z-10">
+        <LoginForm />
+      </div>
 
-              <label>Password</label><br />
-              <input
-                name="password"
-                type="password"
-                placeholder="••••••••"
-                value={form.password}
-                onChange={handleChange}
-                required
-              /> <br />
-
-            <button
-              type="submit"
-              disabled={loading}
-              className='border'
-            >
-              {loading ? 'Memproses...' : 'Masuk'}
-            </button>
-          </form>
-
-          <p >
-            Belum punya akun?{' '}
-            <Link to="/register" className='underline'>Daftar sekarang</Link>
-          </p>
+      <BackgroundBlobs />
     </div>
   )
 }
