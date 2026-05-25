@@ -6,6 +6,7 @@ import tensorflow as tf
 from fastapi import FastAPI, HTTPException
 from PIL import Image
 from pydantic import BaseModel
+from tensorflow.keras.applications.efficientnet import preprocess_input
 
 app = FastAPI(
     title="Plant Disease Classification Service",
@@ -66,21 +67,11 @@ except Exception as e:
 
 # Class Label (Sorted)
 CLASS_LABELS = [
-    "Bacterialblight",
-    "Blast",
-    "Brownspot",
-    "Tungro",
-    "tomato_bacterial_spot",
-    "tomato_early_blight",
-    "tomato_healthy",
-    "tomato_late_blight",
-    "tomato_leaf_mold",
-    "tomato_septoria_leaf_spot",
-    "tomato_spotted_spider_mite",
-    "tomato_target_spot",
-    "tomato_yellow_leaf_curl_virus",
+    "bacterial_spot",
+    "early_blight",
+    "healthy",
+    "late_blight",
 ]
-
 
 # Skema data request body menggunakan Pydantic
 class PredictRequest(BaseModel):
@@ -115,8 +106,8 @@ async def predict_disease(payload: PredictRequest):
         img = img.resize((224, 224))
         img_array = np.array(img).astype(np.float32)
 
-        # Pixel Normalization (0, 1)
-        img_array = img_array / 255.0
+        # Pixel Normalization
+        img_array = preprocess_input(img_array)
 
         # Batch Dimension
         img_array = np.expand_dims(img_array, axis=0)
