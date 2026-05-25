@@ -24,30 +24,11 @@ const deleteFromS3 = async (imageUrl) => {
 }
 
 const LABEL_TO_SLUG = {
-    'Bacterialblight':               'rice-bacterial-blight',
-    'Blast':                         'rice-blast',
-    'Brownspot':                     'rice-brown-spot',
-    'Tungro':                        'rice-tungro',
-    'tomato_bacterial_spot':         'tomato-bacterial-spot',
-    'tomato_early_blight':           'tomato-early-blight',
-    'tomato_healthy':                'tomato-healthy',
-    'tomato_late_blight':            'tomato-late-blight',
-    'tomato_leaf_mold':              'tomato-leaf-mold',
-    'tomato_septoria_leaf_spot':     'tomato-septoria-leaf-spot',
-    'tomato_spotted_spider_mite':    'tomato-spider-mites',
-    'tomato_target_spot':            'tomato-target-spot',
-    'tomato_yellow_leaf_curl_virus': 'tomato-yellow-leaf-curl-virus',
+    'bacterial_spot': 'tomato-bacterial-spot',
+    'early_blight':   'tomato-early-blight',
+    'healthy':        'tomato-healthy',
+    'late_blight':    'tomato-late-blight',
 }
-
-// DUMMY CLASSIFIER
-// async function classifyImage(imageUrl) {
-//     const diseases = await prisma.disease.findMany({ select: { slug: true } })
-//     const random = diseases[Math.floor(Math.random() * diseases.length)]
-//     return {
-//         slug: random.slug,
-//         confidenceScore: parseFloat((Math.random() * 0.4 + 0.6).toFixed(4)),
-//     }
-// }
 
 // HELPER: generate presigned S3 URL
 async function generatePresignedUrl(imageUrl) {
