@@ -174,7 +174,17 @@ export const TEXT = {
   // Auth 
   auth: {
     login: {
-      
+      heading: 'Welcome Back',
+      subheading: 'Enter your credential to access your Dashboard',
+      emailLabel: 'Email',
+      emailPlaceholder: 'tanam@gmail.com',
+      passwordLabel: 'Password',
+      passwordPlaceholder: '••••••••',
+      forgotPassword: 'Forgot Password?',
+      submitBtn: 'Sign In',
+      submittingBtn: 'Processing...',
+      noAccount: "Don't have an account?",
+      registerLink: 'Register',
     },
     register: {
       
