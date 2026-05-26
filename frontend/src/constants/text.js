@@ -187,7 +187,28 @@ export const TEXT = {
       registerLink: 'Register',
     },
     register: {
-      
+      heading: 'Sign Up for FREE',
+      fullNameLabel: 'Full Name',
+      fullNamePlaceholder: 'Julius',
+      emailLabel: 'Email',
+      emailPlaceholder: 'julius@gmail.com',
+      passwordLabel: 'Password',
+      passwordPlaceholder: '••••••••',
+      confirmPasswordLabel: 'Confirm Password',
+      confirmPasswordPlaceholder: '••••••••',
+      passwordRules: [
+        { key: 'length',    label: 'At least 8 characters' },
+        { key: 'upper',     label: 'Uppercase and lowercase letters' },
+        { key: 'number',    label: 'A mixture of letters and numbers' },
+        { key: 'special',   label: 'Special characters (example: $, !, @, #, etc.)' },
+      ],
+      submitBtn: 'Create Account',
+      submittingBtn: 'Processing...',
+      emailNote: 'Check your email to verify your account',
+      termsPrefix: 'By creating an account, you agree to the',
+      termsLink: 'Terms of Service',
+      confirmMismatch: 'Passwords do not match.',
+      nameTooShort: 'Full name must be at least 3 characters.',
     },
     forgotPassword: {
       
