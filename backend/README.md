@@ -1,32 +1,57 @@
-# API Documentation
+# API Documentation — Plant Disease Detection App
 
-Base URL: `/api`
-
----
-
-## 📁 Routes
-
-- [Auth](#auth-routes) — `/auth`
-- [Classify](#classify-routes) — `/api/classify`
-- [Disease](#disease-routes) — `/api/diseases`
+Dokumentasi ini menjelaskan seluruh endpoint REST API yang tersedia pada aplikasi Plant Disease Detection. API ini dibangun menggunakan Node.js dengan framework Express dan menggunakan JWT untuk autentikasi.
 
 ---
 
-## Auth Routes
+## Base URL
 
-### `POST /auth/register`
-Mendaftarkan pengguna baru.
+```
+https://<your-domain>/api
+```
 
-**Request Body (JSON):**
-| Field | Type | Required | Keterangan |
-|-------|------|----------|------------|
-| `name` | string | ✅ | Nama pengguna |
-| `email` | string | ✅ | Format email valid |
-| `password` | string | ✅ | Minimal 8 karakter |
+---
 
-**Response:**
+## Autentikasi
+
+Sebagian besar endpoint memerlukan token JWT yang dikirimkan melalui header `Authorization`:
+
+```
+Authorization: Bearer <token>
+```
+
+Token diperoleh setelah berhasil melakukan **registrasi** atau **login**.
+
+---
+
+## Daftar Endpoint
+
+- [Auth](#1-auth)
+- [Klasifikasi](#2-klasifikasi)
+- [Dashboard](#3-dashboard)
+- [Penyakit](#4-penyakit)
+
+---
+
+## 1. Auth
+
+Base path: `/auth`
+
+### POST `/auth/register`
+
+Mendaftarkan pengguna baru ke dalam sistem.
+
+**Request Body** (`application/json`)
+
+| Field      | Tipe   | Wajib | Keterangan                    |
+|------------|--------|-------|-------------------------------|
+| `name`     | string | Ya    | Nama lengkap pengguna         |
+| `email`    | string | Ya    | Alamat email yang valid       |
+| `password` | string | Ya    | Minimal 8 karakter            |
+
+**Response Sukses** `201 Created`
+
 ```json
-// 201 Created
 {
   "message": "Registrasi berhasil",
   "user": {
@@ -34,33 +59,38 @@ Mendaftarkan pengguna baru.
     "name": "John Doe",
     "email": "john@example.com",
     "profileImage": null,
-    "createdAt": "2025-01-01T00:00:00.000Z"
+    "createdAt": "2024-01-01T00:00:00.000Z"
   },
   "token": "<jwt_token>"
 }
 ```
 
-**Error Responses:**
-| Status | Pesan |
-|--------|-------|
-| `400` | Semua field wajib diisi / Format email tidak valid / Password minimal 8 karakter |
-| `409` | Email sudah terdaftar |
-| `500` | Terjadi kesalahan server |
+**Response Error**
+
+| Kode | Pesan                        | Penyebab                              |
+|------|------------------------------|---------------------------------------|
+| 400  | Semua field wajib diisi      | Terdapat field yang kosong            |
+| 400  | Format email tidak valid     | Format email tidak sesuai             |
+| 400  | Password minimal 8 karakter  | Password terlalu pendek               |
+| 409  | Email sudah terdaftar        | Email telah digunakan akun lain       |
+| 500  | Terjadi kesalahan server     | Kesalahan internal server             |
 
 ---
 
-### `POST /auth/login`
-Login pengguna dan mendapatkan token JWT.
+### POST `/auth/login`
 
-**Request Body (JSON):**
-| Field | Type | Required |
-|-------|------|----------|
-| `email` | string | ✅ |
-| `password` | string | ✅ |
+Mengautentikasi pengguna dan mengembalikan token JWT.
 
-**Response:**
+**Request Body** (`application/json`)
+
+| Field      | Tipe   | Wajib | Keterangan              |
+|------------|--------|-------|-------------------------|
+| `email`    | string | Ya    | Alamat email pengguna   |
+| `password` | string | Ya    | Password pengguna       |
+
+**Response Sukses** `200 OK`
+
 ```json
-// 200 OK
 {
   "message": "Login berhasil",
   "user": {
@@ -68,261 +98,338 @@ Login pengguna dan mendapatkan token JWT.
     "name": "John Doe",
     "email": "john@example.com",
     "profileImage": null,
-    "createdAt": "2025-01-01T00:00:00.000Z"
+    "createdAt": "2024-01-01T00:00:00.000Z"
   },
   "token": "<jwt_token>"
 }
 ```
 
-**Error Responses:**
-| Status | Pesan |
-|--------|-------|
-| `400` | Email dan password wajib diisi |
-| `401` | Email atau password salah |
-| `500` | Terjadi kesalahan server |
+**Response Error**
+
+| Kode | Pesan                        | Penyebab                              |
+|------|------------------------------|---------------------------------------|
+| 400  | Email dan password wajib diisi | Field kosong                        |
+| 401  | Email atau password salah    | Kredensial tidak valid                |
+| 500  | Terjadi kesalahan server     | Kesalahan internal server             |
 
 ---
 
-### `GET /auth/me`
-Mendapatkan data pengguna yang sedang login.
+### GET `/auth/me`
 
-🔒 **Requires Authentication**
+🔒 *Memerlukan autentikasi*
 
-**Response:**
+Mengambil data profil pengguna yang sedang login.
+
+**Response Sukses** `200 OK`
+
 ```json
-// 200 OK
 {
   "user": {
     "id": 1,
     "name": "John Doe",
     "email": "john@example.com",
     "profileImage": "https://...",
-    "createdAt": "2025-01-01T00:00:00.000Z"
+    "createdAt": "2024-01-01T00:00:00.000Z"
   }
 }
 ```
 
-**Error Responses:**
-| Status | Pesan |
-|--------|-------|
-| `401` | Unauthorized |
-| `500` | Terjadi kesalahan server |
+---
+
+### PUT `/auth/profile/name`
+
+🔒 *Memerlukan autentikasi*
+
+Memperbarui nama pengguna yang sedang login.
+
+**Request Body** (`application/json`)
+
+| Field  | Tipe   | Wajib | Keterangan              |
+|--------|--------|-------|-------------------------|
+| `name` | string | Ya    | Nama baru, minimal 3 karakter |
+
+**Response Sukses** `200 OK`
+
+```json
+{
+  "message": "Nama berhasil diperbarui.",
+  "user": { ... }
+}
+```
+
+**Response Error**
+
+| Kode | Pesan                        | Penyebab                    |
+|------|------------------------------|-----------------------------|
+| 400  | Nama tidak boleh kosong      | Field `name` kosong         |
+| 400  | Nama minimal 3 karakter      | Nama terlalu pendek         |
+| 500  | Terjadi kesalahan server     | Kesalahan internal server   |
 
 ---
 
-### `PUT /auth/change-password`
-Mengubah password pengguna.
+### PUT `/auth/change-password`
 
-🔒 **Requires Authentication**
+🔒 *Memerlukan autentikasi*
 
-**Request Body (JSON):**
-| Field | Type | Required | Keterangan |
-|-------|------|----------|------------|
-| `currentPassword` | string | ✅ | Password saat ini |
-| `newPassword` | string | ✅ | Minimal 8 karakter |
-| `confirmNewPassword` | string | ✅ | Harus sama dengan `newPassword` |
+Mengubah password pengguna yang sedang login.
 
-**Response:**
+**Request Body** (`application/json`)
+
+| Field                | Tipe   | Wajib | Keterangan                          |
+|----------------------|--------|-------|-------------------------------------|
+| `currentPassword`    | string | Ya    | Password saat ini                   |
+| `newPassword`        | string | Ya    | Password baru, minimal 8 karakter   |
+| `confirmNewPassword` | string | Ya    | Harus sama dengan `newPassword`     |
+
+**Response Sukses** `200 OK`
+
 ```json
-// 200 OK
 {
   "message": "Password berhasil diubah."
 }
 ```
 
-**Error Responses:**
-| Status | Pesan |
-|--------|-------|
-| `400` | Semua field wajib diisi / Password baru minimal 8 karakter / Konfirmasi password tidak cocok / Password baru tidak boleh sama dengan password lama |
-| `401` | Password saat ini tidak valid |
-| `404` | User tidak ditemukan |
-| `500` | Terjadi kesalahan server |
+**Response Error**
+
+| Kode | Pesan                                            | Penyebab                              |
+|------|--------------------------------------------------|---------------------------------------|
+| 400  | Semua field wajib diisi                          | Terdapat field yang kosong            |
+| 400  | Password baru minimal 8 karakter                 | Password baru terlalu pendek          |
+| 400  | Konfirmasi password tidak cocok                  | `newPassword` ≠ `confirmNewPassword`  |
+| 400  | Password baru tidak boleh sama dengan lama       | Password tidak berubah                |
+| 401  | Password saat ini tidak valid                    | `currentPassword` salah               |
+| 404  | User tidak ditemukan                             | Token menunjuk user yang tidak ada    |
+| 500  | Terjadi kesalahan server                         | Kesalahan internal server             |
 
 ---
 
-### `PUT /auth/profile/image`
-Mengunggah atau memperbarui foto profil pengguna. Foto lama di S3 akan otomatis dihapus.
+### PUT `/auth/profile/image`
 
-🔒 **Requires Authentication**
+🔒 *Memerlukan autentikasi*
 
-**Request:** `multipart/form-data`
-| Field | Type | Required |
-|-------|------|----------|
-| `image` | file | ✅ |
+Mengunggah atau memperbarui foto profil pengguna. Gambar lama akan otomatis dihapus dari storage.
 
-**Response:**
+**Request** `multipart/form-data`
+
+| Field   | Tipe | Wajib | Keterangan          |
+|---------|------|-------|---------------------|
+| `image` | file | Ya    | File gambar profil  |
+
+**Response Sukses** `200 OK`
+
 ```json
-// 200 OK
 {
   "message": "Foto profil berhasil diperbarui.",
-  "user": {
-    "id": 1,
-    "name": "John Doe",
-    "email": "john@example.com",
-    "profileImage": "https://s3.amazonaws.com/...",
-    "createdAt": "2025-01-01T00:00:00.000Z"
-  }
+  "user": { ... }
 }
 ```
 
-**Error Responses:**
-| Status | Pesan |
-|--------|-------|
-| `400` | Foto profil wajib diunggah |
-| `500` | Terjadi kesalahan server |
+**Response Error**
+
+| Kode | Pesan                        | Penyebab                    |
+|------|------------------------------|-----------------------------|
+| 400  | Foto profil wajib diunggah   | Tidak ada file yang dikirim |
+| 500  | Terjadi kesalahan server     | Kesalahan internal server   |
 
 ---
 
-### `DELETE /auth/profile/image`
-Menghapus foto profil pengguna dari database dan S3.
+### DELETE `/auth/profile/image`
 
-🔒 **Requires Authentication**
+🔒 *Memerlukan autentikasi*
 
-**Response:**
+Menghapus foto profil pengguna yang sedang login.
+
+**Response Sukses** `200 OK`
+
 ```json
-// 200 OK
 {
   "message": "Foto profil berhasil dihapus."
 }
 ```
 
-**Error Responses:**
-| Status | Pesan |
-|--------|-------|
-| `404` | Tidak ada foto profil yang tersimpan |
-| `500` | Terjadi kesalahan server |
+**Response Error**
+
+| Kode | Pesan                                  | Penyebab                       |
+|------|----------------------------------------|--------------------------------|
+| 404  | Tidak ada foto profil yang tersimpan   | Pengguna belum memiliki foto   |
+| 500  | Terjadi kesalahan server               | Kesalahan internal server      |
 
 ---
 
-### `PUT /auth/profile/name`
-Memperbarui nama pengguna.
+### DELETE `/auth/account`
 
-🔒 **Requires Authentication**
+🔒 *Memerlukan autentikasi*
 
-**Request Body (JSON):**
-| Field | Type | Required | Keterangan |
-|-------|------|----------|------------|
-| `name` | string | ✅ | Minimal 3 karakter |
+Menghapus akun pengguna secara permanen beserta seluruh data terkait (termasuk riwayat klasifikasi dan foto profil).
 
-**Response:**
+**Request Body** (`application/json`)
+
+| Field      | Tipe   | Wajib | Keterangan                          |
+|------------|--------|-------|-------------------------------------|
+| `password` | string | Ya    | Password sebagai konfirmasi penghapusan |
+
+**Response Sukses** `200 OK`
+
 ```json
-// 200 OK
-{
-  "message": "Nama berhasil diperbarui.",
-  "user": {
-    "id": 1,
-    "name": "John Doe",
-    "email": "john@example.com",
-    "profileImage": "https://...",
-    "createdAt": "2025-01-01T00:00:00.000Z"
-  }
-}
-```
-**Error Responses:**
-| Status | Pesan |
-|--------|-------|
-| `400` | Nama tidak boleh kosong / Nama minimal 3 karakter |
-| `500` | Terjadi kesalahan server |
-
----
-
-### `DELETE /auth/account`
-Menghapus akun pengguna beserta foto profilnya dari S3.
-
-🔒 **Requires Authentication**
-
-**Request Body (JSON):**
-| Field | Type | Required |
-|-------|------|----------|
-| `password` | string | ✅ |
-
-**Response:**
-```json
-// 200 OK
 {
   "message": "Akun berhasil dihapus."
 }
 ```
-**Error Responses:**
-| Status | Pesan |
-|--------|-------|
-| `400` | Password wajib diisi untuk konfirmasi |
-| `401` | Password tidak valid |
-| `401` | User tidak ditemukan |
-| `500` | Terjadi kesalahan server |
+
+**Response Error**
+
+| Kode | Pesan                        | Penyebab                    |
+|------|------------------------------|-----------------------------|
+| 400  | Password wajib diisi untuk konfirmasi | Field kosong         |
+| 401  | Password tidak valid         | Password salah              |
+| 404  | User tidak ditemukan         | User tidak ada              |
+| 500  | Terjadi kesalahan server     | Kesalahan internal server   |
 
 ---
 
-## Classify Routes
+### POST `/auth/forgot-password`
 
-### `POST /api/classify`
-Mengunggah gambar dan melakukan klasifikasi penyakit.
+Mengirimkan email berisi tautan reset password kepada pengguna.
 
-🔒 **Requires Authentication**
+> Catatan: Respons selalu `200 OK` meskipun email tidak terdaftar, untuk mencegah enumerasi akun.
 
-**Request:** `multipart/form-data`
-| Field | Type | Required |
-|-------|------|----------|
-| `image` | file | ✅ |
+**Request Body** (`application/json`)
 
-**Response:**
+| Field   | Tipe   | Wajib | Keterangan              |
+|---------|--------|-------|-------------------------|
+| `email` | string | Ya    | Alamat email pengguna   |
+
+**Response Sukses** `200 OK`
+
 ```json
-// 201 Created
+{
+  "message": "Jika email terdaftar, link reset akan dikirimkan."
+}
+```
+
+---
+
+### POST `/auth/reset-password`
+
+Mereset password menggunakan token yang diterima melalui email. Token berlaku selama **1 jam**.
+
+**Request Body** (`application/json`)
+
+| Field                | Tipe   | Wajib | Keterangan                        |
+|----------------------|--------|-------|-----------------------------------|
+| `token`              | string | Ya    | Token dari tautan email           |
+| `newPassword`        | string | Ya    | Password baru, minimal 8 karakter |
+| `confirmNewPassword` | string | Ya    | Harus sama dengan `newPassword`   |
+
+**Response Sukses** `200 OK`
+
+```json
+{
+  "message": "Password berhasil direset. Silakan login kembali."
+}
+```
+
+**Response Error**
+
+| Kode | Pesan                                | Penyebab                              |
+|------|--------------------------------------|---------------------------------------|
+| 400  | Semua field wajib diisi              | Terdapat field yang kosong            |
+| 400  | Password minimal 8 karakter          | Password terlalu pendek               |
+| 400  | Konfirmasi password tidak cocok      | `newPassword` ≠ `confirmNewPassword`  |
+| 400  | Token tidak valid atau sudah expired | Token salah atau kadaluarsa           |
+| 500  | Terjadi kesalahan server             | Kesalahan internal server             |
+
+---
+
+## 2. Klasifikasi
+
+Base path: `/api/classify`
+
+### POST `/api/classify`
+
+🔒 *Memerlukan autentikasi*
+
+Mengunggah gambar tanaman untuk diklasifikasikan oleh model AI. Hasil klasifikasi akan disimpan ke dalam riwayat pengguna.
+
+**Request** `multipart/form-data`
+
+| Field   | Tipe | Wajib | Keterangan                       |
+|---------|------|-------|----------------------------------|
+| `image` | file | Ya    | Gambar tanaman yang akan dianalisis |
+
+**Response Sukses** `201 Created`
+
+```json
 {
   "message": "Klasifikasi berhasil",
   "result": {
-    "classificationId": 10,
+    "classificationId": 42,
     "disease": {
-      "name": "Leaf Blight",
-      "slug": "leaf-blight",
-      "scientificName": "Helminthosporium sp.",
+      "name": "Bacterial Spot",
+      "slug": "tomato-bacterial-spot",
+      "scientificName": "Xanthomonas campestris",
+      "cropType": "tomato",
       "description": "...",
       "symptoms": "...",
       "treatment": "..."
     },
-    "confidenceScore": 0.8731,
-    "imageUrl": "https://s3.amazonaws.com/...",
-    "classifiedAt": "2025-01-01T00:00:00.000Z"
+    "confidenceScore": 0.97,
+    "imageUrl": "https://...",
+    "classifiedAt": "2024-01-01T00:00:00.000Z"
   }
 }
 ```
 
-**Error Responses:**
-| Status | Pesan |
-|--------|-------|
-| `400` | Gambar wajib diunggah |
-| `500` | Penyakit tidak ditemukan di database / Terjadi kesalahan saat memproses gambar |
+**Label yang Didukung**
+
+| Label Model          | Slug Penyakit             |
+|----------------------|---------------------------|
+| `bacterial_spot`     | `tomato-bacterial-spot`   |
+| `early_blight`       | `tomato-early-blight`     |
+| `healthy`            | `tomato-healthy`          |
+| `late_blight`        | `tomato-late-blight`      |
+
+**Response Error**
+
+| Kode | Pesan                                    | Penyebab                          |
+|------|------------------------------------------|-----------------------------------|
+| 400  | Gambar wajib diunggah                    | Tidak ada file yang dikirim       |
+| 500  | Penyakit tidak ditemukan di database     | Label tidak terdapat di database  |
+| 500  | Terjadi kesalahan saat memproses gambar  | Kegagalan koneksi ke model AI     |
 
 ---
 
-### `GET /api/classify/history`
-Mengambil riwayat klasifikasi milik pengguna dengan pagination.
+### GET `/api/classify/history`
 
-🔒 **Requires Authentication**
+🔒 *Memerlukan autentikasi*
 
-**Query Parameters:**
-| Param | Type | Default | Keterangan |
-|-------|------|---------|------------|
-| `page` | number | `1` | Halaman saat ini |
-| `limit` | number | `10` | Jumlah item per halaman |
-| `keyword` | string | - | Filter berdasarkan nama atau slug |
-| `crop_type` | string | - | Filter berdasarkan jenis tanaman |
-| `sort` | string | newest | Filter Pengurutan (newest atau oldest) |
+Mengambil daftar riwayat klasifikasi milik pengguna dengan dukungan filter, pencarian, dan paginasi.
 
-**Response:**
+**Query Parameters**
+
+| Parameter   | Tipe    | Default   | Keterangan                                        |
+|-------------|---------|-----------|---------------------------------------------------|
+| `page`      | integer | `1`       | Nomor halaman                                     |
+| `limit`     | integer | `10`      | Jumlah data per halaman                           |
+| `keyword`   | string  | —         | Cari berdasarkan nama penyakit atau nama ilmiah   |
+| `crop_type` | string  | —         | Filter berdasarkan jenis tanaman                  |
+| `sort`      | string  | `newest`  | Urutan data: `newest` atau `oldest`               |
+
+**Response Sukses** `200 OK`
+
 ```json
-// 200 OK
 {
   "data": [
     {
-      "id": 10,
-      "imageUrl": "https://s3.amazonaws.com/...",
-      "confidenceScore": 0.8731,
-      "createdAt": "2025-01-01T00:00:00.000Z",
+      "id": 42,
+      "imageUrl": "https://...",
+      "confidenceScore": 0.97,
+      "createdAt": "2024-01-01T00:00:00.000Z",
       "disease": {
-        "name": "Leaf Blight",
-        "slug": "leaf-blight",
-        "scientificName": "Helminthosporium sp."
+        "name": "Bacterial Spot",
+        "slug": "tomato-bacterial-spot",
+        "cropType": "tomato",
+        "scientificName": "Xanthomonas campestris"
       }
     }
   ],
@@ -331,167 +438,261 @@ Mengambil riwayat klasifikasi milik pengguna dengan pagination.
     "limit": 10,
     "total": 25,
     "totalPages": 3
+  },
+  "meta": {
+    "keyword": null,
+    "crop_type": null,
+    "sort": "newest"
   }
 }
 ```
 
-**Error Responses:**
-| Status | Pesan |
-|--------|-------|
-| `500` | Terjadi kesalahan server |
-
 ---
 
-### `GET /api/classify/history/:id`
+### GET `/api/classify/history/:id`
+
+🔒 *Memerlukan autentikasi*
+
 Mengambil detail satu riwayat klasifikasi berdasarkan ID.
 
-🔒 **Requires Authentication**
+**Path Parameter**
 
-**Path Parameters:**
-| Param | Type | Keterangan |
-|-------|------|------------|
-| `id` | number | ID klasifikasi |
+| Parameter | Tipe    | Keterangan                   |
+|-----------|---------|------------------------------|
+| `id`      | integer | ID riwayat klasifikasi       |
 
-**Response:**
+**Response Sukses** `200 OK`
+
 ```json
-// 200 OK
 {
   "data": {
-    "id": 10,
-    "imageUrl": "https://s3.amazonaws.com/...",
-    "confidenceScore": 0.8731,
-    "createdAt": "2025-01-01T00:00:00.000Z",
-    "disease": {
-      "id": 2,
-      "name": "Leaf Blight",
-      "slug": "leaf-blight",
-      "scientificName": "Helminthosporium sp.",
-      "description": "...",
-      "symptoms": "...",
-      "treatment": "...",
-      "imageUrl": "https://...",
-      "createdAt": "2025-01-01T00:00:00.000Z"
-    }
+    "id": 42,
+    "imageUrl": "https://...",
+    "confidenceScore": 0.97,
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "disease": { ... }
   }
 }
 ```
 
-**Error Responses:**
-| Status | Pesan |
-|--------|-------|
-| `404` | Data klasifikasi tidak ditemukan |
-| `500` | Terjadi kesalahan server |
+**Response Error**
+
+| Kode | Pesan                               | Penyebab                             |
+|------|-------------------------------------|--------------------------------------|
+| 404  | Data klasifikasi tidak ditemukan    | ID tidak ada atau bukan milik user   |
+| 500  | Terjadi kesalahan server            | Kesalahan internal server            |
 
 ---
 
-### `DELETE /api/classify/history/:id`
-Menghapus satu riwayat klasifikasi beserta gambarnya dari S3.
+### DELETE `/api/classify/history/:id`
 
-🔒 **Requires Authentication**
+🔒 *Memerlukan autentikasi*
 
-**Path Parameters:**
-| Param | Type | Keterangan |
-|-------|------|------------|
-| `id` | number | ID klasifikasi |
+Menghapus satu riwayat klasifikasi beserta file gambarnya dari storage.
 
-**Response:**
+**Path Parameter**
+
+| Parameter | Tipe    | Keterangan                   |
+|-----------|---------|------------------------------|
+| `id`      | integer | ID riwayat klasifikasi       |
+
+**Response Sukses** `200 OK`
+
 ```json
-// 200 OK
 {
   "message": "Riwayat klasifikasi berhasil dihapus."
 }
 ```
 
-**Error Responses:**
-| Status | Pesan |
-|--------|-------|
-| `404` | Data klasifikasi tidak ditemukan |
-| `500` | Terjadi kesalahan server |
+**Response Error**
+
+| Kode | Pesan                               | Penyebab                             |
+|------|-------------------------------------|--------------------------------------|
+| 404  | Data klasifikasi tidak ditemukan    | ID tidak ada atau bukan milik user   |
+| 500  | Terjadi kesalahan server            | Kesalahan internal server            |
 
 ---
 
-### `DELETE /api/classify/history`
-Menghapus seluruh riwayat klasifikasi milik pengguna beserta semua gambar terkait di S3.
+### DELETE `/api/classify/history`
 
-🔒 **Requires Authentication**
+🔒 *Memerlukan autentikasi*
 
-**Response:**
+Menghapus seluruh riwayat klasifikasi milik pengguna beserta semua file gambar dari storage.
+
+**Response Sukses** `200 OK`
+
 ```json
 {
-  "message": "X riwayat klasifikasi berhasil dihapus."
-}
-```
-**Error Responses:**
-| Status | Pesan |
-|--------|-------|
-| `404` | Tidak ada riwayat klasifikasi |
-| `500` | Terjadi kesalahan server |
-
----
-
-## Disease Routes
-
-### `GET /api/diseases`
-Mengambil seluruh daftar penyakit yang tersedia.
-
-**Query Parameters:**
-| Param | Type | Default | Keterangan |
-|-------|------|---------|------------|
-| `keyword` | string | - | Filter berdasarkan nama atau slug |
-| `crop_type` | string | - | Filter berdasarkan jenis tanaman |
-
-**Response:**
-```json
-// 200 OK
-{
-  "data": [
-    {
-      "id": 1,
-      "name": "Leaf Blight",
-      "slug": "leaf-blight",
-      "scientificName": "Helminthosporium sp.",
-      "description": "..."
-    }
-  ]
+  "message": "25 riwayat klasifikasi berhasil dihapus."
 }
 ```
 
-**Error Responses:**
-| Status | Pesan |
-|--------|-------|
-| `500` | Terjadi kesalahan server |
+**Response Error**
+
+| Kode | Pesan                            | Penyebab                         |
+|------|----------------------------------|----------------------------------|
+| 404  | Tidak ada riwayat klasifikasi    | Pengguna belum memiliki riwayat  |
+| 500  | Terjadi kesalahan server         | Kesalahan internal server        |
 
 ---
 
-### `GET /api/diseases/:slug`
-Mengambil detail lengkap satu penyakit berdasarkan slug, termasuk jumlah total deteksi.
+## 3. Dashboard
 
-**Path Parameters:**
-| Param | Type | Keterangan |
-|-------|------|------------|
-| `slug` | string | Slug unik penyakit (contoh: `leaf-blight`) |
+Base path: `/api/dashboard`
 
-**Response:**
+### GET `/api/dashboard`
+
+🔒 *Memerlukan autentikasi*
+
+Mengambil ringkasan statistik aktivitas pengguna untuk ditampilkan pada halaman dashboard.
+
+**Response Sukses** `200 OK`
+
 ```json
-// 200 OK
 {
   "data": {
-    "id": 1,
-    "name": "Leaf Blight",
-    "slug": "leaf-blight",
-    "scientificName": "Helminthosporium sp.",
-    "description": "...",
-    "symptoms": "...",
-    "treatment": "...",
-    "imageUrl": "https://...",
-    "createdAt": "2025-01-01T00:00:00.000Z",
-    "totalDetections": 142
+    "totalScans": 50,
+    "scansThisMonth": 12,
+    "healthyPercentage": 64,
+    "lastScan": {
+      "id": 42,
+      "imageUrl": "https://...",
+      "confidenceScore": 0.97,
+      "createdAt": "2024-01-15T10:30:00.000Z",
+      "disease": {
+        "name": "Bacterial Spot",
+        "slug": "tomato-bacterial-spot",
+        "cropType": "tomato"
+      }
+    },
+    "recentHistory": [
+      { ... },
+      { ... }
+    ]
   }
 }
 ```
 
-**Error Responses:**
-| Status | Pesan |
-|--------|-------|
-| `404` | Penyakit tidak ditemukan |
-| `500` | Terjadi kesalahan server |
+**Keterangan Field**
+
+| Field                | Tipe    | Keterangan                                              |
+|----------------------|---------|---------------------------------------------------------|
+| `totalScans`         | integer | Total seluruh klasifikasi yang pernah dilakukan         |
+| `scansThisMonth`     | integer | Jumlah klasifikasi pada bulan berjalan                  |
+| `healthyPercentage`  | integer | Persentase tanaman yang terdeteksi sehat (0–100)        |
+| `lastScan`           | object  | Data klasifikasi terakhir, atau `null` jika belum ada   |
+| `recentHistory`      | array   | Lima klasifikasi terbaru                                |
+
+**Response Error**
+
+| Kode | Pesan                    | Penyebab                  |
+|------|--------------------------|---------------------------|
+| 500  | Terjadi kesalahan server | Kesalahan internal server |
+
+---
+
+## 4. Penyakit
+
+Base path: `/api/diseases`
+
+### GET `/api/diseases`
+
+Mengambil daftar seluruh penyakit yang tersedia dalam sistem. Endpoint ini bersifat publik dan tidak memerlukan autentikasi.
+
+**Query Parameters**
+
+| Parameter   | Tipe   | Keterangan                                                |
+|-------------|--------|-----------------------------------------------------------|
+| `keyword`   | string | Cari berdasarkan nama penyakit atau nama ilmiah           |
+| `crop_type` | string | Filter berdasarkan jenis tanaman (contoh: `tomato`)       |
+
+**Response Sukses** `200 OK`
+
+```json
+{
+  "data": [
+    {
+      "id": 1,
+      "name": "Bacterial Spot",
+      "slug": "tomato-bacterial-spot",
+      "cropType": "tomato",
+      "scientificName": "Xanthomonas campestris",
+      "description": "..."
+    }
+  ],
+  "meta": {
+    "total": 4,
+    "keyword": null,
+    "crop_type": null
+  }
+}
+```
+
+---
+
+### GET `/api/diseases/:slug`
+
+Mengambil detail lengkap satu penyakit berdasarkan slug. Endpoint ini bersifat publik dan tidak memerlukan autentikasi.
+
+**Path Parameter**
+
+| Parameter | Tipe   | Keterangan                                  |
+|-----------|--------|---------------------------------------------|
+| `slug`    | string | Identifikasi unik penyakit (contoh: `tomato-bacterial-spot`) |
+
+**Response Sukses** `200 OK`
+
+```json
+{
+  "data": {
+    "id": 1,
+    "name": "Bacterial Spot",
+    "slug": "tomato-bacterial-spot",
+    "scientificName": "Xanthomonas campestris",
+    "cropType": "tomato",
+    "description": "...",
+    "symptoms": "...",
+    "treatment": "...",
+    "imageUrl": "https://...",
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "totalDetections": 128
+  }
+}
+```
+
+**Keterangan Field**
+
+| Field             | Tipe    | Keterangan                                        |
+|-------------------|---------|---------------------------------------------------|
+| `totalDetections` | integer | Total kasus penyakit ini yang pernah terdeteksi   |
+
+**Response Error**
+
+| Kode | Pesan                    | Penyebab                         |
+|------|--------------------------|----------------------------------|
+| 404  | Penyakit tidak ditemukan | Slug tidak cocok dengan database |
+| 500  | Terjadi kesalahan server | Kesalahan internal server        |
+
+---
+
+## Kode Status HTTP
+
+| Kode | Makna                  | Penggunaan Umum                                  |
+|------|------------------------|--------------------------------------------------|
+| 200  | OK                     | Request berhasil                                 |
+| 201  | Created                | Resource baru berhasil dibuat                    |
+| 400  | Bad Request            | Validasi input gagal                             |
+| 401  | Unauthorized           | Kredensial tidak valid atau token tidak diberikan|
+| 404  | Not Found              | Resource tidak ditemukan                         |
+| 409  | Conflict               | Data sudah ada (contoh: email duplikat)          |
+| 500  | Internal Server Error  | Kesalahan pada sisi server                       |
+
+---
+
+## Catatan Tambahan
+
+- Seluruh request dan response menggunakan format **JSON**, kecuali endpoint yang menerima file (`multipart/form-data`).
+- Token JWT berlaku selama **7 hari** sejak diterbitkan.
+- Token reset password berlaku selama **1 jam** sejak dikirimkan melalui email.
+- File gambar disimpan di **AWS S3**. Penghapusan data akan selalu disertai penghapusan file terkait dari storage.
+- Model AI mendukung klasifikasi penyakit pada tanaman **tomat** dengan empat label: `bacterial_spot`, `early_blight`, `late_blight`, dan `healthy`.
