@@ -5,6 +5,8 @@ const { DeleteObjectCommand } = require('@aws-sdk/client-s3')
 const prisma = require('../config/prisma')
 const authenticate = require('../middleware/auth')
 const { upload, s3 } = require('../middleware/upload')
+const nodemailer = require('nodemailer')
+const crypto = require('crypto')
 
 const router = express.Router()
 
@@ -21,6 +23,14 @@ const deleteProfileImageFromS3 = async (imageUrl) => {
     console.error('Gagal menghapus foto profil dari S3:', error)
   }
 }
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+})
 
 // POST /auth/register
 router.post('/register', async (req, res) => {
@@ -282,6 +292,97 @@ router.delete('/profile/image', authenticate, async (req, res) => {
     return res.status(200).json({ message: 'Foto profil berhasil dihapus.' })
   } catch (error) {
     console.error('Error saat menghapus foto profil:', error)
+    return res.status(500).json({ message: 'Terjadi kesalahan server.' })
+  }
+})
+
+// POST /auth/forgot-password
+router.post('/forgot-password', async (req, res) => {
+  try {
+    const { email } = req.body
+
+    if (!email) {
+      return res.status(400).json({ message: 'Email wajib diisi.' })
+    }
+
+    const user = await prisma.user.findUnique({ where: { email } })
+
+    if (!user) {
+      return res.status(200).json({ message: 'Jika email terdaftar, link reset akan dikirimkan.' })
+    }
+
+    // Expired in 1 hour
+    const resetToken = crypto.randomBytes(32).toString('hex')
+    const resetTokenExpiry = new Date(Date.now() + 60 * 60 * 1000)
+
+    await prisma.user.update({
+      where: { email },
+      data: { resetToken, resetTokenExpiry },
+    })
+
+    const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`
+
+    await transporter.sendMail({
+      from: `"Plant Disease App" <${process.env.EMAIL_USER}>`,
+      to: email,
+      subject: 'Reset Password',
+      html: `
+        <p>Halo ${user.name},</p>
+        <p>Kami menerima permintaan reset password untuk akunmu.</p>
+        <p>Klik link berikut untuk mereset password (berlaku 1 jam):</p>
+        <a href="${resetLink}">${resetLink}</a>
+        <p>Jika kamu tidak merasa melakukan permintaan ini, abaikan email ini.</p>
+      `,
+    })
+
+    return res.status(200).json({ message: 'Jika email terdaftar, link reset akan dikirimkan.' })
+  } catch (error) {
+    console.error('Error forgot password:', error)
+    return res.status(500).json({ message: 'Terjadi kesalahan server.' })
+  }
+})
+
+// POST /auth/reset-password
+router.post('/reset-password', async (req, res) => {
+  try {
+    const { token, newPassword, confirmNewPassword } = req.body
+
+    if (!token || !newPassword || !confirmNewPassword) {
+      return res.status(400).json({ message: 'Semua field wajib diisi.' })
+    }
+
+    if (newPassword.length < 8) {
+      return res.status(400).json({ message: 'Password minimal 8 karakter.' })
+    }
+
+    if (newPassword !== confirmNewPassword) {
+      return res.status(400).json({ message: 'Konfirmasi password tidak cocok.' })
+    }
+
+    const user = await prisma.user.findFirst({
+      where: {
+        resetToken: token,
+        resetTokenExpiry: { gt: new Date() },
+      },
+    })
+
+    if (!user) {
+      return res.status(400).json({ message: 'Token tidak valid atau sudah expired.' })
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10)
+    await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        password: hashedPassword,
+        resetToken: null,
+        resetTokenExpiry: null,
+      },
+    })
+
+    return res.status(200).json({ message: 'Password berhasil direset. Silakan login kembali.' })
+  } catch (error) {
+    console.error('Error reset password:', error)
     return res.status(500).json({ message: 'Terjadi kesalahan server.' })
   }
 })
