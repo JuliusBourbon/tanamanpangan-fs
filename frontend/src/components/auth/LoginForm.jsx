@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { TEXT } from '../../constants/text'
+import PasswordInput from './PasswordInput'
+
 
 const T = TEXT.auth.login
 
@@ -15,40 +17,9 @@ function IconEmail() {
   )
 }
 
-// Icon kunci (password)
-function IconLock() {
-  return (
-    <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
-      <rect x="5" y="11" width="14" height="10" rx="2" />
-      <path d="M8 11V7a4 4 0 018 0v4" />
-    </svg>
-  )
-}
-
-// Icon mata — show password
-function IconEyeOpen() {
-  return (
-    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
-      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-      <circle cx="12" cy="12" r="3" />
-    </svg>
-  )
-}
-
-// Icon mata dicoret — hide password
-function IconEyeOff() {
-  return (
-    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
-      <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24" />
-      <line x1="1" y1="1" x2="23" y2="23" />
-    </svg>
-  )
-}
-
 export default function LoginForm() {
   const { login } = useAuth()
   const [form, setForm] = useState({ email: '', password: '' })
-  const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
@@ -102,31 +73,13 @@ export default function LoginForm() {
         {/* Password field */}
         <div className="flex flex-col gap-1.5">
           <label className="text-sm font-medium text-gray-700">{T.passwordLabel}</label>
-          <div className="relative flex items-center">
-            <span className="absolute left-3 pointer-events-none">
-              <IconLock />
-            </span>
-            <input
-              name="password"
-              type={showPassword ? 'text' : 'password'}
-              placeholder={T.passwordPlaceholder}
-              value={form.password}
-              onChange={handleChange}
-              required
-              className="w-full pl-9 pr-10 py-2.5 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2a7a53]/30 focus:border-[#2a7a53] transition-colors"
-            />
-
-            {/* Toggle show/hide password */}
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 text-gray-400 hover:text-gray-600 transition-colors"
-              aria-label={showPassword ? 'Hide password' : 'Show password'}
-            >
-              {showPassword ? <IconEyeOpen /> : <IconEyeOff />}
-            </button>
-          </div>
-
+          <PasswordInput
+            name="password"
+            placeholder={T.passwordPlaceholder}
+            value={form.password}
+            onChange={handleChange}
+          />
+          
           {/* Forgot password link */}
           <Link
             to="/forgot-password"
