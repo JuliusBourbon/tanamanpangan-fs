@@ -43,6 +43,21 @@ async function generatePresignedUrl(imageUrl) {
     // URL Expired in 60 sec
     return getSignedUrl(s3, command, { expiresIn: 60 })
 }
+
+// HELPER: generate presigned URL
+const getPresignedImageUrl = async (imageUrl) => {
+    try {
+        const url = new URL(imageUrl)
+        const key = url.pathname.startsWith('/') ? url.pathname.slice(1) : url.pathname
+        const command = new GetObjectCommand({
+            Bucket: process.env.AWS_S3_BUCKET,
+            Key: key,
+        })
+        return getSignedUrl(s3, command, { expiresIn: 3600 })
+    } catch {
+        return null
+    }
+}
  
 async function classifyImage(imageUrl) {
     const presignedUrl = await generatePresignedUrl(imageUrl)
@@ -97,16 +112,16 @@ router.post('/', authenticate, upload.single('image'), async (req, res) => {
             result: {
                 classificationId: classification.id,
                 disease: {
-                name: disease.name,
-                slug: disease.slug,
-                scientificName: disease.scientificName,
-                cropType: disease.cropType,
-                description: disease.description,
-                symptoms: disease.symptoms,
-                treatment: disease.treatment,
+                    name: disease.name,
+                    slug: disease.slug,
+                    scientificName: disease.scientificName,
+                    cropType: disease.cropType,
+                    description: disease.description,
+                    symptoms: disease.symptoms,
+                    treatment: disease.treatment,
                 },
                 confidenceScore,
-                imageUrl,
+                imageUrl: await getPresignedImageUrl(imageUrl),
                 classifiedAt: classification.createdAt,
             },
         })
@@ -129,8 +144,8 @@ router.get('/history', authenticate, async (req, res) => {
             ...(keyword
                 ? {
                     OR: [
-                    { name: { contains: keyword, mode: 'insensitive' } },
-                    { scientificName: { contains: keyword, mode: 'insensitive' } },
+                        { name: { contains: keyword, mode: 'insensitive' } },
+                        { scientificName: { contains: keyword, mode: 'insensitive' } },
                     ],
                 }
                 : {}),
@@ -156,9 +171,16 @@ router.get('/history', authenticate, async (req, res) => {
             }),
             prisma.classification.count({ where }),
         ])
-    
+        
+        const historyWithUrls = await Promise.all(
+            history.map(async (item) => ({
+                ...item,
+                imageUrl: await getPresignedImageUrl(item.imageUrl),
+            }))
+        )
+
         return res.status(200).json({
-            data: history,
+            data: historyWithUrls,
             pagination: {
                 page: parseInt(page),
                 limit: parseInt(limit),
@@ -192,7 +214,7 @@ router.get('/history/:id', authenticate, async (req, res) => {
             return res.status(404).json({ message: 'Data klasifikasi tidak ditemukan.' })
         }
 
-        return res.status(200).json({ data: classification })
+        return res.status(200).json({ data: { ...classification, imageUrl: await getPresignedImageUrl(classification.imageUrl) } })
     } catch (error) {
         console.error('Error saat mengambil detail klasifikasi:', error)
         return res.status(500).json({ message: 'Terjadi kesalahan server.' })
