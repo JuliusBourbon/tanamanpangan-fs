@@ -27,6 +27,7 @@ import ScanHistory from './pages/ScanHistory'
 import EncyclopediaUser from './pages/EncyclopediaUser'
 import EncyclopediaUserDetail from './pages/EncyclopediaUserDetail'
 import UserProfile from './pages/UserProfile'
+import AppLayout from './components/layout/AppLayout'
 
 // PublicOnlyRoute — redirect ke /dashboard kalau sudah login
 function PublicOnlyRoute({ children }) {
@@ -104,72 +105,20 @@ function AppRoutes() {
       />
 
       {/* ── Protected routes ── */}
-      <Route
-        path="/dashboard"
-        element={
-          <PrivateRoute>
-            <Dashboard />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/scan"
-        element={
-          <PrivateRoute>
-            <ScanPage />
-          </PrivateRoute>
-        }
-      />
-
-      {/* /scan/result/:id — id dari classificationId response API */}
-      <Route
-        path="/scan/result/:id"
-        element={
-          <PrivateRoute>
-            <ScanResult />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/history"
-        element={
-          <PrivateRoute>
-            <ScanHistory />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/history/:id"
-        element={
-          <PrivateRoute>
-            <ScanResult />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/encyclopedia-app"
-        element={
-          <PrivateRoute>
-            <EncyclopediaUser />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/encyclopedia-app/:slug"
-        element={
-          <PrivateRoute>
-            <EncyclopediaUserDetail />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/profile"
-        element={
-          <PrivateRoute>
-            <UserProfile />
-          </PrivateRoute>
-        }
-      />
+      <Route element={
+        <PrivateRoute>
+          <AppLayout />
+        </PrivateRoute>
+      }>
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/scan" element={<ScanPage />} />
+        <Route path="/scan/result/:id" element={<ScanResult />} />
+        <Route path="/history" element={<ScanHistory />} />
+        <Route path="/history/:id" element={<ScanResult />} />
+        <Route path="/encyclopedia-app" element={<EncyclopediaUser />} />
+        <Route path="/encyclopedia-app/:slug" element={<EncyclopediaUserDetail />} />
+        <Route path="/profile" element={<UserProfile />} />
+      </Route>
 
       {/* ── Fallback — semua route tidak dikenal ── */}
       <Route path="*" element={<Navigate to="/" replace />} />

@@ -1,15 +1,25 @@
 import { useAuth } from '../context/AuthContext'
 
 export default function Dashboard() {
-  const { user, logout } = useAuth()
+  const { user, logout } = useAuth();
 
   return (
-    <div>
-        <h1>Selamat Datang {user.name} {user.email}</h1>
-        <button className='text-red-500' onClick={logout} title="Keluar">
-            Logout
-          </button>
-    </div>
-
-  )
+    <header className="mb-8 flex justify-between items-end">
+      <div>
+        <h1 className="text-5xl font-bold tracking-tight mb-2 text-[#222222]">Dashboard</h1>
+        <p className="text-slate-600">Summary of your scan activity</p>
+      </div>
+      <div className="text-right">
+        <p className="text-xl text-slate-500">
+          Afternoon, <span className="font-bold text-[#222222]">{user?.name}</span>
+        </p>
+        <button className="mt-4 bg-[#1E6436] text-white px-4 py-2 rounded text-sm hover:bg-green-800 transition-colors">
+          + New Scan
+        </button>
+        <button className='text-red-500 ml-4' onClick={logout} title="Keluar">
+          Logout
+        </button>
+      </div>
+    </header>
+  );
 }
