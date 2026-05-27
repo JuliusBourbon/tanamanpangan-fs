@@ -1,23 +1,9 @@
 // Komponen 4 kriteria password
 
+import { checkPasswordRules } from './passwordUtils'
 import { TEXT } from '../../constants/text'
 
 const rules = TEXT.auth.register.passwordRules
-
-// Fungsi cek tiap kriteria
-export function checkPasswordRules(password) {
-  return {
-    length:  password.length >= 8,
-    upper:   /[a-z]/.test(password) && /[A-Z]/.test(password),
-    number:  /[0-9]/.test(password),
-    special: /[$!@#%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password),
-  }
-}
-
-export function allRulesPassed(password) {
-  const checks = checkPasswordRules(password)
-  return Object.values(checks).every(Boolean)
-}
 
 function IconCheck({ passed }) {
   return passed ? (
