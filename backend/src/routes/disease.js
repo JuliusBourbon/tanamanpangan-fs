@@ -26,6 +26,7 @@ router.get('/', async (req, res) => {
                 name: true,
                 slug: true,
                 cropType: true,
+                severity: true,
                 scientificName: true,
                 description: true,
             },
@@ -52,23 +53,23 @@ router.get('/:slug', async (req, res) => {
         const { slug } = req.params
     
         const disease = await prisma.disease.findUnique({
-        where: { slug },
-        select: {
-            id: true,
-            name: true,
-            slug: true,
-            scientificName: true,
-            cropType: true,
-            description: true,
-            symptoms: true,
-            treatment: true,
-            imageUrl: true,
-            createdAt: true,
-            // Counting detected case
-            _count: {
-                select: { classifications: true },
-            },
-        },
+            where: { slug },
+            select: {
+                id: true,
+                name: true,
+                slug: true,
+                cropType: true,
+                severity: true,
+                scientificName: true,
+                description: true,
+                symptoms: true,
+                treatment: true,
+                preventiveMeasures: true,
+                rootCauses: true,
+                imageUrl: true,
+                createdAt: true,
+                _count: { select: { classifications: true } },
+                },
         })
     
         if (!disease) {
