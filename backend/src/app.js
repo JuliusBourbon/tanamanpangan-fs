@@ -31,10 +31,10 @@ const generalLimiter = rateLimit({
 })
 
 // Classification Endpoint
-// Max: 5 req / 1 Minute / IP
+// Max: 20 req / 1 Minute / IP
 const classifyLimiter = rateLimit({
   windowMs: 60 * 1000,
-  max: 10,
+  max: 20,
   message: { message: 'Terlalu banyak request klasifikasi. Coba lagi dalam 1 menit.' },
   standardHeaders: true,
   legacyHeaders: false,
