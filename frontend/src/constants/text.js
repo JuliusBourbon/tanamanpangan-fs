@@ -168,7 +168,60 @@ export const TEXT = {
 
   // Terms of Service
   terms: {
-    
+    heading: 'Terms of Service',
+    effectiveDate: 'Effective from: May 9, 2026',
+    sections: [
+      {
+        title: 'About Services',
+        type: 'paragraph',
+        content: 'The Tanam Pangan Service is an AI-based educational platform to help identify diseases in paddy and tomato plants. This service was developed as a capstone project by students.',
+      },
+      {
+        title: 'Permitted Use',
+        type: 'list',
+        items: [
+          'This service is for educational and personal purposes only.',
+          'Users are prohibited from using the platform for commercial purposes without permission.',
+          'Users are responsible for the accuracy of the photos they upload.',
+        ],
+      },
+      {
+        title: 'Service Limitations',
+        type: 'list',
+        items: [
+          'Diagnostic results are recommendations, not final decisions.',
+          'For a definitive diagnosis, consult an agricultural extension officer or agronomist.',
+          'The Tanam Pangan Team is not responsible for any losses resulting from the use of diagnostic results.',
+        ],
+      },
+      {
+        title: 'User Data',
+        type: 'list',
+        items: [
+          'Uploaded photo data is used solely for AI analysis.',
+          'We do not sell or share user data with third parties.',
+          'Users can delete their accounts and data at any time through their Profile page.',
+        ],
+      },
+      {
+        title: 'User Account',
+        type: 'list',
+        items: [
+          'Users are responsible for maintaining the security of their accounts and passwords.',
+          'Contact us immediately if you detect any suspicious activity on your account.',
+        ],
+      },
+      {
+        title: 'Changes to Services',
+        type: 'paragraph',
+        content: 'The Tanam Pangan Team reserves the right to change or discontinue services at any time without prior notice, as this is a time-limited project.',
+      },
+      {
+        title: 'Contact',
+        type: 'paragraph',
+        content: 'Questions regarding Terms of Service can be sent to: example@gmail.com',
+      },
+    ],
   },
 
   // Auth 
