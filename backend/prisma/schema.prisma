@@ -21,18 +21,21 @@ model User {
 }
 
 model Disease {
-  id              Int              @id @default(autoincrement())
-  name            String           @unique
-  slug            String           @unique
-  scientificName  String?
-  cropType        String
-  description     String           @db.Text
-  symptoms        String           @db.Text // Gejala
-  treatment       String           @db.Text // Penanganan
-  imageUrl        String?
-  classifications Classification[]
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
+  id                 Int              @id @default(autoincrement())
+  name               String           @unique
+  slug               String           @unique
+  scientificName     String?
+  cropType           String
+  severity           String           // 'low' | 'medium' | 'high'
+  description        String           @db.Text
+  symptoms           Json
+  treatment          Json
+  preventiveMeasures Json
+  rootCauses         String           @db.Text
+  imageUrl           String?
+  classifications    Classification[]
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
 }
 
 model Classification {
