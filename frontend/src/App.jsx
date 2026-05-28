@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider, useAuth } from './context/AuthContext'
+import { useEffect } from 'react'
 import PrivateRoute from './components/PrivateRoute'
 
 // Public pages
@@ -28,6 +29,29 @@ import EncyclopediaUser from './pages/EncyclopediaUser'
 import EncyclopediaUserDetail from './pages/EncyclopediaUserDetail'
 import UserProfile from './pages/UserProfile'
 import AppLayout from './components/layout/AppLayout'
+import { PreferencesProvider, usePreferences } from './context/PreferencesContext'
+
+// Component untuk mengelola tema (dark/light) secara global
+function ThemeManager({ children }) {
+  const { preferences } = usePreferences()
+
+  useEffect(() => {
+    const root = window.document.documentElement
+
+    if (preferences.theme === 'system') {
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+      const handleChange = (e) => root.classList.toggle('dark', e.matches)
+      
+      root.classList.toggle('dark', mediaQuery.matches) // Atur tema awal
+      mediaQuery.addEventListener('change', handleChange)
+      return () => mediaQuery.removeEventListener('change', handleChange)
+    } else {
+      root.classList.toggle('dark', preferences.theme === 'dark')
+    }
+  }, [preferences.theme])
+
+  return children
+}
 
 // PublicOnlyRoute — redirect ke /dashboard kalau sudah login
 function PublicOnlyRoute({ children }) {
@@ -130,7 +154,11 @@ export default function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <AppRoutes />
+        <PreferencesProvider>
+          <ThemeManager>
+            <AppRoutes />
+          </ThemeManager>
+        </PreferencesProvider>
       </AuthProvider>
     </BrowserRouter>
   )

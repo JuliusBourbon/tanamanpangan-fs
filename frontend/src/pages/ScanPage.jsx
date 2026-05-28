@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import api from '../api/axios';
+import { usePreferences } from '../context/PreferencesContext';
 
 export default function ScanPage() {
   const [activeTab, setActiveTab] = useState('upload');
@@ -8,6 +9,7 @@ export default function ScanPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [scanResult, setScanResult] = useState(null);
   const [error, setError] = useState('');
+  const { preferences } = usePreferences()
 
   const fileInputRef = useRef(null);
 
@@ -168,7 +170,7 @@ export default function ScanPage() {
                         </div>
 
                         {/* Confidence Score Bar */}
-                        {scanResult.result.confidenceScore && (
+                        {preferences.showConfidenceScore && scanResult.result.confidenceScore && (
                           <div className="bg-gray-50 rounded-xl p-4 border border-gray-100">
                             <div className="flex justify-between items-center mb-2">
                               <span className="text-xs font-semibold text-gray-500">Confidence Level</span>
