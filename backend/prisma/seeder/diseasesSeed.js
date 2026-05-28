@@ -16,101 +16,88 @@ const diseases = [
     slug: 'tomato-bacterial-spot',
     scientificName: 'Xanthomonas vesicatoria',
     cropType: 'tomato',
-    severity: 'medium',
-    description: 'Penyakit bakteri yang sangat umum menyerang tanaman tomat rumahan. Bakteri ini berkembang biak dengan cepat pada kondisi hangat dan basah, sering kali menular melalui cipratan air hujan atau penyiraman yang mengenai tanah dan melompat ke daun bawah.',
+    severity: 'Medium',
+    description: 'Bacterial spot is a highly destructive disease affecting tomato and pepper production worldwide. It causes dark brown to black lesions on all above-ground plant tissues, including leaves, stems, and fruits.',
     symptoms: [
-      'Fase Awal: Muncul bercak-bercak kecil berair berwarna coklat gelap pada daun, biasanya dikelilingi lingkaran halo berwarna kekuningan.',
-      'Fase Lanjut: Bercak membesar, mengering, dan bagian tengahnya bisa berlubang. Daun akhirnya menguning dan gugur.',
-      'Pada Buah: Muncul bintik-bintik kasar, menonjol, dan berwarna coklat seperti keropeng. Meski buah masih bisa dimakan jika dikupas, tampilannya menjadi kurang menarik dan pertumbuhannya terhambat.',
+      'Small, water-soaked or greasy-looking spots initially appearing on the underside of the leaves.',
+      'Spots develop a light brown center with a dark margin, sometimes surrounded by a yellow halo.',
+      "Enlarging spots become sunken on the upper leaf surface, darken, and the centers may crack or fall out.",
+      "Coalescing leaf spots lead to general yellowing, necrosis, and eventual premature defoliation.",
+      "On fruits, small brown to black spots appear, which later enlarge, become slightly raised, and develop a rough, scabby surface.",
+      "Dark, elongated streaks or lesions can also form on stems and pedicels."
     ],
-    rootCauses: 'Kelembapan tinggi, sirkulasi udara antar tanaman yang buruk, dan cipratan air dari tanah yang terinfeksi ke area daun.',
+    rootCauses: "Infection by the bacterial spot species complex, which includes four distinct species: Xanthomonas euvesicatoria, Xanthomonas vesicatoria, Xanthomonas perforans, and Xanthomonas gardneri.",
     treatment: [
-      'Segera potong daun atau cabang yang terinfeksi menggunakan gunting yang sudah disterilkan dengan alkohol.',
-      'Jangan masukkan daun yang terinfeksi ke dalam tumpukan kompos rumahan karena bakteri dapat bertahan hidup. Bakar atau buang ke tempat sampah umum.',
-      'Gunakan fungisida berbahan dasar tembaga organik hanya sebagai langkah terakhir untuk mencegah penyebaran ke daun yang sehat, bukan untuk menyembuhkan daun yang sudah sakit.',
+      "Application of copper-based agrochemicals (although commercial efficacy is currently limited due to widespread copper tolerance and resistance in pathogen populations)."
     ],
     preventiveMeasures: [
-      'Selalu siram tepat di pangkal tanah (akar), hindari menyiram dari atas yang membuat daun basah.',
-      'Gunakan mulsa organik seperti jerami atau daun kering di atas tanah untuk mencegah air cipratan tanah mengenai daun bawah.',
-      'Terapkan jarak tanam yang cukup agar udara bisa mengalir bebas di antara tanaman tomat untuk mengurangi kelembapan.',
+      "Implementing a combination of good cultural management tactics.",
+      "Utilizing elite tomato cultivars bred with genetic resistance to the disease.",
+      "Planting certified, pathogen-free seeds and transplants.",
+      "Practicing crop rotation and maintaining field sanitation to minimize water-splashed bacterial spread."
     ],
-    imageUrl: null,
+    imageUrl: null
   },
   {
-    name: 'Hawar Awal (Early Blight)',
-    slug: 'tomato-early-blight',
-    scientificName: 'Alternaria solani',
-    cropType: 'tomato',
-    severity: 'medium',
-    description: 'Penyakit jamur yang sangat umum dialami pemula berkebun tomat. Jamur ini biasanya menyerang daun tua di bagian bawah tanaman terlebih dahulu sebelum menyebar ke atas, terutama saat tanaman mulai berbunga atau berbuah.',
+    name: "Early Blight",
+    slug: "tomato-early-blight",
+    scientificName: "Alternaria solani, Alternaria tomatophila",
+    cropType: "tomato",
+    severity: "Medium",
+    description: "Early blight is a very common and destructive fungal disease that affects tomato plants. It attacks the foliage, stems, and fruits. Infections typically begin on the older, lower leaves closest to the ground and gradually progress up the plant.",
     symptoms: [
-      'Fase Awal: Muncul bercak coklat kecil pada daun tua bagian bawah dengan pola lingkaran konsentris seperti cincin target atau mata banteng.',
-      'Fase Lanjut: Jaringan di sekitar bercak menguning. Daun yang terinfeksi berat akan mengering dan rontok dari bawah ke atas secara bertahap.',
-      'Pada Batang: Lesi gelap memanjang bisa muncul di pangkal batang bibit yang disebut collar rot, menyebabkan bibit roboh.',
+      "Small dark spots initially appear on older foliage near the ground.",
+      "Spots enlarge into circular lesions (up to 0.5 inches in diameter), turning brown and developing characteristic concentric rings that resemble a target or bulls-eye.",
+      "Leaf tissue surrounding the spots often turns yellow (forming a yellow halo).",
+      "Severely infected leaves turn brown, dry up, die, and eventually fall off (premature defoliation).",
+      "On seedling stems, infections near the soil line cause dark, sunken, and dry lesions (collar rot) that can cause the seedling to wilt and die.",
+      "On fruits, dark, leathery, and slightly sunken spots with concentric rings develop. These typically occur near the stem end of the fruit and can cause premature dropping."
     ],
-    rootCauses: 'Spora jamur yang tersimpan di tanah atau sisa tanaman musim lalu. Menyebar melalui percikan air, angin, dan serangga. Tanaman yang kekurangan nutrisi lebih rentan.',
+    rootCauses: "Infection by the fungal pathogens Alternaria solani and Alternaria tomatophila. The fungal spores overwinter in the soil on infected plant debris, on seeds, or on weed hosts. The disease is easily spread by splashing water (rain or overhead watering) and thrives in warm temperatures with high humidity or heavy dew.",
     treatment: [
-      'Pangkas dan buang segera semua daun bawah yang menunjukkan gejala bercak target.',
-      'Pastikan area di sekitar pangkal tanaman bersih dari daun-daun yang sudah gugur.',
-      'Semprotkan fungisida organik berbahan mankozeb atau larutan baking soda (1 sendok teh per liter air) pada daun yang belum terinfeksi sebagai perlindungan.',
+      "Prune or remove the lower leaves that first show symptoms (do not remove more than one-third of the plant's total foliage) to slow the spread and improve air circulation.",
+      "Apply fungicides labeled for vegetables, such as those containing copper or chlorothalonil. Fungicides are most effective when applied as early as possible after the first symptoms appear or as a regular preventative measure."
     ],
     preventiveMeasures: [
-      'Berikan mulsa tebal di sekitar pangkal tanaman untuk mencegah spora di tanah memercik ke daun saat disiram.',
-      'Rutin pangkas daun bawah yang sudah tua setiap minggu agar sirkulasi udara di bagian bawah tanaman tetap baik.',
-      'Pastikan tanaman mendapat nutrisi yang cukup, terutama kalsium dan kalium, karena tanaman yang sehat lebih tahan terhadap serangan jamur.',
+      "Plant tomato varieties that are resistant or tolerant to early blight.",
+      "Practice crop rotation by avoiding planting members of the Solanaceae family (tomatoes, potatoes, eggplants, peppers) in the same location for at least 2 consecutive years.",
+      "Apply mulch (plastic or organic materials) over the soil under the plants to create a barrier, preventing soil-borne spores from splashing onto the leaves during rain.",
+      "Water plants directly at the base (preferably using drip irrigation or soaker hoses) to keep the foliage dry.",
+      "Provide adequate spacing between plants and use supports (staking or trellising) to ensure good air circulation.",
+      "Clean up, burn, or dispose of all infected plant debris far from the garden at the end of the harvest season to prevent the fungus from overwintering in the soil."
     ],
-    imageUrl: null,
+    imageUrl: null
   },
   {
-    name: 'Hawar Akhir (Late Blight)',
-    slug: 'tomato-late-blight',
-    scientificName: 'Phytophthora infestans',
-    cropType: 'tomato',
-    severity: 'high',
-    description: 'Penyakit paling berbahaya pada tanaman tomat yang bisa menghancurkan seluruh tanaman hanya dalam 3–5 hari jika kondisi mendukung. Bukan jamur sejati melainkan organisme mirip jamur yang menyebar sangat cepat melalui udara, terutama saat cuaca dingin dan lembap.',
+    name: "Late Blight",
+    slug: "tomato-late-blight",
+    scientificName: "Phytophthora infestans",
+    cropType: "tomato",
+    severity: "High",
+    description: "Late blight is a devastating plant disease that affects tomatoes and potatoes. Caused by a water mold (oomycete), it is famous for causing the Irish Potato Famine in the 1840s. It spreads rapidly through the air and can wipe out healthy plants almost overnight when the weather is cool and wet.",
     symptoms: [
-      'Fase Awal: Muncul bercak hijau gelap berminyak atau seperti basah kuyup pada tepi atau permukaan daun.',
-      'Fase Lanjut: Bercak dengan cepat berubah menjadi coklat kehitaman. Pada kondisi lembap, bagian bawah daun ditumbuhi lapisan putih tipis berbulu halus yang merupakan spora penyakit.',
-      'Pada Batang dan Buah: Batang menunjukkan lesi coklat kehitaman dan bisa patah. Buah membusuk dengan cepat menjadi coklat kehitaman dan berbau tidak sedap.',
+      "Large, irregular, water-soaked, pale green to dark brown lesions appear on leaves, often starting near the edges or tips.",
+      "During high humidity or wet weather, a fuzzy, white fungal-like growth (spores) appears on the underside of the infected leaves.",
+      "Dark brown to black irregular, spreading lesions develop on the stems and petioles, which can cause the plant to collapse.",
+      "On tomato fruits, firm, large, irregular, greasy-looking, olive-brown to dark brown spots appear.",
+      "Unlike some other fruit rots, the late blight lesions on fruit remain firm rather than becoming soft and mushy (unless secondary pathogens invade).",
+      "Entire plants can turn completely brown, shrivel, and die within a few days of the first symptoms."
     ],
-    rootCauses: 'Cuaca dingin (10–20°C) dengan kelembapan tinggi di atas 90% selama beberapa jam adalah kondisi ideal penyebarannya. Spora menyebar sangat cepat melalui angin ke tanaman di sekitarnya.',
+    rootCauses: "Infection by the oomycete (water mold) pathogen Phytophthora infestans. The pathogen produces sporangia (spores) that can travel miles on the wind, especially during cloudy, stormy weather. It thrives in cool (60-70°F / 15-21°C) and highly moist or wet conditions. It cannot survive in dead plant tissue; it requires living host tissue (like infected potato tubers left in the soil or volunteer plants) to overwinter.",
     treatment: [
-      'TINDAKAN DARURAT: Segera pisahkan atau cabut seluruh tanaman yang terinfeksi dari area kebun untuk mencegah penyebaran ke tanaman lain.',
-      'Masukkan tanaman yang terinfeksi ke dalam kantong plastik sebelum memindahkannya agar spora tidak menyebar ke udara. Buang ke tempat sampah, jangan dikompos.',
-      'Semprotkan fungisida berbahan metalaksil atau tembaga pada tanaman yang belum terinfeksi di sekitarnya sebagai tindakan pencegahan darurat.',
+      "Once a plant is severely infected, there is no cure; infected plants should be immediately pulled up, bagged, and disposed of in the trash (do not compost) to prevent the spread to nearby plants and farms.",
+      "Fungicides (such as those containing chlorothalonil or copper) can be applied, but they act strictly as a protectant and must be applied before the disease takes hold or at the very first sign of infection."
     ],
     preventiveMeasures: [
-      'Pantau prakiraan cuaca secara rutin. Saat cuaca diprediksi dingin dan hujan beberapa hari berturut-turut, lakukan penyemprotan fungisida preventif.',
-      'Pastikan tanaman tidak terlalu rapat dan daun tidak saling menempel agar udara bisa mengalir dan daun cepat kering setelah hujan.',
-      'Hindari menyiram di sore atau malam hari karena daun yang basah semalaman sangat rentan terhadap serangan penyakit ini.',
+      "Plant late blight-resistant tomato varieties if the disease is common in your area.",
+      "Monitor weather reports and local agricultural extension alerts for late blight outbreaks in your region.",
+      "Destroy any volunteer tomato or potato plants from the previous season, as these can harbor the overwintering pathogen.",
+      "Ensure excellent air circulation by spacing plants appropriately, staking, and pruning to allow leaves to dry quickly.",
+      "Water at the base of the plant using drip irrigation or soaker hoses to keep the foliage completely dry.",
+      "Apply preventative fungicides during periods of cool, wet weather, especially if the disease has been reported nearby."
     ],
-    imageUrl: null,
-  },
-  {
-    name: 'Tomat Sehat (Healthy)',
-    slug: 'tomato-healthy',
-    scientificName: null,
-    cropType: 'tomato',
-    severity: 'low',
-    description: 'Tanaman tomat dalam kondisi prima dan tumbuh dengan optimal. Pertahankan kondisi ini dengan perawatan rutin yang konsisten.',
-    symptoms: [
-      'Daun berwarna hijau tua segar dan merata tanpa bercak, lubang, atau perubahan warna.',
-      'Batang tegak dan kokoh dengan ruas pertumbuhan yang normal.',
-      'Pertumbuhan tunas baru terlihat aktif dan tanaman terlihat segar dan bersemangat.',
-    ],
-    rootCauses: 'Tidak ada masalah. Tanaman mendapatkan air, nutrisi, sinar matahari, dan sirkulasi udara yang cukup.',
-    treatment: [
-      'Tidak diperlukan penanganan khusus.',
-      'Pertahankan jadwal penyiraman rutin di pagi hari langsung ke pangkal tanaman.',
-      'Lanjutkan pemupukan seimbang setiap 2 minggu sekali untuk menjaga kesehatan tanaman.',
-    ],
-    preventiveMeasures: [
-      'Periksa bagian bawah daun secara rutin setiap minggu untuk mendeteksi gejala awal penyakit sedini mungkin.',
-      'Pangkas tunas air (tunas yang tumbuh di ketiak daun) secara rutin agar energi tanaman terfokus pada pertumbuhan buah.',
-      'Pastikan tanaman mendapat sinar matahari penuh minimal 6–8 jam sehari untuk pertumbuhan yang optimal.',
-    ],
-    imageUrl: null,
-  },
+    imageUrl: null
+  }
 ]
 async function main() {
   console.log('Memulai proses seeding\n')
