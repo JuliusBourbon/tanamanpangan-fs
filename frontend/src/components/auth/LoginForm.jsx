@@ -1,9 +1,9 @@
 import { useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { TEXT } from '../../constants/text'
 import PasswordInput from './PasswordInput'
-
 
 const T = TEXT.auth.login
 
@@ -19,6 +19,9 @@ function IconEmail() {
 
 export default function LoginForm() {
   const { login } = useAuth()
+  const location = useLocation()
+  // Pesan sukses dari ResetPassword page setelah berhasil reset
+  const successMessage = location.state?.message || ''
   const [form, setForm] = useState({ email: '', password: '' })
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -49,15 +52,19 @@ export default function LoginForm() {
         <h1 className="text-2xl font-bold text-gray-800 mb-1">{T.heading}</h1>
         <p className="text-gray-500 text-sm">{T.subheading}</p>
       </div>
+
+      {successMessage && (
+        <p className="text-[#2a7a53] text-xs text-center bg-green-50 border border-green-200 rounded-lg px-3 py-2 mb-2">
+          {successMessage}
+        </p>
+      )}
     
       <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5">
         {/* Email field */}
         <div className="flex flex-col gap-1.5">
           <label className="text-sm font-medium text-gray-700">{T.emailLabel}</label>
           <div className="relative flex items-center">
-            <span className="absolute left-3 pointer-events-none">
-              <IconEmail />
-            </span>
+            <span className="absolute left-3 pointer-events-none"><IconEmail /></span>
             <input
               name="email"
               type="email"
