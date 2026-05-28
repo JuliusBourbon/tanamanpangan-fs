@@ -2,8 +2,11 @@ import { useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from '../sidebar/sidebar';
 import MainContent from '../mainContent/MainContent';
+import { useOnboarding } from '../../hooks/onboarding';
 
 export default function AppLayout() {
+    useOnboarding();
+
     // lg+: expanded by default | md: collapsed by default | sm: hidden by default
     const getInitialExpanded = () => window.innerWidth >= 1024;
 

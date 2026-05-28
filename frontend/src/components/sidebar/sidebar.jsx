@@ -47,7 +47,7 @@ export default function Sidebar({ isExpanded, setIsExpanded, onNavigate }) {
             }}
             className="relative flex flex-col h-full pt-6 pb-4 shrink-0 overflow-hidden bg-[#E4E4E4] dark:bg-gray-900"
         >
-            <div className="relative flex items-center mb-8 px-4" style={{ height: 40 }}>
+            <div id='sidebar-logo' className="relative flex items-center mb-8 px-4" style={{ height: 40 }}>
                 <div
                     className="absolute inset-0 items-center justify-center hidden md:flex"
                     style={{
@@ -56,7 +56,7 @@ export default function Sidebar({ isExpanded, setIsExpanded, onNavigate }) {
                         transition: 'opacity 200ms ease',
                     }}
                 >
-                <button
+                <button id="sidebar-toggle"
                     onClick={() => setIsExpanded(true)}
                     className="text-slate-500 dark:text-white hover:text-slate-800 dark:hover:text-gray-300 transition-colors p-1 rounded-md"
                     title="Expand sidebar"
@@ -89,7 +89,7 @@ export default function Sidebar({ isExpanded, setIsExpanded, onNavigate }) {
                 </div>
             </div>
 
-            <nav className="flex flex-col gap-1 px-3">
+            <nav id="sidebar-nav" className="flex flex-col gap-1 px-3">
                 {menuItems.map(({ id, label, path, icon: Icon, shortcut }) => {
                     const active = location.pathname.startsWith(path);
                     const currentLabel = label[isId ? 'id' : 'en'];
