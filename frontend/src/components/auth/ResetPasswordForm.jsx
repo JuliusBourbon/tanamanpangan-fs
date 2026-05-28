@@ -4,7 +4,7 @@ import { TEXT } from '../../constants/text'
 import api from '../../api/axios'
 import PasswordInput from './PasswordInput'
 import PasswordStrength from './PasswordStrength'
-import { allRulesPassed } from '../../utils/passwordUtils'
+import { allRulesPassed } from './passwordUtils'
 
 const T = TEXT.auth.resetPassword
 
