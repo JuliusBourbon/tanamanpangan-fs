@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { TEXT } from '../../constants/text'
 import PasswordInput from './PasswordInput'
-import PasswordStrength, { allRulesPassed } from './PasswordStrength'
+import PasswordStrength from './PasswordStrength'
+import { allRulesPassed } from './passwordUtils'
 
 const T = TEXT.auth.register
 

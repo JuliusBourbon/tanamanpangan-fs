@@ -264,10 +264,30 @@ export const TEXT = {
       nameTooShort: 'Full name must be at least 3 characters.',
     },
     forgotPassword: {
-      
+      heading: 'Forgot Password?',
+      subheading: 'Enter your email, we will send you a link to reset your password.',
+      emailLabel: 'Email',
+      emailPlaceholder: 'tanam@gmail.com',
+      submitBtn: 'Send Reset Link',
+      submittingBtn: 'Sending...',
+      successNote: "If your email address is registered, a password reset link will be sent within a few minutes. Check your spam folder if it doesn't appear.",
+      navbarQuestion: 'Already remembered?',
+      navbarLink: 'Sign In →',
     },
     resetPassword: {
-      
+      heading: 'Create New Password',
+      subheading: 'Enter new password for your account.',
+      passwordLabel: 'Password',
+      passwordPlaceholder: '••••••••',
+      confirmPasswordLabel: 'Confirm Password',
+      confirmPasswordPlaceholder: '••••••••',
+      submitBtn: 'Save New Password',
+      submittingBtn: 'Saving...',
+      confirmMismatch: 'Passwords do not match.',
+      tokenInvalid: 'Reset link is invalid or has expired. Please request a new one.',
+      successMessage: 'Password successfully reset. Please sign in.',
+      navbarQuestion: 'Already remembered?',
+      navbarLink: 'Sign In →',
     },
   },
 
