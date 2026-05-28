@@ -12,7 +12,7 @@ module.exports = prisma
 
 const diseases = [
   {
-    name: 'Bercak Bakteri (Bacterial Spot)',
+    name: 'Bacterial Spot',
     slug: 'tomato-bacterial-spot',
     scientificName: 'Xanthomonas vesicatoria',
     cropType: 'tomato',
