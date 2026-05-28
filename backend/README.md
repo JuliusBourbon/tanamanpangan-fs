@@ -4,14 +4,6 @@ Dokumentasi ini menjelaskan seluruh endpoint REST API yang tersedia pada aplikas
 
 ---
 
-## Base URL
-
-```
-https://<your-domain>/api
-```
-
----
-
 ## Autentikasi
 
 Sebagian besar endpoint memerlukan token JWT yang dikirimkan melalui header `Authorization`:
@@ -368,10 +360,12 @@ Mengunggah gambar tanaman untuk diklasifikasikan oleh model AI. Hasil klasifikas
       "name": "Bacterial Spot",
       "slug": "tomato-bacterial-spot",
       "scientificName": "Xanthomonas campestris",
-      "cropType": "tomato",
+      "severity": "high",
       "description": "...",
       "symptoms": "...",
-      "treatment": "..."
+      "treatment": "...",
+      "preventiveMeasures": "...",
+      "rootCauses": "..."
     },
     "confidenceScore": 0.97,
     "imageUrl": "https://...",
@@ -653,6 +647,8 @@ Mengambil detail lengkap satu penyakit berdasarkan slug. Endpoint ini bersifat p
     "description": "...",
     "symptoms": "...",
     "treatment": "...",
+    "preventiveMeasures": "...",
+    "rootCauses": "...",
     "imageUrl": "https://...",
     "createdAt": "2024-01-01T00:00:00.000Z",
     "totalDetections": 128
@@ -662,9 +658,12 @@ Mengambil detail lengkap satu penyakit berdasarkan slug. Endpoint ini bersifat p
 
 **Keterangan Field**
 
-| Field             | Tipe    | Keterangan                                        |
-|-------------------|---------|---------------------------------------------------|
-| `totalDetections` | integer | Total kasus penyakit ini yang pernah terdeteksi   |
+| Field                | Tipe    | Keterangan                                        |
+|----------------------|---------|---------------------------------------------------|
+| `severity`           | string  | Tingkat keparahan penyakit                        |
+| `preventiveMeasures` | string  | Langkah-langkah pencegahan penyakit               |
+| `rootCauses`         | string  | Penyebab utama penyakit                           |
+| `totalDetections`    | integer | Total kasus penyakit ini yang pernah terdeteksi   |
 
 **Response Error**
 
