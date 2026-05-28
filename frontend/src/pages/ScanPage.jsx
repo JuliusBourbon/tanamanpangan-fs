@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import api from '../api/axios';
 import { usePreferences } from '../context/PreferencesContext';
 
@@ -10,8 +10,11 @@ export default function ScanPage() {
   const [scanResult, setScanResult] = useState(null);
   const [error, setError] = useState('');
   const { preferences } = usePreferences()
-
+  const [isCameraActive, setIsCameraActive] = useState(false);
+  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
   const fileInputRef = useRef(null);
+
 
   const handleFileSelect = (e) => {
     const file = e.target.files?.[0];
@@ -30,6 +33,69 @@ export default function ScanPage() {
     setError('');
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
+
+  const startCamera = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ 
+        video: { facingMode: 'environment' } 
+      });
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+      setIsCameraActive(true);
+      setError('');
+    } catch (err) {
+      setError('Gagal mengakses kamera. Pastikan Anda telah memberikan izin kamera.');
+      console.error("Camera error:", err);
+    }
+  };
+
+  const stopCamera = () => {
+    if (videoRef.current && videoRef.current.srcObject) {
+      const tracks = videoRef.current.srcObject.getTracks();
+      tracks.forEach(track => track.stop());
+      videoRef.current.srcObject = null;
+    }
+    setIsCameraActive(false);
+  };
+
+  const capturePhoto = () => {
+    if (videoRef.current && canvasRef.current) {
+      const video = videoRef.current;
+      const canvas = canvasRef.current;
+      
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      
+      const context = canvas.getContext('2d');
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+      
+      canvas.toBlob((blob) => {
+        if (blob) {
+          const file = new File([blob], "camera-capture.jpg", { type: "image/jpeg" });
+          setSelectedFile(file);
+          setPreviewUrl(URL.createObjectURL(file));
+          setScanResult(null);
+          setError('');
+          
+          stopCamera();
+          setActiveTab('upload');
+        }
+      }, 'image/jpeg', 0.9);
+    }
+  };
+
+  useEffect(() => {
+    if (activeTab === 'camera') {
+      startCamera();
+    } else {
+      stopCamera();
+    }
+    
+    return () => {
+      stopCamera();
+    };
+  }, [activeTab]);
 
   const handleScan = async () => {
     if (!selectedFile) return;
@@ -78,7 +144,6 @@ export default function ScanPage() {
           </button>
         </nav>
 
-        {/* Image Upload or Camera Feed Container */}
         <div className="w-full max-w-full mx-auto bg-white dark:bg-gray-800 dark:border-gray-600 border-2 border-dashed border-emerald-200 hover:border-emerald-400 rounded-3xl flex flex-col items-center justify-center p-10 min-h-100 shadow-lg shadow-emerald-900/5 transition-all duration-300 group">
           {activeTab === 'upload' ? (
             <div className="flex flex-col items-center text-center w-full">
@@ -107,7 +172,6 @@ export default function ScanPage() {
                 </div>
               ) : (
                 <div className="flex flex-col lg:flex-row md:gap-10 items-center justify-around w-full transition-all animate-fade-in">
-                  {/* Image Preview */}
                   <div className="relative mb-8 md:mb-0 w-full md:w-72 h-72 rounded-2xl flex items-center justify-center bg-gray-50 border border-gray-100 shadow-inner group/image">
                     <img 
                       src={previewUrl} 
@@ -138,7 +202,6 @@ export default function ScanPage() {
                     {scanResult?.result ? (
                       <div className="w-full bg-white dark:bg-gray-800 dark:border-gray-600 border border-gray-100 rounded-2xl p-6 shadow-xl shadow-emerald-900/5 flex flex-col gap-6 animate-slide-up">
                         
-                        {/* Header: Status & Crop Badge */}
                         <div className="flex justify-between items-center pb-4 border-b border-gray-50">
                           <div className="flex items-center gap-2 text-emerald-600 font-semibold text-sm">
                             <svg className="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -153,7 +216,6 @@ export default function ScanPage() {
                           )}
                         </div>
 
-                        {/* Main Information: Disease Name & Scientific Name */}
                         <div>
                           <p className="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-1.5">
                             Analysis Results
@@ -168,7 +230,6 @@ export default function ScanPage() {
                           )}
                         </div>
 
-                        {/* Confidence Score Bar */}
                         {preferences.showConfidenceScore && scanResult.result.confidenceScore && (
                           <div className="bg-gray-50 rounded-xl p-4 border border-gray-100">
                             <div className="flex justify-between items-center mb-2">
@@ -186,7 +247,6 @@ export default function ScanPage() {
                           </div>
                         )}
 
-                        {/* Actions */}
                         <div className="mt-2 flex gap-3">
                           <button 
                             className="flex-1 bg-white border border-gray-200 text-gray-700 font-semibold px-4 py-3 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all text-sm"
@@ -231,24 +291,78 @@ export default function ScanPage() {
               )}
             </div>
           ) : (
-            <div className="flex flex-col items-center text-center w-full max-w-sm animate-fade-in">
-              <div className="bg-gray-50 dark:bg-gray-800 w-full h-72 rounded-2xl flex items-center justify-center mb-8 border border-gray-200 dark:border-gray-600 shadow-inner group-hover:border-emerald-200 transition-colors">
-                <div className="flex flex-col items-center gap-3">
-                  <svg className="w-12 h-12 text-gray-300 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                  <span className="text-gray-400 dark:text-gray-500 font-medium text-sm">Camera is not active</span>
+            <div className="flex flex-col items-center text-center w-full max-w-lg animate-fade-in">
+              
+              {/* Tampilkan error jika izin kamera ditolak */}
+              {error && (
+                <div className="text-red-600 bg-red-50 p-3 rounded-lg mb-4 text-sm w-full">
+                  {error}
                 </div>
+              )}
+
+              <div className="bg-gray-50 dark:bg-gray-800 w-full rounded-2xl flex flex-col items-center justify-center mb-6 border border-gray-200 dark:border-gray-600 overflow-hidden relative">
+                
+                {/* Elemen Video untuk menampilkan stream */}
+                <video 
+                  ref={videoRef} 
+                  autoPlay 
+                  playsInline 
+                  className={`w-full h-auto max-h-96 object-cover ${!isCameraActive ? 'hidden' : 'block'}`}
+                />
+                
+                {/* Canvas tersembunyi untuk memproses gambar */}
+                <canvas ref={canvasRef} className="hidden" />
+
+                {/* State ketika kamera sedang loading (belum aktif tapi tidak ada error) */}
+                {!isCameraActive && !error && (
+                  <div className="flex flex-col items-center gap-4 py-24 animate-pulse">
+                    <svg className="animate-spin h-10 w-10 text-emerald-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span className="text-gray-500 font-medium text-sm">Starting camera...</span>
+                  </div>
+                )}
+                
+                {/* State ketika kamera gagal dimuat karena error */}
+                {!isCameraActive && error && (
+                  <div className="flex flex-col items-center gap-3 py-24">
+                    <svg className="w-12 h-12 text-gray-300 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <span className="text-gray-400 dark:text-gray-500 font-medium text-sm">Failed to access camera</span>
+                  </div>
+                )}
               </div>
-              <button className="bg-emerald-700 text-white font-medium px-8 py-3 rounded-xl hover:bg-emerald-800 transition-all shadow-md hover:shadow-emerald-700/20 active:scale-95 w-full">
-                Open Camera
-              </button>
+
+              {/* Tombol Capture muncul jika kamera aktif, tombol Retry muncul jika ada error */}
+              {isCameraActive ? (
+                <button 
+                  onClick={capturePhoto}
+                  className="bg-emerald-700 text-white font-medium px-8 py-4 rounded-xl hover:bg-emerald-800 transition-all shadow-md hover:shadow-emerald-700/20 active:scale-95 w-full flex items-center justify-center gap-2 text-lg"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="3" strokeWidth="2"></circle>
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                  Capture Photo
+                </button>
+              ) : error ? (
+                <button 
+                  onClick={startCamera}
+                  className="bg-gray-600 text-white font-medium px-8 py-3 rounded-xl hover:bg-gray-700 transition-all shadow-md active:scale-95 w-full flex items-center justify-center gap-2"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  </svg>
+                  Try Again
+                </button>
+              ) : null}
             </div>
           )}
         </div>
 
-        {/* Tips for better Results */}
         <div className="w-full max-w-full mt-10 border border-gray-100 bg-gray-50 dark:bg-gray-800 dark:border-gray-700 rounded-xl p-6 shadow-sm">
           <div className="flex items-center gap-3 mb-4">
             <div className="bg-white dark:bg-gray-800 p-2 rounded-full shadow-sm border border-gray-200 dark:border-gray-600 flex items-center justify-center">
