@@ -31,7 +31,7 @@ export default function AppLayout() {
     const handleMobileClose = () => setIsMobileOpen(false);
 
     return (
-        <div className="flex h-screen w-full bg-[#E4E4E4] font-sans overflow-hidden">
+        <div className="flex h-screen w-full bg-[#E4E4E4] dark:bg-gray-900 font-sans overflow-hidden">
 
             {/*Mobile overlay backdrop*/}
             {isMobileOpen && (
@@ -41,18 +41,7 @@ export default function AppLayout() {
                 />
             )}
 
-            {/*Sidebar
-                - sm: fixed overlay drawer, toggled by isMobileOpen
-                - md+: static in-flow sidebar (collapsed or expanded)
-            */}
-            <div
-                className={`
-                fixed z-30 h-full
-                md:static md:z-auto md:h-auto
-                transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]
-                ${isMobileOpen ? 'translate-x-0' : '-translate-x-full'}
-                md:translate-x-0
-                `}
+            <div className={`fixed z-30 h-full md:static md:z-auto md:h-auto transition-transform duration-300 ease-in-out ${isMobileOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0`}
             >
                 <Sidebar
                     isExpanded={isExpanded}
@@ -64,7 +53,7 @@ export default function AppLayout() {
             {/*Main area*/}
             <div className="flex flex-col flex-1 min-w-0">
                 {/* Mobile top bar */}
-                <div className="flex items-center gap-3 px-4 py-3 bg-[#E4E4E4] md:hidden">
+                <div className="flex items-center gap-3 px-4 py-3 bg-[#E4E4E4] dark:bg-gray-800 md:hidden">
                     <button
                         onClick={() => setIsMobileOpen(true)}
                         className="text-slate-500 hover:text-slate-800 transition-colors p-1 rounded-md"

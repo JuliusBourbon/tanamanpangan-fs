@@ -3,14 +3,14 @@ import { useAuth } from '../context/AuthContext'
 
 export default function UserProfile() {
   const { preferences, updatePreferences } = usePreferences()
-  const { user } = useAuth()
+  const { user, logout } = useAuth()
   const isId = preferences.language === 'id'
 
   return (
-    <div className="w-full min-h-[calc(100vh-120px)] p-6 md:p-10 rounded-3xl transition-colors duration-300">
-      <header className="mb-10">
-        <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-2 text-[#222222] dark:text-white">
-          {isId ? 'Profil Pengguna' : 'User Profile'}
+    <div>
+      <header className="mb-8">
+        <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-2 text-gray-900 dark:text-white">
+          {isId ? 'Akun & Pengaturan' : 'Account & Settings'}
         </h1>
         <p className="text-lg text-slate-600 dark:text-gray-400">
           {isId ? 'Kelola Profil dan Pengaturan Anda' : 'Manage your Profile and Settings'}
@@ -39,6 +39,9 @@ export default function UserProfile() {
             </button>
             <button className="w-full font-semibold px-4 py-3.5 rounded-xl transition-all shadow-sm active:scale-95 border bg-white border-gray-200 text-gray-700 hover:bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-600">
               {isId ? 'Reset Kata Sandi' : 'Reset Password'}
+            </button>
+            <button className='text-red-500 ml-4' onClick={logout} title="Keluar">
+              Logout
             </button>
           </div>
         </div>
