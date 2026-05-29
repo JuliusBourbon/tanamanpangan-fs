@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import api from '../api/axios'
+import { hasCompletedOnboarding } from '../utils/onboarding'
 
 const AuthContext = createContext(null)
 
@@ -12,12 +13,10 @@ export function AuthProvider({ children }) {
 
   // Loading state — untuk cek session saat pertama kali app dibuka
   const [isLoadingAuth, setIsLoadingAuth] = useState(true)
-
   const navigate = useNavigate()
 
   // Verifikasi token ke server saat app pertama kali dibuka
   // Mencegah user yang tokennya sudah expired tapi masih punya data di localStorage
-
   useEffect(() => {
     const verifySession = async () => {
       const token = localStorage.getItem('token')
@@ -46,7 +45,7 @@ export function AuthProvider({ children }) {
     localStorage.setItem('token', res.data.token)
     localStorage.setItem('user', JSON.stringify(res.data.user))
     setUser(res.data.user)
-    navigate('/dashboard')
+    navigate(hasCompletedOnboarding() ? '/dashboard' : '/onboarding')
   }
 
   const register = async (name, email, password) => {
@@ -60,6 +59,8 @@ export function AuthProvider({ children }) {
   const logout = () => {
     localStorage.removeItem('token')
     localStorage.removeItem('user')
+    // Sengaja TIDAK hapus hasOnboarded saat logout
+    // supaya user yang login ulang tidak lihat onboarding lagi
     setUser(null)
     navigate('/login')
   }
