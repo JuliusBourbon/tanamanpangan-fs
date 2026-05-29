@@ -108,11 +108,7 @@ function AppRoutes() {
       {/* /reset-password?token=xxx — token dibaca via useSearchParams di dalam page */}
       <Route
         path="/reset-password"
-        element={
-          <PublicOnlyRoute>
-            <ResetPassword />
-          </PublicOnlyRoute>
-        }
+        element={<ResetPassword />}
       />
 
       {/* ── Protected routes ── */}

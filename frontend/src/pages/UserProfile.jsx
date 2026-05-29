@@ -1,10 +1,81 @@
 import { usePreferences } from '../context/PreferencesContext'
 import { useAuth } from '../context/AuthContext'
+import { useRef, useState } from 'react'
+import api from '../api/axios';
+import ResetPasswordModal from '../components/ResetPasswordModal';
 
 export default function UserProfile() {
   const { preferences, updatePreferences } = usePreferences()
-  const { user, logout } = useAuth()
+  const { user, logout, updateUser } = useAuth()
   const isId = preferences.language === 'id'
+
+  // State untuk Foto Profil
+  const fileInputRef = useRef(null)
+  const [isUploadingImage, setIsUploadingImage] = useState(false)
+
+  // State untuk Ubah Nama
+  const [isEditingName, setIsEditingName] = useState(false)
+  const [newName, setNewName] = useState('')
+  const [isUpdatingName, setIsUpdatingName] = useState(false)
+  const [nameError, setNameError] = useState('')
+
+  // State untuk Modal Reset Password
+  const [isResetModalOpen, setIsResetModalOpen] = useState(false)
+
+  // Handler Upload Foto
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0]
+    if (!file) return
+
+    const formData = new FormData()
+    formData.append('image', file)
+
+    try {
+      setIsUploadingImage(true)
+      const { data } = await api.put('/auth/profile/image', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      })
+      updateUser(data.user)
+    } catch (err) {
+      console.error(err.response?.data?.message || 'Gagal upload foto')
+    } finally {
+      setIsUploadingImage(false)
+      e.target.value = ''
+    }
+  }
+
+  // Handler Ubah Nama
+  const handleNameSubmit = async () => {
+    if (!newName || newName.trim().length < 3) {
+      setNameError(isId ? 'Nama minimal 3 karakter.' : 'Name must be at least 3 characters.');
+      return;
+    }
+
+    try {
+      setIsUpdatingName(true)
+      setNameError('')
+      const { data } = await api.put('/auth/profile/name', { 
+        name: newName.trim() 
+      })
+      
+      // Update state global/context user
+      updateUser(data.user)
+      setIsEditingName(false)
+    } catch (err) {
+      setNameError(
+        err.response?.data?.message || 
+        (isId ? 'Gagal mengubah nama' : 'Failed to update name')
+      )
+    } finally {
+      setIsUpdatingName(false)
+    }
+  }
+
+  const cancelEditName = () => {
+    setIsEditingName(false)
+    setNameError('')
+    setNewName('')
+  }
 
   return (
     <div>
@@ -26,22 +97,106 @@ export default function UserProfile() {
               alt="Profile" 
               className="w-36 h-36 rounded-full object-cover border-4 shadow-md border-white dark:border-gray-700"
             />
-            <button className="absolute bottom-1 right-1 bg-emerald-600 text-white p-2.5 rounded-full shadow-lg hover:bg-emerald-700 transition-colors active:scale-95">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleImageChange}
+            />
+
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              disabled={isUploadingImage}
+              className="absolute bottom-1 right-1 bg-emerald-600 text-white p-2.5 rounded-full shadow-lg hover:bg-emerald-700 transition-colors active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              {isUploadingImage
+                ? <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+                  </svg>
+                : <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                  </svg>
+              }
             </button>
           </div>
-          <h2 className="text-2xl font-bold mb-1 dark:text-white">{user?.name || 'Guest User'}</h2>
-          <p className="text-sm mb-8 text-gray-500 dark:text-gray-400">{user?.email || 'guest@example.com'}</p>
+
+          {/* Section Edit Nama */}
+          <div className="w-full mb-1 flex flex-col items-center min-h-10">
+            {isEditingName ? (
+              <div className="flex flex-col items-center w-full px-4">
+                <div className="flex items-center gap-2 w-full max-w-50">
+                  <input
+                    type="text"
+                    value={newName}
+                    onChange={(e) => setNewName(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') handleNameSubmit();
+                      if (e.key === 'Escape') cancelEditName();
+                    }}
+                    autoFocus
+                    className="w-full text-center text-lg font-bold px-3 py-1.5 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                    placeholder={isId ? 'Nama baru' : 'New name'}
+                    disabled={isUpdatingName}
+                  />
+                </div>
+                {nameError && (
+                  <p className="text-red-500 text-xs mt-1">{nameError}</p>
+                )}
+                <div className="flex gap-2 mt-2">
+                  <button
+                    onClick={handleNameSubmit}
+                    disabled={isUpdatingName}
+                    className="bg-emerald-600 text-white p-1.5 rounded-lg hover:bg-emerald-700 disabled:opacity-50 transition-colors"
+                  >
+                    {isUpdatingName ? (
+                      <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/></svg>
+                    ) : (
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+                    )}
+                  </button>
+                  <button
+                    onClick={cancelEditName}
+                    disabled={isUpdatingName}
+                    className="bg-gray-200 text-gray-700 p-1.5 rounded-lg hover:bg-gray-300 dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-500 transition-colors"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2 group">
+                <h2 className="text-2xl font-bold dark:text-white">
+                  {user?.name || 'Guest User'}
+                </h2>
+                <button
+                  onClick={() => {
+                    setNewName(user?.name || '')
+                    setIsEditingName(true)
+                  }}
+                  className="text-gray-400 hover:text-emerald-600 transition-opacity opacity-0 group-hover:opacity-100 focus:opacity-100 p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
+                  title={isId ? 'Edit Nama' : 'Edit Name'}
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                </button>
+              </div>
+            )}
+          </div>
+          {/* Akhir Section Edit Nama */}
+
+          <p className="text-sm mb-8 mt-1 text-gray-500 dark:text-gray-400">{user?.email || 'guest@example.com'}</p>
           
           <div className="w-full flex flex-col gap-3">
-            <button className="w-full bg-emerald-700 text-white font-semibold px-4 py-3.5 rounded-xl hover:bg-emerald-800 transition-all shadow-sm shadow-emerald-700/20 active:scale-95">
-              {isId ? 'Edit Profil' : 'Edit Profile'}
+            <button 
+              onClick={() => setIsResetModalOpen(true)} 
+              className="w-full font-semibold px-4 py-3.5 rounded-xl transition-all shadow-sm active:scale-95 border bg-white border-gray-200 text-gray-700 hover:bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-600"
+            >
+              {isId ? 'Ubah Kata Sandi' : 'Change Password'}
             </button>
-            <button className="w-full font-semibold px-4 py-3.5 rounded-xl transition-all shadow-sm active:scale-95 border bg-white border-gray-200 text-gray-700 hover:bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-600">
-              {isId ? 'Reset Kata Sandi' : 'Reset Password'}
-            </button>
-            <button className='text-red-500 ml-4' onClick={logout} title="Keluar">
-              Logout
+            <button className='text-red-500 font-semibold py-3.5 rounded-xl hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors w-full' onClick={logout}>
+              {isId ? 'Keluar' : 'Logout'}
             </button>
           </div>
         </div>
@@ -64,7 +219,7 @@ export default function UserProfile() {
                   <p className="text-sm mt-1 text-gray-500 dark:text-gray-400">{isId ? 'Pilih tema untuk seluruh aplikasi' : 'Select theme for the entire app'}</p>
                 </div>
                 <select
-                  className="px-4 py-2.5 rounded-xl border focus:ring-2 focus:ring-emerald-500 outline-none transition-colors min-w-[150px] font-medium bg-gray-50 border-gray-200 text-gray-800 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                  className="px-4 py-2.5 rounded-xl border focus:ring-2 focus:ring-emerald-500 outline-none transition-colors min-w-37.5 font-medium bg-gray-50 border-gray-200 text-gray-800 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                   value={preferences.theme}
                   onChange={(e) => updatePreferences({ theme: e.target.value })}
                 >
@@ -81,7 +236,7 @@ export default function UserProfile() {
                   <p className="text-sm mt-1 text-gray-500 dark:text-gray-400">{isId ? 'Pilih bahasa antarmuka' : 'Select interface language'}</p>
                 </div>
                 <select
-                  className="px-4 py-2.5 rounded-xl border focus:ring-2 focus:ring-emerald-500 outline-none transition-colors min-w-[150px] font-medium bg-gray-50 border-gray-200 text-gray-800 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                  className="px-4 py-2.5 rounded-xl border focus:ring-2 focus:ring-emerald-500 outline-none transition-colors min-w-37.5 font-medium bg-gray-50 border-gray-200 text-gray-800 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                   value={preferences.language}
                   onChange={(e) => updatePreferences({ language: e.target.value })}
                 >
@@ -103,7 +258,7 @@ export default function UserProfile() {
                     checked={preferences.saveHistory}
                     onChange={(e) => updatePreferences({ saveHistory: e.target.checked })}
                   />
-                  <div className="w-14 h-7 bg-gray-200 dark:bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-emerald-300/50 dark:peer-focus:ring-emerald-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-emerald-600"></div>
+                  <div className="w-14 h-7 bg-gray-200 dark:bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-emerald-300/50 dark:peer-focus:ring-emerald-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-emerald-600"></div>
                 </label>
               </div>
 
@@ -120,13 +275,19 @@ export default function UserProfile() {
                     checked={preferences.showConfidenceScore}
                     onChange={(e) => updatePreferences({ showConfidenceScore: e.target.checked })}
                   />
-                  <div className="w-14 h-7 bg-gray-200 dark:bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-emerald-300/50 dark:peer-focus:ring-emerald-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-emerald-600"></div>
+                  <div className="w-14 h-7 bg-gray-200 dark:bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-emerald-300/50 dark:peer-focus:ring-emerald-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-emerald-600"></div>
                 </label>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <ResetPasswordModal 
+        isOpen={isResetModalOpen} 
+        onClose={() => setIsResetModalOpen(false)} 
+        userEmail={user?.email} 
+        isId={isId} 
+      />
     </div>
   )
 }
