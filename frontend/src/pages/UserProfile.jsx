@@ -291,7 +291,7 @@ export default function UserProfile() {
                     setNewName(user?.name || '')
                     setIsEditingName(true)
                   }}
-                  className="text-gray-400 hover:text-emerald-600 transition-opacity opacity-0 group-hover:opacity-100 focus:opacity-100 p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
+                  className="text-gray-800 dark:text-gray-300 hover:text-gray-600 dark:hover:text-gray-400 transition-colors p-1 rounded-md group-hover:opacity-100"
                   title={isId ? 'Edit Nama' : 'Edit Name'}
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
@@ -301,7 +301,7 @@ export default function UserProfile() {
           </div>
           {/* Akhir Section Edit Nama */}
 
-          <p className="text-sm mb-8 mt-1 text-gray-500 dark:text-gray-400">{user?.email || 'guest@example.com'}</p>
+          <p className="text-sm mb-8 mt-1 text-gray-500 dark:text-gray-400">{user?.email}</p>
           
           <div className="w-full flex flex-col gap-3">
             <button 

@@ -145,7 +145,7 @@ export default function ScanPage() {
           </button>
         </nav>
 
-        <div className="w-full max-w-full mx-auto bg-white dark:bg-gray-800 dark:border-gray-600 border-2 border-dashed border-emerald-200 hover:border-emerald-400 rounded-3xl flex flex-col items-center justify-center p-10 min-h-100 shadow-lg shadow-emerald-900/5 transition-all duration-300 group">
+        <div className="w-full max-w-full mx-auto bg-white dark:bg-gray-800 dark:border-gray-600 border-2 border-dashed border-emerald-200 hover:border-gray-100 dark:hover:border-gray-500 rounded-3xl flex flex-col items-center justify-center p-10 min-h-100 shadow-lg shadow-emerald-900/5 transition-all duration-300 group">
           {activeTab === 'upload' ? (
             <div className="flex flex-col items-center text-center w-full">
               {!previewUrl ? (
@@ -221,11 +221,11 @@ export default function ScanPage() {
                           <p className="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-1.5">
                             Analysis Results
                           </p>
-                          <h3 className="text-2xl font-bold text-gray-900 capitalize leading-tight">
+                          <h3 className="text-2xl font-bold text-gray-900 dark:text-white capitalize leading-tight">
                             {scanResult.result.disease?.name || 'Unknown'}
                           </h3>
                           {scanResult.result.disease?.scientificName && (
-                            <p className="text-sm text-gray-500 italic mt-1.5">
+                            <p className="text-sm text-gray-500 dark:text-gray-400 italic mt-1.5">
                               {scanResult.result.disease.scientificName}
                             </p>
                           )}
