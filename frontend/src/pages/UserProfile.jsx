@@ -22,6 +22,10 @@ export default function UserProfile() {
   // State untuk Modal Reset Password
   const [isResetModalOpen, setIsResetModalOpen] = useState(false)
 
+  // State untuk Hapus Akun
+  const [isDeleting, setIsDeleting] = useState(false)
+  const [isDeletingHistory, setIsDeletingHistory] = useState(false)
+
   // Handler Upload Foto
   const handleImageChange = async (e) => {
     const file = e.target.files[0]
@@ -76,6 +80,61 @@ export default function UserProfile() {
     setNameError('')
     setNewName('')
   }
+
+  // Handler Hapus Akun
+  const handleDeleteAccount = async () => {
+    const confirmationText = isId
+      ? 'Apakah Anda yakin ingin menghapus akun Anda? Tindakan ini tidak dapat diurungkan. Semua data Anda akan dihapus secara permanen.'
+      : 'Are you sure you want to delete your account? This action cannot be undone. All your data will be permanently deleted.';
+
+    if (!window.confirm(confirmationText)) {
+      return;
+    }
+
+    const passwordPromptText = isId
+      ? 'Untuk konfirmasi, masukkan kata sandi Anda:'
+      : 'To confirm, please enter your password:';
+
+    const password = window.prompt(passwordPromptText);
+
+    if (password === null) { // User clicked "Cancel"
+      return;
+    }
+
+    setIsDeleting(true);
+    try {
+      await api.delete('/auth/account', { data: { password } });
+      alert(isId ? 'Akun Anda telah berhasil dihapus.' : 'Your account has been successfully deleted.');
+      logout();
+    } catch (err) {
+      const errorMessage = err.response?.data?.message || (isId ? 'Gagal menghapus akun. Periksa kembali password Anda.' : 'Failed to delete account. Please check your password.');
+      alert(errorMessage);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  // Handler Hapus Riwayat
+  const handleDeleteHistory = async () => {
+    const confirmationText = isId
+      ? 'Apakah Anda yakin ingin menghapus seluruh riwayat scan Anda? Tindakan ini tidak dapat diurungkan.'
+      : 'Are you sure you want to delete all your scan history? This action cannot be undone.';
+
+    if (!window.confirm(confirmationText)) {
+      return;
+    }
+
+    setIsDeletingHistory(true);
+    try {
+      await api.delete('/api/classify/history');
+      alert(isId ? 'Seluruh riwayat scan berhasil dihapus.' : 'All scan history has been successfully deleted.');
+    } catch (err) {
+      const errorMessage = err.response?.data?.message || (isId ? 'Gagal menghapus riwayat.' : 'Failed to delete history.');
+      alert(errorMessage);
+    } finally {
+      setIsDeletingHistory(false);
+    }
+  };
 
   return (
     <div>
@@ -277,6 +336,45 @@ export default function UserProfile() {
                   />
                   <div className="w-14 h-7 bg-gray-200 dark:bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-emerald-300/50 dark:peer-focus:ring-emerald-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-emerald-600"></div>
                 </label>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-8 rounded-3xl border border-red-200 bg-red-50 dark:bg-red-900/20 dark:border-red-800/50">
+            <h3 className="text-xl font-bold mb-6 text-red-800 dark:text-red-300 flex items-center gap-3">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+              {isId ? 'Zona Berbahaya' : 'Danger Zone'}
+            </h3>
+            <div className="space-y-6">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center pb-6 border-b border-red-200 dark:border-red-800/50 gap-4">
+                <div>
+                  <h4 className="font-semibold text-lg text-red-900 dark:text-red-200">{isId ? 'Hapus Riwayat Scan' : 'Delete Scan History'}</h4>
+                  <p className="text-sm mt-1 text-red-700 dark:text-red-300/80">{isId ? 'Hapus semua data riwayat deteksi tanaman secara permanen.' : 'Permanently delete all crop detection history data.'}</p>
+                </div>
+                <button
+                  onClick={handleDeleteHistory}
+                  disabled={isDeletingHistory}
+                  className="font-semibold px-5 py-2.5 rounded-xl transition-all shadow-sm active:scale-95 border bg-red-600 border-red-700 text-white hover:bg-red-700 disabled:opacity-60 disabled:cursor-not-allowed shrink-0"
+                >
+                  {isDeletingHistory 
+                    ? (isId ? 'Menghapus...' : 'Deleting...') 
+                    : (isId ? 'Hapus Riwayat' : 'Delete History')}
+                </button>
+              </div>
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+                <div>
+                  <h4 className="font-semibold text-lg text-red-900 dark:text-red-200">{isId ? 'Hapus Akun' : 'Delete Account'}</h4>
+                  <p className="text-sm mt-1 text-red-700 dark:text-red-300/80">{isId ? 'Hapus akun dan semua data terkait secara permanen.' : 'Permanently delete your account and all associated data.'}</p>
+                </div>
+                <button
+                  onClick={handleDeleteAccount}
+                  disabled={isDeleting}
+                  className="font-semibold px-5 py-2.5 rounded-xl transition-all shadow-sm active:scale-95 border bg-red-600 border-red-700 text-white hover:bg-red-700 disabled:opacity-60 disabled:cursor-not-allowed shrink-0"
+                >
+                  {isDeleting 
+                    ? (isId ? 'Menghapus...' : 'Deleting...') 
+                    : (isId ? 'Hapus Akun' : 'Delete Account')}
+                </button>
               </div>
             </div>
           </div>
