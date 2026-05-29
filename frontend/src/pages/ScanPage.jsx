@@ -103,11 +103,12 @@ export default function ScanPage() {
     const formData = new FormData();
     formData.append('image', selectedFile);
     
+    formData.append('saveHistory', preferences.saveHistory); 
+    
     setIsLoading(true);
     setError('');
     
     try {
-      // API request menggunakan axios instance
       const res = await api.post('/api/classify', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
