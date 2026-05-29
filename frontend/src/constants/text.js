@@ -292,6 +292,40 @@ export const TEXT = {
   },
 
   // App (protected pages)
+  onboarding: {
+    steps: [
+      {
+        icon: 'logo',
+        title: 'Welcome To Tanam Pangan!',
+        desc: `Welcome!
+        Tanam Pangan helps you quickly detect diseases in paddy and tomato plants using AI.`,
+        nextBtn: 'Next →',
+        skipBtn: 'Skip Intro',
+      },
+      {
+        icon: 'photo',
+        title: 'Photo or Scan Your Plant',
+        desc: 'Upload a photo of an infected plant leaf from your gallery, or use the live camera for a real-time scan.',
+        nextBtn: 'Next →',
+        prevBtn: 'Previous',
+      },
+      {
+        icon: 'ai',
+        title: 'AI Analysis',
+        desc: 'Our AI will analyze your photo in 3–5 seconds and identify diseases based on visual symptoms.',
+        nextBtn: 'Next →',
+        prevBtn: 'Previous',
+      },
+      {
+        icon: 'result',
+        title: 'Get the Result!',
+        desc: 'Get a complete diagnosis and treatment recommendations that can be implemented immediately in the field.',
+        nextBtn: 'Finish',
+        prevBtn: 'Previous',
+      },
+    ],
+  },
+  
   dashboard: {
     
   },
