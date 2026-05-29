@@ -73,11 +73,11 @@ export default function Sidebar({ isExpanded, setIsExpanded, onNavigate }) {
                         transition: 'opacity 200ms ease',
                 }}
                 >
-                <div className="shrink-0 bg-[#19793F] text-white p-1 rounded-full">
+                <div className="shrink-0 bg-gray-800 text-white p-1 rounded-md">
                     <LogoIcon />
                 </div>
-                <span className="font-semibold text-xl text-[#19793F] whitespace-nowrap flex-1 overflow-hidden">
-                    Tanam Pangan
+                <span className="font-semibold text-xl text-slate-800 dark:text-[#ffffff] whitespace-nowrap flex-1 overflow-hidden">
+                    Tommy Care
                 </span>
                 <button
                     onClick={() => setIsExpanded(false)}
