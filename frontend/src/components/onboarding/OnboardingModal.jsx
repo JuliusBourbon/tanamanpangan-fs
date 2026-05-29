@@ -70,15 +70,19 @@ function DotIndicators({ current, total }) {
   )
 }
 
-export default function OnboardingModal() {
+export default function OnboardingModal({ onFinish  }) {
   const [currentStep, setCurrentStep] = useState(0)
   const navigate = useNavigate()
   const step = steps[currentStep]
   const isLast = currentStep === steps.length - 1
 
   const finish = () => {
-    completeOnboarding()
-    navigate('/dashboard', { replace: true })
+    if (onFinish) {
+      onFinish()
+    } else {
+      completeOnboarding() 
+      navigate('/dashboard', { replace: true })
+    }
   }
 
   const handleNext = () => {

@@ -1,24 +1,21 @@
-import { useEffect, useRef } from 'react'
+import { useRef, useState } from 'react'
 import { driver } from 'driver.js'
 import 'driver.js/dist/driver.css'
 import { hasCompletedOnboarding, completeOnboarding } from '../utils/onboarding'
 
 export const useOnboarding = () => {
+  const [showWelcome, setShowWelcome] = useState(!hasCompletedOnboarding())
   const driverRef = useRef(null)
 
-  useEffect(() => {
-    if (hasCompletedOnboarding()) return
-
+  const startSidebarTour = () => {
     driverRef.current = driver({
       animate: true,
-      smoothScroll: true,
       showProgress: true,
       progressText: '{{current}} / {{total}}',
       nextBtnText: 'Lanjut →',
       prevBtnText: '← Kembali',
       doneBtnText: 'Mulai!',
       onDestroyStarted: () => {
-        // Dipanggil saat user klik X atau selesai
         completeOnboarding()
         driverRef.current?.destroy()
       },
@@ -53,11 +50,13 @@ export const useOnboarding = () => {
       ],
     })
 
-    // Sedikit delay agar DOM sudah siap sebelum driver berjalan
-    const timer = setTimeout(() => {
-      driverRef.current?.drive()
-    }, 500)
+    setTimeout(() => driverRef.current?.drive(), 300)
+  }
 
-    return () => clearTimeout(timer)
-  }, [])
+  const finishWelcome = () => {
+    setShowWelcome(false)
+    startSidebarTour()
+  }
+
+  return { showWelcome, finishWelcome }
 }

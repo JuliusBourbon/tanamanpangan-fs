@@ -3,9 +3,10 @@ import { Outlet } from 'react-router-dom';
 import Sidebar from '../sidebar/sidebar';
 import MainContent from '../mainContent/MainContent';
 import { useOnboarding } from '../../hooks/onboarding';
+import OnboardingModal from '../onboarding/OnboardingModal';
 
 export default function AppLayout() {
-    useOnboarding();
+    const { showWelcome, finishWelcome } = useOnboarding()
 
     // lg+: expanded by default | md: collapsed by default | sm: hidden by default
     const getInitialExpanded = () => window.innerWidth >= 1024;
@@ -35,6 +36,7 @@ export default function AppLayout() {
 
     return (
         <div className="flex h-screen w-full bg-[#E4E4E4] dark:bg-gray-900 font-sans overflow-hidden">
+            {showWelcome && <OnboardingModal onFinish={finishWelcome} />}
 
             {/*Mobile overlay backdrop*/}
             {isMobileOpen && (
