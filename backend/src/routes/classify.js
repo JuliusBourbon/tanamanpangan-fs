@@ -88,6 +88,8 @@ router.post('/', authenticate, upload.single('image'), async (req, res) => {
     }
 
     const imageUrl = req.file.location
+    
+    const saveHistory = req.body.saveHistory !== 'false'
 
     try {
         const { slug, confidenceScore } = await classifyImage(imageUrl)
@@ -98,19 +100,28 @@ router.post('/', authenticate, upload.single('image'), async (req, res) => {
             return res.status(500).json({ message: 'Penyakit tidak ditemukan di database.' })
         }
 
-        const classification = await prisma.classification.create({
-            data: {
-                userId: req.user.userId,
-                diseaseId: disease.id,
-                imageUrl,
-                confidenceScore,
-            },
-        })
+        let classificationId = null;
+        let finalImageUrl = null;
+
+        if (saveHistory) {
+            const classification = await prisma.classification.create({
+                data: {
+                    userId: req.user.userId,
+                    diseaseId: disease.id,
+                    imageUrl,
+                    confidenceScore,
+                },
+            })
+            classificationId = classification.id
+            finalImageUrl = await getPresignedImageUrl(imageUrl)
+        } else {
+            await deleteFromS3(imageUrl)
+        }
 
         return res.status(201).json({
             message: 'Klasifikasi berhasil',
             result: {
-                classificationId: classification.id,
+                classificationId: classificationId,
                 disease: {
                     name: disease.name,
                     slug: disease.slug,
@@ -123,8 +134,8 @@ router.post('/', authenticate, upload.single('image'), async (req, res) => {
                     rootCauses: disease.rootCauses,
                 },
                 confidenceScore,
-                imageUrl: await getPresignedImageUrl(imageUrl),
-                classifiedAt: classification.createdAt,
+                imageUrl: finalImageUrl,
+                classifiedAt: new Date(),
             },
         })
     } catch (error) {
