@@ -1,8 +1,28 @@
 const express = require('express')
 const prisma = require('../config/prisma')
 const authenticate = require('../middleware/auth')
+const { GetObjectCommand } = require('@aws-sdk/client-s3')
+const { getSignedUrl } = require('@aws-sdk/s3-request-presigner')
+const { s3 } = require('../middleware/upload')
 
 const router = express.Router()
+
+// HELPER: generate presigned URL
+const getPresignedImageUrl = async (imageUrl) => {
+    try {
+        const url = new URL(imageUrl)
+        const key = url.pathname.startsWith('/') ? url.pathname.slice(1) : url.pathname
+        const command = new GetObjectCommand({
+            Bucket: process.env.AWS_S3_BUCKET,
+            Key: key,
+        })
+        return await getSignedUrl(s3, command, { expiresIn: 3600 })
+    } catch (error) {
+        console.error('Error saat membuat presigned URL:', error.message)
+        return null
+    }
+}
+
 
 // GET /api/dashboard
 router.get('/', authenticate, async (req, res) => {
@@ -66,6 +86,23 @@ router.get('/', authenticate, async (req, res) => {
 
     ])
 
+    if (lastScan && lastScan.imageUrl) {
+      lastScan.imageUrl = await getPresignedImageUrl(lastScan.imageUrl)
+    }
+
+    // 2. Proses Presigned URL untuk array recentHistory menggunakan Promise.all
+    const recentHistoryWithUrls = await Promise.all(
+      recentHistory.map(async (item) => {
+        if (item.imageUrl) {
+          return {
+            ...item,
+            imageUrl: await getPresignedImageUrl(item.imageUrl),
+          }
+        }
+        return item
+      })
+    )
+
     // Healthy Percentage
     const healthyPercentage = totalScans > 0
       ? Math.round((healthyCount / totalScans) * 100)
@@ -77,7 +114,7 @@ router.get('/', authenticate, async (req, res) => {
         scansThisMonth,
         healthyPercentage,
         lastScan,
-        recentHistory,
+        recentHistory: recentHistoryWithUrls,
       },
     })
   } catch (error) {
