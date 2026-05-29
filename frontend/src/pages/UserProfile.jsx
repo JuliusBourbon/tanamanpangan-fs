@@ -13,6 +13,7 @@ export default function UserProfile() {
   // State untuk Foto Profil
   const fileInputRef = useRef(null)
   const [isUploadingImage, setIsUploadingImage] = useState(false)
+  const [isDeletingImage, setIsDeletingImage] = useState(false)
 
   // State untuk Ubah Nama
   const [isEditingName, setIsEditingName] = useState(false)
@@ -63,6 +64,38 @@ export default function UserProfile() {
       e.target.value = ''
     }
   }
+
+  // Handler Hapus Foto
+  const handleDeleteImage = () => {
+    setModalConfig({
+      isOpen: true,
+      type: 'confirm',
+      title: isId ? 'Hapus Foto Profil?' : 'Delete Profile Picture?',
+      message: isId 
+        ? 'Apakah Anda yakin ingin menghapus foto profil Anda?' 
+        : 'Are you sure you want to delete your profile picture?',
+      confirmText: isId ? 'Ya, Hapus' : 'Yes, Delete',
+      cancelText: isId ? 'Batal' : 'Cancel',
+      onConfirm: async () => {
+        handleCloseModal();
+        try {
+          setIsDeletingImage(true);
+          await api.delete('/auth/profile/image');
+          updateUser({ ...user, profileImage: null });
+        } catch (err) {
+          setModalConfig({
+            isOpen: true,
+            type: 'error',
+            title: isId ? 'Gagal' : 'Error',
+            message: err.response?.data?.message || (isId ? 'Gagal menghapus foto.' : 'Failed to delete photo.'),
+            onConfirm: null
+          });
+        } finally {
+          setIsDeletingImage(false);
+        }
+      }
+    });
+  };
 
   // Handler Ubah Nama
   const handleNameSubmit = async () => {
@@ -206,12 +239,26 @@ export default function UserProfile() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Profile Card */}
         <div className="col-span-1 p-8 rounded-3xl border flex flex-col items-center text-center shadow-sm transition-colors duration-300 bg-gray-50 border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-          <div className="relative mb-6">
+          <div className="relative mb-6 group">
             <img 
               src={user?.profileImage || `https://ui-avatars.com/api/?name=${user?.name || 'User'}&background=1E6436&color=fff&size=150`} 
               alt="Profile" 
               className="w-36 h-36 rounded-full object-cover border-4 shadow-md border-white dark:border-gray-700"
             />
+            {user?.profileImage && (
+              <button
+                onClick={handleDeleteImage}
+                disabled={isDeletingImage}
+                className="absolute top-1 right-1 bg-red-500 text-white p-2 rounded-full shadow-lg hover:bg-red-600 transition-colors active:scale-95 disabled:cursor-not-allowed"
+                title={isId ? 'Hapus Foto' : 'Delete Photo'}
+              >
+                {isDeletingImage ? (
+                  <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/></svg>
+                ) : (
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                )}
+              </button>
+            )}
             <input
               ref={fileInputRef}
               type="file"
