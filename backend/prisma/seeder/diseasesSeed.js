@@ -36,7 +36,7 @@ const diseases = [
       "Planting certified, pathogen-free seeds and transplants.",
       "Practicing crop rotation and maintaining field sanitation to minimize water-splashed bacterial spread."
     ],
-    imageUrl: null
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Bacterial_spot_on_tomato_leaf.jpg/2560px-Bacterial_spot_on_tomato_leaf.jpg"
   },
   {
     name: "Early Blight",
@@ -66,7 +66,7 @@ const diseases = [
       "Provide adequate spacing between plants and use supports (staking or trellising) to ensure good air circulation.",
       "Clean up, burn, or dispose of all infected plant debris far from the garden at the end of the harvest season to prevent the fungus from overwintering in the soil."
     ],
-    imageUrl: null
+    imageUrl: "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcS58CsxjIIk7g7viD_r2-znyA6XmLdBSutkqFm953ihDb_ypJvUq0T3yg8LX6An"
   },
   {
     name: "Late Blight",
@@ -96,7 +96,7 @@ const diseases = [
       "Water at the base of the plant using drip irrigation or soaker hoses to keep the foliage completely dry.",
       "Apply preventative fungicides during periods of cool, wet weather, especially if the disease has been reported nearby."
     ],
-    imageUrl: null
+    imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSK8fHCxum_s_UXidLY7D2AlyDTNbZiWn_3lKi3vkIsU31ud-clnGEDPzxhnerZ"
   }
 ]
 async function main() {
