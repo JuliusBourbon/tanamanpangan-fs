@@ -174,7 +174,7 @@ router.delete('/account', authenticate, async (req, res) => {
  
     const isPasswordValid = await bcrypt.compare(password, user.password)
     if (!isPasswordValid) {
-      return res.status(401).json({ message: 'Password tidak valid.' })
+      return res.status(400).json({ message: 'Password tidak valid.' })
     }
  
     // Delete User Profile
