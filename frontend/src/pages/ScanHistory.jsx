@@ -2,12 +2,28 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../api/axios';
 import { usePreferences } from '../context/PreferencesContext';
+import DynamicModal from '../components/DynamicModal';
 
 export default function ScanHistory() {
   const [history, setHistory] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const { preferences } = usePreferences();
+  const isId = preferences?.language === 'id';
+  const [isDeletingId, setIsDeletingId] = useState(null);
+  const [modalConfig, setModalConfig] = useState({
+    isOpen: false,
+    type: 'info',
+    title: '',
+    message: '',
+    onConfirm: null,
+    confirmText: '',
+    cancelText: ''
+  });
+
+  const handleCloseModal = () => {
+    setModalConfig(prev => ({ ...prev, isOpen: false }));
+  };
 
   useEffect(() => {
     const fetchHistory = async () => {
@@ -23,6 +39,33 @@ export default function ScanHistory() {
 
     fetchHistory();
   }, []);
+
+  const handleDelete = (e, id) => {
+    e.preventDefault(); // Mencegah ter-trigger klik Link untuk mengarah ke detail
+    e.stopPropagation();
+    setModalConfig({
+      isOpen: true,
+      type: 'confirm',
+      title: isId ? 'Hapus Riwayat?' : 'Delete History?',
+      message: isId 
+        ? 'Apakah Anda yakin ingin menghapus riwayat pemindaian ini?' 
+        : 'Are you sure you want to delete this scan history?',
+      confirmText: isId ? 'Ya, Hapus' : 'Yes, Delete',
+      cancelText: isId ? 'Batal' : 'Cancel',
+      onConfirm: async () => {
+        handleCloseModal();
+        try {
+          setIsDeletingId(id);
+          await api.delete(`/api/classify/history/${id}`);
+          setHistory(prev => prev.filter(item => item.id !== id));
+        } catch (err) {
+          console.error('Failed to delete history:', err);
+        } finally {
+          setIsDeletingId(null);
+        }
+      }
+    });
+  };
 
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'short', day: 'numeric' };
@@ -61,7 +104,7 @@ export default function ScanHistory() {
               <Link 
                 key={item.id} 
                 to={`/history/${item.id}`}
-                className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm hover:shadow-md transition-all group flex flex-col"
+                className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm hover:shadow-md transition-all group flex flex-col relative"
               >
                 <div className="h-48 w-full bg-gray-100 dark:bg-gray-700 relative overflow-hidden">
                   <img 
@@ -74,6 +117,18 @@ export default function ScanHistory() {
                       {(item.confidenceScore * 100).toFixed(0)}% Match
                     </div>
                   )}
+                  <button
+                    onClick={(e) => handleDelete(e, item.id)}
+                    disabled={isDeletingId === item.id}
+                    className="absolute top-3 left-3 bg-red-500/90 hover:bg-red-600 text-white p-2 rounded-lg shadow-sm transition-all opacity-0 group-hover:opacity-100 disabled:opacity-50"
+                    title={isId ? 'Hapus' : 'Delete'}
+                  >
+                    {isDeletingId === item.id ? (
+                      <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/></svg>
+                    ) : (
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                    )}
+                  </button>
                 </div>
                 <div className="p-4 flex flex-col flex-1">
                   <div className="flex justify-between items-center mb-2">
@@ -88,6 +143,17 @@ export default function ScanHistory() {
           </div>
         )}
       </main>
+
+      <DynamicModal
+        isOpen={modalConfig.isOpen}
+        onClose={handleCloseModal}
+        type={modalConfig.type}
+        title={modalConfig.title}
+        message={modalConfig.message}
+        onConfirm={modalConfig.onConfirm}
+        confirmText={modalConfig.confirmText}
+        cancelText={modalConfig.cancelText}
+      />
     </div>
   );
 }
