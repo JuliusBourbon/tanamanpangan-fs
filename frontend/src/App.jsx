@@ -17,9 +17,6 @@ import Register from './pages/Register'
 import ForgotPassword from './pages/ForgotPassword'
 import ResetPassword from './pages/ResetPassword'
 
-// Onboarding (setelah register, sebelum dashboard)
-import Onboarding from './pages/Onboarding'
-
 // Protected pages
 import Dashboard from './pages/Dashboard'
 import ScanPage from './pages/ScanPage'
@@ -115,16 +112,6 @@ function AppRoutes() {
           <PublicOnlyRoute>
             <ResetPassword />
           </PublicOnlyRoute>
-        }
-      />
-
-      {/* ── Onboarding — protected, tapi terpisah dari layout dashboard ── */}
-      <Route
-        path="/onboarding"
-        element={
-          <PrivateRoute>
-            <Onboarding />
-          </PrivateRoute>
         }
       />
 
