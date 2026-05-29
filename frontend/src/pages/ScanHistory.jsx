@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../api/axios';
 import { usePreferences } from '../context/PreferencesContext';
@@ -6,6 +6,8 @@ import DynamicModal from '../components/DynamicModal';
 
 export default function ScanHistory() {
   const [history, setHistory] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sortOrder, setSortOrder] = useState('newest');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const { preferences } = usePreferences();
@@ -28,7 +30,8 @@ export default function ScanHistory() {
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const res = await api.get('/api/classify/history');
+        setIsLoading(true);
+        const res = await api.get(`/api/classify/history?sort=${sortOrder}`);
         setHistory(res.data.data || []);
       } catch (err) {
         setError(err.response?.data?.message || 'Failed to load history. Please try again later.');
@@ -38,7 +41,7 @@ export default function ScanHistory() {
     };
 
     fetchHistory();
-  }, []);
+  }, [sortOrder]);
 
   const handleDelete = (e, id) => {
     e.preventDefault(); // Mencegah ter-trigger klik Link untuk mengarah ke detail
@@ -72,12 +75,22 @@ export default function ScanHistory() {
     return new Date(dateString).toLocaleDateString('en-US', options);
   };
 
+  const filteredHistory = useMemo(() => {
+    if (!searchTerm.trim()) return history;
+    const lowercasedTerm = searchTerm.toLowerCase();
+    return history.filter((item) => {
+      const diseaseName = item.disease?.name?.toLowerCase() || '';
+      const scientificName = item.disease?.scientificName?.toLowerCase() || '';
+      return diseaseName.includes(lowercasedTerm) || scientificName.includes(lowercasedTerm);
+    });
+  }, [history, searchTerm]);
+
   return (
     <div className="flex flex-col w-full h-full">
       <header className="mb-8 flex justify-between items-end">
         <div>
-          <h1 className="text-5xl font-bold tracking-tight mb-2 text-gray-900 dark:text-white">History</h1>
-          <p className="text-slate-600 dark:text-gray-300">Review and manage your plant diseases diagnoses</p>
+          <h1 className="text-5xl font-bold tracking-tight mb-2 text-gray-900 dark:text-white">{isId ? 'Riwayat' : 'History'}</h1>
+          <p className="text-slate-600 dark:text-gray-300">{isId ? 'Tinjau dan kelola diagnosis penyakit tanaman Anda' : 'Review and manage your plant diseases diagnoses'}</p>
         </div>
       </header>
 
@@ -93,14 +106,47 @@ export default function ScanHistory() {
           </div>
         ) : history.length === 0 ? (
           <div className="text-center py-20 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
-            <p className="text-gray-500 dark:text-gray-400 mb-4 text-lg">You haven't made any scans yet.</p>
+            <p className="text-gray-500 dark:text-gray-400 mb-4 text-lg">{isId ? 'Anda belum melakukan pemindaian apa pun.' : 'You haven\'t made any scans yet.'}</p>
             <Link to="/scan" className="bg-[#1E6436] dark:bg-emerald-600 text-white px-6 py-2.5 rounded-md hover:bg-green-800 dark:hover:bg-emerald-700 transition-colors font-medium">
-              Start your first scan
+              {isId ? 'Mulai pemindaian pertama Anda' : 'Start your first scan'}
             </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pb-10">
-            {history.map((item) => (
+          <div className="flex flex-col gap-2">
+            <div className="flex flex-col sm:flex-row gap-4 mb-6">
+              <div className="relative flex-1 max-w-md">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                </div>
+                <input
+                  type="text"
+                  placeholder={isId ? "Cari nama penyakit atau ilmiah..." : "Search by disease or scientific name..."}
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border bg-white border-gray-200 text-gray-800 focus:ring-2 focus:ring-[#1E6436] outline-none transition-shadow dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:focus:ring-emerald-500"
+                />
+              </div>
+              
+              <button
+                onClick={() => setSortOrder(prev => prev === 'newest' ? 'oldest' : 'newest')}
+                className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border bg-white border-gray-200 text-gray-800 hover:bg-gray-50 focus:ring-2 focus:ring-[#1E6436] outline-none transition-all dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 dark:focus:ring-emerald-500 cursor-pointer"
+              >
+                {/* <svg className={`w-5 h-5 transition-transform duration-300 ${sortOrder === 'oldest' ? 'rotate-180' : ''}`}  xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-down-wide-narrow-icon lucide-arrow-down-wide-narrow"><path d="m3 16 4 4 4-4"/><path d="M7 20V4"/><path d="M11 4h10"/><path d="M11 8h7"/><path d="M11 12h4"/></svg> */}
+                <span className="font-medium">
+                  {sortOrder === 'newest' ? (isId ? 'Terbaru' : 'Newest') : (isId ? 'Terlama' : 'Oldest')}
+                </span>
+              </button>
+            </div>
+            
+            {filteredHistory.length === 0 ? (
+              <div className="text-center py-12 rounded-xl dark:border-gray-700 shadow-sm">
+                <p className="text-gray-500 dark:text-gray-400 text-lg">
+                  {isId ? 'Tidak ada riwayat yang cocok dengan pencarian Anda.' : 'No history matches your search.'}
+                </p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pb-10">
+                {filteredHistory.map((item) => (
               <Link 
                 key={item.id} 
                 to={`/history/${item.id}`}
@@ -140,6 +186,8 @@ export default function ScanHistory() {
                 </div>
               </Link>
             ))}
+              </div>
+            )}
           </div>
         )}
       </main>
