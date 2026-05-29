@@ -13,7 +13,7 @@ export const TEXT = {
     },
     auth: {
       backToHome: 'Back to Home',
-      brand: 'Tanam Pangan',
+      brand: 'Tommy Care',
     },
     app: {
       dashboard: 'Dashboard',
@@ -38,9 +38,9 @@ export const TEXT = {
     },
     different: {
       heading1: 'What Makes',
-      brand: 'Tanam Pangan',
+      brand: 'Tommy Care',
       heading2: 'Different?',
-      desc1: 'Tanam Pangan was developed specifically for Indonesian farmers, focusing on the most common paddy and tomato plant diseases.',
+      desc1: 'Tommy Care was developed specifically for Indonesian farmers, focusing on the most common paddy and tomato plant diseases.',
       desc2: "It's free, easy to use, and based on academic research.",
       cards: [
         {
@@ -58,7 +58,7 @@ export const TEXT = {
       ],
       academic: {
         title: 'Academic Research Project',
-        desc1: 'Tanam Pangan was developed as a final project by students, supported by the Coding Camp 2026 program supported by DBS Bank.',
+        desc1: 'Tommy Care was developed as a final project by students, supported by the Coding Camp 2026 program supported by DBS Bank.',
         desc2: 'This platform was built for educational purposes and continues to be actively developed.',
       },
     },
@@ -104,15 +104,15 @@ export const TEXT = {
         { label: 'Capstone Team', to: '/about#team' },
         { label: 'Contact', to: '#' }, // placeholder — isi sendiri
       ],
-      copyright: '© 2026 Tanam Pangan All Right reserved',
+      copyright: '© 2026 Tommy Care All Right reserved',
       builtFor: 'Built to fulfill Coding Camp Capstone Project powered by Bank DBS capstone project',
     },
   },
 
   // How It Works 
   howItWorks: {    
-    heading: 'How Tanam Pangan Works',
-    subheading: "Tanam Pangan uses computer vision technology to analyze plant photos and automatically detect diseases. Here's how our system works.",
+    heading: 'How Tommy Care Works',
+    subheading: "Tommy Care uses computer vision technology to analyze plant photos and automatically detect diseases. Here's how our system works.",
     steps: [
       {
         num: 1,
@@ -142,12 +142,12 @@ export const TEXT = {
     hero: {
       badge: 'OUR MISSION',
       heading: 'Empowering Sustainable Agriculture Through AI',
-      body: 'We believe every farmer deserves access to fast, accurate, and free plant disease diagnosis. Tanam Pangan is here to help Indonesian farmers detect paddy and tomato diseases early, so they can prevent crop losses.',
+      body: 'We believe every farmer deserves access to fast, accurate, and free plant disease diagnosis. Tommy Care is here to help Indonesian farmers detect paddy and tomato diseases early, so they can prevent crop losses.',
     },
     story: {
       heading: 'Capstone Project Story',
       paragraphs: [
-        'Tanam Pangan was born out of our concern for the challenges Indonesian farmers face in detecting plant diseases. As students, we saw that access to accurate agricultural information was still limited, especially in rural areas.',
+        'Tommy Care was born out of our concern for the challenges Indonesian farmers face in detecting plant diseases. As students, we saw that access to accurate agricultural information was still limited, especially in rural areas.',
         'This project was developed as a Capstone Project within the Coding Camp program supported by DBS Bank. For several months, our team of six students with backgrounds in AI Engineering, FullStack Development, and Data Science collaborated to build this platform from scratch.',
         'Mentored by Jason and Vivy Junita, we combined computer vision technology with plant disease research to deliver a truly beneficial solution.',
       ],
@@ -174,7 +174,7 @@ export const TEXT = {
       {
         title: 'About Services',
         type: 'paragraph',
-        content: 'The Tanam Pangan Service is an AI-based educational platform to help identify diseases in paddy and tomato plants. This service was developed as a capstone project by students.',
+        content: 'The Tommy Care Service is an AI-based educational platform to help identify diseases in paddy and tomato plants. This service was developed as a capstone project by students.',
       },
       {
         title: 'Permitted Use',
@@ -191,7 +191,7 @@ export const TEXT = {
         items: [
           'Diagnostic results are recommendations, not final decisions.',
           'For a definitive diagnosis, consult an agricultural extension officer or agronomist.',
-          'The Tanam Pangan Team is not responsible for any losses resulting from the use of diagnostic results.',
+          'The Tommy Care Team is not responsible for any losses resulting from the use of diagnostic results.',
         ],
       },
       {
@@ -214,7 +214,7 @@ export const TEXT = {
       {
         title: 'Changes to Services',
         type: 'paragraph',
-        content: 'The Tanam Pangan Team reserves the right to change or discontinue services at any time without prior notice, as this is a time-limited project.',
+        content: 'The Tommy Care Team reserves the right to change or discontinue services at any time without prior notice, as this is a time-limited project.',
       },
       {
         title: 'Contact',
@@ -296,9 +296,9 @@ export const TEXT = {
     steps: [
       {
         icon: 'logo',
-        title: 'Welcome To Tanam Pangan!',
+        title: 'Welcome To Tommy Care!',
         desc: `Welcome!
-        Tanam Pangan helps you quickly detect diseases in paddy and tomato plants using AI.`,
+        Tommy Care helps you quickly detect diseases in paddy and tomato plants using AI.`,
         nextBtn: 'Next →',
         skipBtn: 'Skip Intro',
       },
