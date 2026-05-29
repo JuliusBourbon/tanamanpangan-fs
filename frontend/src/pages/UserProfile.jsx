@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext'
 import { useRef, useState } from 'react'
 import api from '../api/axios';
 import ResetPasswordModal from '../components/ResetPasswordModal';
+import DynamicModal from '../components/DynamicModal';
 
 export default function UserProfile() {
   const { preferences, updatePreferences } = usePreferences()
@@ -25,6 +26,21 @@ export default function UserProfile() {
   // State untuk Hapus Akun
   const [isDeleting, setIsDeleting] = useState(false)
   const [isDeletingHistory, setIsDeletingHistory] = useState(false)
+
+  // State untuk Dynamic Modal
+  const [modalConfig, setModalConfig] = useState({
+    isOpen: false,
+    type: 'info',
+    title: '',
+    message: '',
+    onConfirm: null,
+    confirmText: '',
+    cancelText: ''
+  });
+
+  const handleCloseModal = () => {
+    setModalConfig(prev => ({ ...prev, isOpen: false }));
+  };
 
   // Handler Upload Foto
   const handleImageChange = async (e) => {
@@ -82,58 +98,98 @@ export default function UserProfile() {
   }
 
   // Handler Hapus Akun
-  const handleDeleteAccount = async () => {
-    const confirmationText = isId
-      ? 'Apakah Anda yakin ingin menghapus akun Anda? Tindakan ini tidak dapat diurungkan. Semua data Anda akan dihapus secara permanen.'
-      : 'Are you sure you want to delete your account? This action cannot be undone. All your data will be permanently deleted.';
+  const handleDeleteAccount = () => {
+    setModalConfig({
+      isOpen: true,
+      type: 'confirm',
+      title: isId ? 'Hapus Akun?' : 'Delete Account?',
+      message: isId
+        ? 'Apakah Anda yakin ingin menghapus akun Anda? Tindakan ini tidak dapat diurungkan. Semua data Anda akan dihapus secara permanen.'
+        : 'Are you sure you want to delete your account? This action cannot be undone. All your data will be permanently deleted.',
+      confirmText: isId ? 'Ya, Hapus' : 'Yes, Delete',
+      cancelText: isId ? 'Batal' : 'Cancel',
+      onConfirm: () => {
+        handleCloseModal();
+        
+        // Memberikan sedikit waktu agar modal tertutup sebelum prompt browser memblokir layar
+        setTimeout(async () => {
+          const passwordPromptText = isId
+            ? 'Untuk konfirmasi, masukkan kata sandi Anda:'
+            : 'To confirm, please enter your password:';
 
-    if (!window.confirm(confirmationText)) {
-      return;
-    }
+          const password = window.prompt(passwordPromptText);
 
-    const passwordPromptText = isId
-      ? 'Untuk konfirmasi, masukkan kata sandi Anda:'
-      : 'To confirm, please enter your password:';
+          if (password === null) {
+            return;
+          }
 
-    const password = window.prompt(passwordPromptText);
-
-    if (password === null) { // User clicked "Cancel"
-      return;
-    }
-
-    setIsDeleting(true);
-    try {
-      await api.delete('/auth/account', { data: { password } });
-      alert(isId ? 'Akun Anda telah berhasil dihapus.' : 'Your account has been successfully deleted.');
-      logout();
-    } catch (err) {
-      const errorMessage = err.response?.data?.message || (isId ? 'Gagal menghapus akun. Periksa kembali password Anda.' : 'Failed to delete account. Please check your password.');
-      alert(errorMessage);
-    } finally {
-      setIsDeleting(false);
-    }
+          setIsDeleting(true);
+          try {
+            await api.delete('/auth/account', { data: { password } });
+            setModalConfig({
+              isOpen: true,
+              type: 'success',
+              title: isId ? 'Berhasil' : 'Success',
+              message: isId ? 'Akun Anda telah berhasil dihapus.' : 'Your account has been successfully deleted.',
+              onConfirm: () => {
+                handleCloseModal();
+                logout();
+              }
+            });
+          } catch (err) {
+            const errorMessage = err.response?.data?.message || (isId ? 'Gagal menghapus akun. Periksa kembali password Anda.' : 'Failed to delete account. Please check your password.');
+            setModalConfig({
+              isOpen: true,
+              type: 'error',
+              title: isId ? 'Gagal' : 'Error',
+              message: errorMessage,
+              onConfirm: null
+            });
+          } finally {
+            setIsDeleting(false);
+          }
+        }, 150);
+      }
+    });
   };
 
   // Handler Hapus Riwayat
-  const handleDeleteHistory = async () => {
-    const confirmationText = isId
-      ? 'Apakah Anda yakin ingin menghapus seluruh riwayat scan Anda? Tindakan ini tidak dapat diurungkan.'
-      : 'Are you sure you want to delete all your scan history? This action cannot be undone.';
-
-    if (!window.confirm(confirmationText)) {
-      return;
-    }
-
-    setIsDeletingHistory(true);
-    try {
-      await api.delete('/api/classify/history');
-      alert(isId ? 'Seluruh riwayat scan berhasil dihapus.' : 'All scan history has been successfully deleted.');
-    } catch (err) {
-      const errorMessage = err.response?.data?.message || (isId ? 'Gagal menghapus riwayat.' : 'Failed to delete history.');
-      alert(errorMessage);
-    } finally {
-      setIsDeletingHistory(false);
-    }
+  const handleDeleteHistory = () => {
+    setModalConfig({
+      isOpen: true,
+      type: 'confirm',
+      title: isId ? 'Hapus Riwayat?' : 'Delete History?',
+      message: isId
+        ? 'Apakah Anda yakin ingin menghapus seluruh riwayat scan Anda? Tindakan ini tidak dapat diurungkan.'
+        : 'Are you sure you want to delete all your scan history? This action cannot be undone.',
+      confirmText: isId ? 'Ya, Hapus' : 'Yes, Delete',
+      cancelText: isId ? 'Batal' : 'Cancel',
+      onConfirm: async () => {
+        handleCloseModal();
+        setIsDeletingHistory(true);
+        try {
+          await api.delete('/api/classify/history');
+          setModalConfig({
+            isOpen: true,
+            type: 'success',
+            title: isId ? 'Berhasil' : 'Success',
+            message: isId ? 'Seluruh riwayat scan berhasil dihapus.' : 'All scan history has been successfully deleted.',
+            onConfirm: null
+          });
+        } catch (err) {
+          const errorMessage = err.response?.data?.message || (isId ? 'Gagal menghapus riwayat.' : 'Failed to delete history.');
+          setModalConfig({
+            isOpen: true,
+            type: 'error',
+            title: isId ? 'Gagal' : 'Error',
+            message: errorMessage,
+            onConfirm: null
+          });
+        } finally {
+          setIsDeletingHistory(false);
+        }
+      }
+    });
   };
 
   return (
@@ -385,6 +441,17 @@ export default function UserProfile() {
         onClose={() => setIsResetModalOpen(false)} 
         userEmail={user?.email} 
         isId={isId} 
+      />
+      
+      <DynamicModal
+        isOpen={modalConfig.isOpen}
+        onClose={handleCloseModal}
+        type={modalConfig.type}
+        title={modalConfig.title}
+        message={modalConfig.message}
+        onConfirm={modalConfig.onConfirm}
+        confirmText={modalConfig.confirmText}
+        cancelText={modalConfig.cancelText}
       />
     </div>
   )
