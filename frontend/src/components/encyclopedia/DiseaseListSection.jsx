@@ -73,7 +73,51 @@ export default function DiseaseListSection({ diseases = [], basePath = '/encyclo
         ))}
       </div>
 
-      
+      {paginated.length === 0 ? (
+        <p className="text-center text-gray-400 py-16 text-sm">{T.empty}</p>
+      ) : (
+         <div className="flex flex-col gap-4">
+          {paginated.map((disease) => (
+           <div>proses pengerjaan</div>
+          ))}
+         </div>
+      )}
+
+
+
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-center gap-2 mt-10">
+          <button
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            disabled={page === 1}
+            className="px-4 py-2 text-sm rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          >
+            ← Prev
+          </button>
+          {Array.from({ length: totalPages }).map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setPage(i + 1)}
+              className={`w-9 h-9 text-sm rounded-lg border transition-colors ${
+                page === i + 1
+                  ? 'bg-[#2a7a53] text-white border-[#2a7a53]'
+                  : 'border-gray-200 text-gray-600 hover:bg-gray-50'
+              }`}
+            >
+              {i + 1}
+            </button>
+          ))}
+          <button
+            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+            disabled={page === totalPages}
+            className="px-4 py-2 text-sm rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          >
+            Next →
+          </button>
+        </div>
+      )}
     </section>
   )
 }
