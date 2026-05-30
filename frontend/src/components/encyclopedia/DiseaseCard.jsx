@@ -6,9 +6,9 @@ const T = TEXT.encyclopedia
 // Badge severity — warna sesuai level
 function SeverityBadge({ severity }) {
   const styles = {
-    high:   'bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400', 
-    medium: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400',
-    low:    'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400',
+    high:   'text-red-500', 
+    medium: 'text-yellow-500',
+    low:    'text-emerald-700',
   }
 
   const normalizedSeverity = severity?.toLowerCase() || ''; 
@@ -26,7 +26,7 @@ export default function DiseaseCard({ disease, basePath = '/encyclopedia' }) {
   return (
     <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden flex flex-col md:flex-row">
       {/* Gambar penyakit */}
-      <div className="md:w-[200px] md:flex-shrink-0 h-40 md:h-auto bg-gray-100 overflow-hidden">
+      <div className="md:w-50 md:shrink-0 h-40 md:h-auto bg-gray-100 overflow-hidden">
         {disease.imageUrl ? (
           <img
             src={disease.imageUrl}

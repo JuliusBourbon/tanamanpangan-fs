@@ -1,11 +1,7 @@
 import { TEXT } from '../../constants/text'
+import { LeafyGreen, Timer, FileChartColumn, GraduationCap }from 'lucide-react'
 
-const CARD_ICONS = [
-  // <img src="/src/assets/nama-file.png" className="w-10 h-10" />
-  <span className="text-4xl">⏱️</span>,
-  <span className="text-4xl">🍅</span>,
-  <span className="text-4xl">💊</span>,
-]
+const CARD_ICONS = [<Timer size={48}/>, <LeafyGreen size={48} />, <FileChartColumn size={48} />]
 
 export default function DifferentSection() {
   const { different } = TEXT.landing
@@ -37,8 +33,8 @@ export default function DifferentSection() {
         </div>
 
         <div className="bg-gray-50 border border-gray-100 rounded-2xl p-8 text-center">
-          <div className="flex items-center justify-center gap-3 mb-3">
-            <span className="text-4xl">🎓</span>
+          <div className="flex flex-col md:flex-row items-center justify-center gap-3 mb-3">
+            <span className="text-4xl"><GraduationCap size={36} /></span>
             <h3 className="text-xl font-bold text-gray-800">{different.academic.title}</h3>
           </div>
           <p className="text-gray-600 mb-2">{different.academic.desc1}</p>

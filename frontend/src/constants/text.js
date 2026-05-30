@@ -1,4 +1,6 @@
 // constants/text.js — Semua teks UI terpusat di sini
+import hheImage from '../assets/profil/hhe.jpeg'
+import rafhliImage from '../assets/profil/rafhli.jpg'
 
 export const TEXT = {
   // Shared / Navbar
@@ -40,16 +42,16 @@ export const TEXT = {
       heading1: 'What Makes',
       brand: 'Tommy Care',
       heading2: 'Different?',
-      desc1: 'Tommy Care was developed specifically for Indonesian farmers, focusing on the most common paddy and tomato plant diseases.',
+      desc1: 'Tommy Care was built to be the most user-friendly and accurate Tomato disease detection platform.',
       desc2: "It's free, easy to use, and based on academic research.",
       cards: [
         {
           title: 'Free & Fast',
-          desc: 'No fees or complicated installation required. Simply open your browser, upload a photo, and get results in 3–5 seconds.',
+          desc: 'No fees or complicated installation required. Simply open your browser, upload a photo, and get results in just a few seconds.',
         },
         {
           title: 'Special Tomato',
-          desc: 'Trained with a dataset of diseases common in Indonesia, not irrelevant global data.',
+          desc: 'Trained specifically on tomato diseases, our AI provides more accurate and relevant results for tomato farmers compared to general plant disease detectors.',
         },
         {
           title: 'Diagnosis & Treatment',
@@ -90,9 +92,9 @@ export const TEXT = {
       note: 'No credit card required. Start for free now',
     },
     footer: {
-      brandDesc: 'An AI-based plant disease detection platform for Indonesian farmers. Developed by Coding Camp 2026 students.',
+      brandDesc: 'An AI-based tomato disease detection platform. Developed by Coding Camp 2026 students.',
       products: 'Products',
-      company: 'Company',
+      company: 'Organization',
       productLinks: [
         { label: 'How it works', to: '/how-it-works' },
         { label: 'Scan Dashboard', to: '/login' },
@@ -102,7 +104,7 @@ export const TEXT = {
       companyLinks: [
         { label: 'About Us', to: '/about' },
         { label: 'Capstone Team', to: '/about#team' },
-        { label: 'Contact', to: '#' }, // placeholder — isi sendiri
+        { label: 'Contact', to: '#' },
       ],
       copyright: '© 2026 Tommy Care All Right reserved',
       builtFor: 'Built to fulfill Coding Camp Capstone Project powered by Bank DBS capstone project',
@@ -147,9 +149,8 @@ export const TEXT = {
     story: {
       heading: 'Capstone Project Story',
       paragraphs: [
-        'Tommy Care was born out of our concern for the challenges Indonesian farmers face in detecting plant diseases. As students, we saw that access to accurate agricultural information was still limited, especially in rural areas.',
-        'This project was developed as a Capstone Project within the Coding Camp program supported by DBS Bank. For several months, our team of six students with backgrounds in AI Engineering, FullStack Development, and Data Science collaborated to build this platform from scratch.',
-        'Mentored by Jason and Vivy Junita, we combined computer vision technology with plant disease research to deliver a truly beneficial solution.',
+        'Tommy Care was developed to fulfill the final assignment as a capstone project for the Coding Camp by DBS program. In this project, we were directed to build an application themed \'Sustainable Living & Responsible Consumption',
+        'Through Tommy Care, we aim to assist a wide range of users, from the general public to farmers, in identifying plant diseases specifically in tomatoes, using leaf imagery powered by AI technology. The identification results will also provide explanations, underlying causes, treatment recommendations, and other relevant information, ensuring that users gain valuable insights while using our application.',
       ],
     },
     team: {
@@ -158,8 +159,8 @@ export const TEXT = {
       members: [
         { name: 'Zacky',    photo: 'src/assets/profil/', role: 'AI Engineering',        bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', instagram: '#', linkedin: '#', github: '#' },
         { name: 'Mario',    photo: 'src/assets/profil/', role: 'AI Engineering',        bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', instagram: '#', linkedin: '#', github: '#' },
-        { name: 'Raihan',   photo: 'src/assets/profil/', role: 'FullStack Engineering', bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', instagram: '#', linkedin: '#', github: '#' },
-        { name: 'Rafhli',   photo: 'src/assets/profil/rafhli.jpg', role: 'FullStack Developer',   bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', instagram: 'https://www.instagram.com/ex_rafh?igsh=MXMxeXlyc2J6cDR1cQ==', linkedin: 'https://www.linkedin.com/in/muhammad-rafhli-alfarizi-103700326', github: 'https://github.com/muhammadrafhlialfarizi' },
+        { name: 'Raihan Fathir Muhammad',   photo: hheImage, role: 'FullStack Engineering', bio: 'Hidup seperti garis linear', instagram: 'https://www.instagram.com/sbjibo', linkedin: 'https://www.linkedin.com/in/naherr', github: 'https://github.com/juliusbourbon' },
+        { name: 'Rafhli',   photo: rafhliImage, role: 'FullStack Developer',   bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', instagram: 'https://www.instagram.com/ex_rafh?igsh=MXMxeXlyc2J6cDR1cQ==', linkedin: 'https://www.linkedin.com/in/muhammad-rafhli-alfarizi-103700326', github: 'https://github.com/muhammadrafhlialfarizi' },
         { name: 'Tiara',    photo: 'src/assets/profil/', role: 'Data Science',          bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', instagram: '#', linkedin: '#', github: '#' },
         { name: 'Katarina', photo: 'src/assets/profil/', role: 'Data Science',          bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', instagram: '#', linkedin: '#', github: '#' },
       ],

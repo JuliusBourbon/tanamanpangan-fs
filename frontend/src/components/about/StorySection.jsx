@@ -9,25 +9,25 @@ export default function StorySection() {
         <div>
           {/* Teks + dua foto kecil */}
           <h2 className="text-2xl font-bold text-gray-800 mb-6">{T.story.heading}</h2>
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 text-justify">
             {T.story.paragraphs.map((p, i) => (
-              <p key={i} className="text-gray-500 text-sm leading-relaxed">{p}</p>
+              <p key={i} className="text-gray-700">{p}</p>
             ))}
           </div>
 
           {/* Ganti div dengan <img src="..."> saat foto sudah siap */}
           <div className="grid grid-cols-2 gap-4 mt-8">
-            <div className="bg-gray-100 rounded-xl aspect-[4/3] flex items-center justify-center text-gray-400 text-xs">
+            <div className="bg-gray-100 rounded-xl aspect-4/3 flex items-center justify-center text-gray-400 text-xs">
               Foto kegiatan 1
             </div>
-            <div className="bg-gray-100 rounded-xl aspect-[4/3] flex items-center justify-center text-gray-400 text-xs">
+            <div className="bg-gray-100 rounded-xl aspect-4/3 flex items-center justify-center text-gray-400 text-xs">
               Foto kegiatan 2
             </div>
           </div>
         </div>
 
         {/* Ganti div dengan <img src="..."> saat foto sudah siap */}
-        <div className="bg-gray-100 rounded-2xl aspect-[3.85/4] flex items-center justify-center text-gray-400 text-sm">
+        <div className="bg-gray-100 rounded-2xl h-full aspect-[3.85/4] flex items-center justify-center text-gray-400 text-sm">
           Foto kegiatan utama
         </div>
       </div>

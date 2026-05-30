@@ -7,7 +7,6 @@ import PasswordInput from './PasswordInput'
 
 const T = TEXT.auth.login
 
-// Icon email
 function IconEmail() {
   return (
     <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
@@ -20,7 +19,6 @@ function IconEmail() {
 export default function LoginForm() {
   const { login } = useAuth()
   const location = useLocation()
-  // Pesan sukses dari ResetPassword page setelah berhasil reset
   const successMessage = location.state?.message || ''
   const [form, setForm] = useState({ email: '', password: '' })
   const [error, setError] = useState('')
@@ -28,7 +26,7 @@ export default function LoginForm() {
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value })
-    if (error) setError('') // clear error saat user mulai mengetik
+    if (error) setError('')
   }
 
   const handleSubmit = async (e) => {
@@ -47,7 +45,16 @@ export default function LoginForm() {
 
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 px-8 py-10 w-full max-w-md mx-auto">
-      {/* Heading */}
+      <Link
+        to="/"
+        className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-[#2a7a53] transition-colors mb-6"
+      >
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        {TEXT.navbar.auth.backToHome}
+      </Link>
+
       <div className="text-center mb-8">
         <h1 className="text-2xl font-bold text-gray-800 mb-1">{T.heading}</h1>
         <p className="text-gray-500 text-sm">{T.subheading}</p>
@@ -60,7 +67,6 @@ export default function LoginForm() {
       )}
     
       <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5">
-        {/* Email field */}
         <div className="flex flex-col gap-1.5">
           <label className="text-sm font-medium text-gray-700">{T.emailLabel}</label>
           <div className="relative flex items-center">
@@ -77,7 +83,6 @@ export default function LoginForm() {
           </div>
         </div>
 
-        {/* Password field */}
         <div className="flex flex-col gap-1.5">
           <label className="text-sm font-medium text-gray-700">{T.passwordLabel}</label>
           <PasswordInput
@@ -87,7 +92,6 @@ export default function LoginForm() {
             onChange={handleChange}
           />
           
-          {/* Forgot password link */}
           <Link
             to="/forgot-password"
             className="text-xs text-blue-500 hover:text-blue-600 transition-colors self-start mt-0.5"
@@ -96,14 +100,12 @@ export default function LoginForm() {
           </Link>
         </div>
 
-        {/* Error message */}
         {error && (
           <p className="text-red-500 text-xs text-center bg-red-50 border border-red-100 rounded-lg px-3 py-2">
             {error}
           </p>
         )}
 
-        {/* Submit button */}
         <button
           type="submit"
           disabled={loading}
@@ -112,7 +114,6 @@ export default function LoginForm() {
           {loading ? T.submittingBtn : T.submitBtn}
         </button>
 
-        {/* Register link */}
         <p className="text-center text-sm text-gray-500">
           {T.noAccount}{' '}
           <Link to="/register" className="text-blue-500 hover:text-blue-600 font-medium transition-colors">

@@ -5,7 +5,6 @@ const api = axios.create({
   headers: { 'Content-Type': 'application/json' }
 })
 
-// Insert JWT token in every request
 api.interceptors.request.use(
   (config) => {
       const token = localStorage.getItem('token')
@@ -15,16 +14,17 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 )
 
-// Response interceptor — tangani error global
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
-      // Token expired atau tidak valid — paksa logout
+    const isLoginRequest = error.config?.url?.includes('/auth/login')
+
+    if (error.response?.status === 401 && !isLoginRequest) {
       localStorage.removeItem('token')
       localStorage.removeItem('user')
       window.location.href = '/login'  
     }
+    
     return Promise.reject(error)
   }
 )

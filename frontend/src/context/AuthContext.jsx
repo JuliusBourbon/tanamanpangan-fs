@@ -11,12 +11,9 @@ export function AuthProvider({ children }) {
     return saved ? JSON.parse(saved) : null
   })
 
-  // Loading state — untuk cek session saat pertama kali app dibuka
   const [isLoadingAuth, setIsLoadingAuth] = useState(true)
   const navigate = useNavigate()
 
-  // Verifikasi token ke server saat app pertama kali dibuka
-  // Mencegah user yang tokennya sudah expired tapi masih punya data di localStorage
   useEffect(() => {
     const verifySession = async () => {
       const token = localStorage.getItem('token')
@@ -29,7 +26,6 @@ export function AuthProvider({ children }) {
         setUser(res.data.user)
         localStorage.setItem('user', JSON.stringify(res.data.user))
       } catch {
-        // Token tidak valid — bersihkan storage
         localStorage.removeItem('token')
         localStorage.removeItem('user')
         setUser(null)
@@ -59,13 +55,10 @@ export function AuthProvider({ children }) {
   const logout = () => {
     localStorage.removeItem('token')
     localStorage.removeItem('user')
-    // Sengaja TIDAK hapus hasOnboarded saat logout
-    // supaya user yang login ulang tidak lihat onboarding lagi
     setUser(null)
     navigate('/login')
   }
 
-  // Untuk update data user di context setelah edit profil / upload foto tanpa harus logout-login ulang
   const updateUser = useCallback((updatedUser) => {
     setUser(updatedUser)
     localStorage.setItem('user', JSON.stringify(updatedUser))
