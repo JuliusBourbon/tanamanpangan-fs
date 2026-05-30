@@ -241,19 +241,19 @@ export default function Dashboard() {
           <div className="space-y-8 animate-fade-in">
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm">
+              <div className="bg-white dark:bg-gray-800 px-4 py-6 md:p-6 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm">
                 <h3 className="text-slate-500 dark:text-gray-400 text-xs md:text-sm font-medium mb-2">
                   {isId ? 'Total Scan' : 'Total Scans'}
                 </h3>
                 <p className="text-4xl font-bold text-gray-900 dark:text-white">{dashboardData.totalScans}</p>
               </div>
-              <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm">
+              <div className="bg-white dark:bg-gray-800 px-4 py-6 md:p-6 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm">
                 <h3 className="text-slate-500 dark:text-gray-400 text-xs md:text-sm font-medium mb-2">
                   {isId ? 'Scan Bulan Ini' : 'Scans This Month'}
                 </h3>
                 <p className="text-4xl font-bold text-gray-900 dark:text-white">{dashboardData.scansThisMonth}</p>
               </div>
-              <div className="bg-emerald-50 dark:bg-emerald-900/20 p-6 rounded-2xl border border-emerald-100 dark:border-emerald-800/50 shadow-sm">
+              <div className="bg-emerald-50 dark:bg-emerald-900/20 px-4 py-6 md:p-6 rounded-2xl border border-emerald-100 dark:border-emerald-800/50 shadow-sm">
                 <h3 className="text-emerald-700 dark:text-emerald-400 text-xs md:text-sm font-medium mb-2">
                   {isId ? 'Tanaman Sehat' : 'Healthy Crops'}
                 </h3>
@@ -261,12 +261,14 @@ export default function Dashboard() {
                   {dashboardData.healthyPercentage}%
                 </p>
               </div>
-              <div className="bg-red-50 dark:bg-red-900/20 p-6 rounded-2xl border border-red-100 dark:border-red-800/50 shadow-sm">
+              <div className="bg-red-50 dark:bg-red-900/20 px-4 py-6 md:p-6 rounded-2xl border border-red-100 dark:border-red-800/50 shadow-sm">
                 <h3 className="text-red-700 dark:text-red-400 text-xs md:text-sm font-medium mb-2">
                   {isId ? 'Tanaman Sakit' : 'Diseased Crops'}
                 </h3>
                 <p className="text-4xl font-bold text-red-600 dark:text-red-500">
-                  {dashboardData.healthyPercentage != null ? Math.round(100 - Number(dashboardData.healthyPercentage)) : 0}%
+                  {dashboardData.totalScans > 0 
+                    ? Math.round(100 - Number(dashboardData.healthyPercentage)) 
+                    : 0}%
                 </p>
               </div>
             </div>
