@@ -14,9 +14,13 @@ function SeverityBadge({ severity }) {
     medium: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400',
     low:    'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400',
   }
+
+  const normalizedSeverity = severity?.toLowerCase() || ''; 
+  const label = T?.severity?.[normalizedSeverity] ?? severity; 
+
   return (
-    <span className={`text-xs font-semibold px-3 py-1 rounded-full ${styles[severity] ?? 'bg-gray-100 text-gray-600'}`}>
-      {T.severity[severity] ?? severity}
+    <span className={`text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md border ${styles[normalizedSeverity] ?? 'bg-gray-100 text-gray-600 border-gray-200'}`}>
+      {label}
     </span>
   )
 }
@@ -103,16 +107,15 @@ export default function EncyclopediaPublicDetail() {
             {/* Judul + badge */}
             <h1 className="text-3xl font-bold text-[#2a7a53] mb-2">{disease.name}</h1>
             <div className="flex items-center gap-3 mb-6">
-              {disease.severity } <div>proses pengerjaan</div>
+              {disease.severity && <SeverityBadge severity={disease.severity} />}
               <span className="text-gray-400 text-sm italic">{disease.scientificName}</span>
             </div>
-
 
             {/* Gambar utama */}
             {disease.imageUrl && (
               <div className="w-full h-72 rounded-2xl overflow-hidden mb-8 bg-gray-100">
                 <img
-                  src={disease.imageUrl}
+                  src={disease.imageUrl || "https://images.unsplash.com/photo-1598514982205-f36b96d1e8d4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"} 
                   alt={disease.name}
                   className="w-full h-full object-cover"
                 />
@@ -123,7 +126,7 @@ export default function EncyclopediaPublicDetail() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               {/* 1. Overview */}
               <InfoCard icon="ℹ️" title={T.detailSections.overview}>
-                <div>proses pengerjaan</div>
+                <TextContent text={disease.description} />
               </InfoCard>
 
               {/* 2. Symptoms */}
@@ -138,7 +141,7 @@ export default function EncyclopediaPublicDetail() {
 
               {/* 4. Causes & Conditions */}
               <InfoCard icon="🔬" title={T.detailSections.causes}>
-                <div>proses pengerjaan</div>
+                <TextContent text={disease.rootCauses} />
               </InfoCard>
 
               {/* 5. Prevention */}
