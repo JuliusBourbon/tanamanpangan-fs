@@ -6,13 +6,16 @@ const T = TEXT.encyclopedia
 // Badge severity — warna sesuai level
 function SeverityBadge({ severity }) {
   const styles = {
-    high:   'bg-yellow-100 text-yellow-700',
-    medium: 'bg-blue-100 text-blue-700',
-    low:    'bg-green-100 text-green-700',
+    high:   'bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400', // Mengikuti standar warna teman Anda
+    medium: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400',
+    low:    'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400',
   }
-  const label = T.severity[severity] ?? severity
+
+  const normalizedSeverity = severity?.toLowerCase() || ''; 
+  const label = T?.severity?.[normalizedSeverity] ?? severity; 
+
   return (
-    <span className={`text-xs font-semibold px-3 py-1 rounded-full ${styles[severity] ?? 'bg-gray-100 text-gray-600'}`}>
+    <span className={`text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md border ${styles[normalizedSeverity] ?? 'bg-gray-100 text-gray-600 border-gray-200'}`}>
       {label}
     </span>
   )
@@ -44,9 +47,9 @@ export default function DiseaseCard({ disease, basePath = '/encyclopedia' }) {
           <div className="flex items-start justify-between gap-3 mb-1">
             <div>
               <h2 className="font-bold text-[#2a7a53] text-lg leading-tight">{disease.name}</h2>
-              <p className="text-gray-400 text-xs italic mt-0.5">proses pengerjaan</p>
+              <p className="text-gray-400 text-xs italic mt-0.5">{disease.scientificName}</p>
             </div>
-            
+            {disease.severity && <SeverityBadge severity={disease.severity} />}
           </div>
 
           {/* Deskripsi singkat */}
