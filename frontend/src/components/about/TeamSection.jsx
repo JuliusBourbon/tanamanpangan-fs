@@ -39,8 +39,9 @@ export default function TeamSection() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 text-center">
           {T.team.members.map((member) => (
             <div key={member.name} className="bg-white rounded-2xl overflow-hidden border border-gray-100">
-              {/* Ganti div dengan <img src={member.photo} /> saat foto siap */}
+
               <div className="w-full aspect-[4/3] bg-gradient-to-br from-green-300 via-yellow-100 to-yellow-200" />
+              {/* <img src={member.photo} alt="Foto Tim" className="w-full aspect-[4/4]" /> */}
 
               <div className="p-4">
                 <p className="font-bold text-gray-800">{member.name}</p>
