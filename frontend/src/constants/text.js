@@ -336,7 +336,31 @@ export const TEXT = {
     
   },
   encyclopedia: {
-    
+    heading: 'Diseases Encyclopedia',
+    subheading: 'Comprehensive diagnostic references for agriculture',
+    searchPlaceholder: 'Search by plant or disease...',
+    sortLabel: 'Sort :',
+    sortAZ: 'A-Z',
+    sortZA: 'Z-A',
+    affects: 'Affects:',
+    clickDetail: 'Click For More Detail',
+    severityLabel: {
+      high: 'High',
+      medium: 'Medium',
+      low: 'Low',
+    },
+    backBtn: '← Back to Encyclopedia',
+    detailSections: {
+      overview: 'Overview',
+      symptoms: 'Symptoms',
+      treatment: 'Treatment',
+      causes: 'Causes & Conditions',
+      prevention: 'Prevention',
+      source: 'Source',
+    },
+    sourceNote: 'Source references will be added soon.',
+    notFound: 'No diseases found.',
+    loadingError: 'Failed to load data. Please try again.',
   },
   profile: {
     
