@@ -105,7 +105,7 @@ export default function ScanHistory() {
             <p>{error}</p>
           </div>
         ) : history.length === 0 ? (
-          <div className="text-center py-20 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+          <div className="text-center py-10">
             <p className="text-gray-500 dark:text-gray-400 mb-4 text-lg">{isId ? 'Anda belum melakukan pemindaian apa pun.' : 'You haven\'t made any scans yet.'}</p>
             <Link to="/scan" className="bg-[#1E6436] dark:bg-emerald-600 text-white px-6 py-2.5 rounded-md hover:bg-green-800 dark:hover:bg-emerald-700 transition-colors font-medium">
               {isId ? 'Mulai pemindaian pertama Anda' : 'Start your first scan'}

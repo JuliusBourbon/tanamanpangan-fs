@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 import { usePreferences } from '../context/PreferencesContext';
 
@@ -14,6 +15,7 @@ export default function ScanPage() {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const fileInputRef = useRef(null);
+  const navigate = useNavigate();
 
 
   const handleFileSelect = (e) => {
@@ -145,7 +147,7 @@ export default function ScanPage() {
           </button>
         </nav>
 
-        <div className="w-full max-w-full mx-auto bg-white dark:bg-gray-800 dark:border-gray-600 border-2 border-dashed border-emerald-200 hover:border-gray-100 dark:hover:border-gray-500 rounded-3xl flex flex-col items-center justify-center p-10 min-h-100 shadow-lg shadow-emerald-900/5 transition-all duration-300 group">
+        <div className="w-full max-w-full mx-auto bg-white dark:bg-gray-800 dark:border-gray-600 border-2 border-dashed border-emerald-200 hover:border-emerald-300 dark:hover:border-gray-500 rounded-3xl flex flex-col items-center justify-center p-10 min-h-100 shadow-lg shadow-emerald-900/5 transition-all duration-300 group">
           {activeTab === 'upload' ? (
             <div className="flex flex-col items-center text-center w-full">
               {!previewUrl ? (
@@ -250,6 +252,7 @@ export default function ScanPage() {
 
                         <div className="mt-2 flex gap-3">
                           <button 
+                            onClick={() => scanResult.result?.classificationId && navigate(`/history/${scanResult.result.classificationId}`)}
                             className="flex-1 bg-white border border-gray-200 text-gray-700 font-semibold px-4 py-3 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all text-sm"
                           >
                             View Details

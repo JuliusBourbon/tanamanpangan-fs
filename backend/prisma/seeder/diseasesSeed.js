@@ -97,6 +97,29 @@ const diseases = [
       "Apply preventative fungicides during periods of cool, wet weather, especially if the disease has been reported nearby."
     ],
     imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSK8fHCxum_s_UXidLY7D2AlyDTNbZiWn_3lKi3vkIsU31ud-clnGEDPzxhnerZ"
+  },
+  {
+    name: 'Healthy',
+    slug: 'tomato-healthy',
+    scientificName: 'Solanum lycopersicum',
+    cropType: 'tomato',
+    severity: 'None',
+    description: 'The tomato plant is healthy. There are no visible signs of fungal, bacterial, or viral diseases on the leaves.',
+    symptoms: [
+      'Leaves are vibrant green and uniform in color.',
+      'No spots, lesions, or unusual yellowing (chlorosis).',
+      'Plant stems and foliage are structurally intact and growing vigorously.'
+    ],
+    rootCauses: 'Optimal growing conditions, good soil health, and absence of pathogens.',
+    treatment: [
+      'No treatment required. Maintain current care routine.'
+    ],
+    preventiveMeasures: [
+      'Continue providing adequate water, sunlight, and nutrients.',
+      'Maintain good air circulation around the plants.',
+      'Routinely inspect for pests or early signs of disease.'
+    ],
+    imageUrl: 'https://thumbs.dreamstime.com/b/close-up-tomato-leaf-view-beautiful-young-green-tomatoes-plants-pots-concept-organic-food-farmer-s-vegetabes-health-245109677.jpg'
   }
 ]
 async function main() {
