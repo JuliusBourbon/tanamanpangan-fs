@@ -44,7 +44,7 @@ export default function ScanHistory() {
   }, [sortOrder]);
 
   const handleDelete = (e, id) => {
-    e.preventDefault(); // Mencegah ter-trigger klik Link untuk mengarah ke detail
+    e.preventDefault();
     e.stopPropagation();
     setModalConfig({
       isOpen: true,
@@ -131,7 +131,7 @@ export default function ScanHistory() {
                 onClick={() => setSortOrder(prev => prev === 'newest' ? 'oldest' : 'newest')}
                 className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border bg-white border-gray-200 text-gray-800 hover:bg-gray-50 focus:ring-2 focus:ring-[#1E6436] outline-none transition-all dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 dark:focus:ring-emerald-500 cursor-pointer"
               >
-                {/* <svg className={`w-5 h-5 transition-transform duration-300 ${sortOrder === 'oldest' ? 'rotate-180' : ''}`}  xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-down-wide-narrow-icon lucide-arrow-down-wide-narrow"><path d="m3 16 4 4 4-4"/><path d="M7 20V4"/><path d="M11 4h10"/><path d="M11 8h7"/><path d="M11 12h4"/></svg> */}
+                <svg className={`lucide lucide-arrow-down-wide-narrow-icon lucide-arrow-down-wide-narrow w-5 h-5 transition-transform duration-300 ${sortOrder === 'oldest' ? 'rotate-180' : ''}`} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m3 16 4 4 4-4"/><path d="M7 20V4"/><path d="M11 4h10"/><path d="M11 8h7"/><path d="M11 12h4"/></svg>
                 <span className="font-medium">
                   {sortOrder === 'newest' ? (isId ? 'Terbaru' : 'Newest') : (isId ? 'Terlama' : 'Oldest')}
                 </span>
