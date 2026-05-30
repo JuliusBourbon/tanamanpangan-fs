@@ -103,7 +103,7 @@ const diseases = [
     slug: 'tomato-healthy',
     scientificName: 'Solanum lycopersicum',
     cropType: 'tomato',
-    severity: 'None',
+    severity: 'Low',
     description: 'The tomato plant is healthy. There are no visible signs of fungal, bacterial, or viral diseases on the leaves.',
     symptoms: [
       'Leaves are vibrant green and uniform in color.',
