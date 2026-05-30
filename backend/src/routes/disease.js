@@ -29,6 +29,7 @@ router.get('/', async (req, res) => {
                 severity: true,
                 scientificName: true,
                 description: true,
+                imageUrl: true,
             },
             orderBy: { name: 'asc' },
         })

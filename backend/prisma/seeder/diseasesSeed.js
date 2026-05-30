@@ -36,7 +36,7 @@ const diseases = [
       "Planting certified, pathogen-free seeds and transplants.",
       "Practicing crop rotation and maintaining field sanitation to minimize water-splashed bacterial spread."
     ],
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Bacterial_spot_on_tomato_leaf.jpg/2560px-Bacterial_spot_on_tomato_leaf.jpg"
+    imageUrl: "https://d3qz1qhhp9wxfa.cloudfront.net/growingproduce/wp-content/uploads/2023/06/bacterial-spot_tomatoes_featured.jpg"
   },
   {
     name: "Early Blight",
