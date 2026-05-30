@@ -89,8 +89,8 @@ export default function ScanHistory() {
     <div className="flex flex-col w-full h-full">
       <header className="mb-8 flex justify-between items-end">
         <div>
-          <h1 className="text-5xl font-bold tracking-tight mb-2 text-gray-900 dark:text-white">{isId ? 'Riwayat' : 'History'}</h1>
-          <p className="text-slate-600 dark:text-gray-300">{isId ? 'Tinjau dan kelola diagnosis penyakit tanaman Anda' : 'Review and manage your plant diseases diagnoses'}</p>
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-2 text-gray-900 dark:text-white">{isId ? 'Riwayat' : 'History'}</h2>
+          <p className="text-sm md:text-base text-slate-600 dark:text-gray-300">{isId ? 'Tinjau dan kelola diagnosis penyakit tanaman Anda' : 'Review and manage your plant diseases diagnoses'}</p>
         </div>
       </header>
 

@@ -202,28 +202,28 @@ export default function Dashboard() {
       }
     }
     fetchDashboard()
-  }, [])
+  }, [isId])
 
   return (
     <div>
       <header className="mb-8 flex justify-between items-end">
         <div>
-          <h1 className="text-5xl font-bold tracking-tight mb-2 text-gray-900 dark:text-gray-200">
-            Dashboard
-          </h1>
-          <p className="text-slate-600 dark:text-gray-300">
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-2 text-gray-900 dark:text-gray-200">
+            {isId ? 'Dasbor' : 'Dashboard'}
+          </h2>
+          <p className="text-sm md:text-base slate-600 dark:text-gray-300">
             {isId ? 'Ringkasan aktivitas pemindaian Anda' : 'Summary of your scan activity'}
           </p>
         </div>
         <div className="text-right">
-          <p className="text-xl text-slate-500">
-            Afternoon, <span className="font-bold text-gray-900 dark:text-gray-200">{user?.name}</span>
+          <p className="md:text-xl text-slate-500">
+            Hello, <span className="font-bold text-gray-900 dark:text-gray-200">{user?.name}</span>
           </p>
           <button
             onClick={() => navigate('/scan')}
             className="mt-4 bg-[#1E6436] text-white px-4 py-2 rounded text-sm hover:bg-green-800 transition-colors"
           >
-            + {isId ? 'Scan Baru' : 'New Scan'}
+            + {isId ? 'Scan' : 'Scan'}
           </button>
         </div>
       </header>
@@ -240,25 +240,33 @@ export default function Dashboard() {
         ) : dashboardData && (
           <div className="space-y-8 animate-fade-in">
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm">
-                <h3 className="text-slate-500 dark:text-gray-400 text-sm font-medium mb-2">
+                <h3 className="text-slate-500 dark:text-gray-400 text-xs md:text-sm font-medium mb-2">
                   {isId ? 'Total Scan' : 'Total Scans'}
                 </h3>
                 <p className="text-4xl font-bold text-gray-900 dark:text-white">{dashboardData.totalScans}</p>
               </div>
               <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm">
-                <h3 className="text-slate-500 dark:text-gray-400 text-sm font-medium mb-2">
+                <h3 className="text-slate-500 dark:text-gray-400 text-xs md:text-sm font-medium mb-2">
                   {isId ? 'Scan Bulan Ini' : 'Scans This Month'}
                 </h3>
                 <p className="text-4xl font-bold text-gray-900 dark:text-white">{dashboardData.scansThisMonth}</p>
               </div>
               <div className="bg-emerald-50 dark:bg-emerald-900/20 p-6 rounded-2xl border border-emerald-100 dark:border-emerald-800/50 shadow-sm">
-                <h3 className="text-emerald-700 dark:text-emerald-400 text-sm font-medium mb-2">
+                <h3 className="text-emerald-700 dark:text-emerald-400 text-xs md:text-sm font-medium mb-2">
                   {isId ? 'Tanaman Sehat' : 'Healthy Crops'}
                 </h3>
                 <p className="text-4xl font-bold text-emerald-600 dark:text-emerald-500">
                   {dashboardData.healthyPercentage}%
+                </p>
+              </div>
+              <div className="bg-red-50 dark:bg-red-900/20 p-6 rounded-2xl border border-red-100 dark:border-red-800/50 shadow-sm">
+                <h3 className="text-red-700 dark:text-red-400 text-xs md:text-sm font-medium mb-2">
+                  {isId ? 'Tanaman Sakit' : 'Diseased Crops'}
+                </h3>
+                <p className="text-4xl font-bold text-red-600 dark:text-red-500">
+                  {dashboardData.healthyPercentage != null ? Math.round(100 - Number(dashboardData.healthyPercentage)) : 0}%
                 </p>
               </div>
             </div>
@@ -329,7 +337,7 @@ export default function Dashboard() {
                     <div
                       key={item.id}
                       onClick={() => navigate(`/history/${item.id}`)}
-                      className="flex items-center gap-4 p-3 rounded-xl border border-gray-50 dark:border-gray-700 hover:border-emerald-100 dark:hover:border-emerald-900/50 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/10 transition-all cursor-pointer group"
+                      className="flex items-center gap-3 p-3 rounded-xl border border-gray-50 dark:border-gray-700 hover:border-emerald-100 dark:hover:border-emerald-900/50 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/10 transition-all cursor-pointer group"
                     >
                       <img
                         src={item.imageUrl || 'https://placehold.co/400x400?text=No+Image'}
@@ -340,7 +348,7 @@ export default function Dashboard() {
                         <h4 className="font-bold text-gray-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors line-clamp-1">
                           {item.disease?.name || (isId ? 'Tidak Teridentifikasi' : 'Unidentified')}
                         </h4>
-                        <div className="flex items-center gap-2 mt-0.5 text-xs text-slate-500 dark:text-gray-400">
+                        <div className="flex items-center gap-2 mt-0.5 text-[10px] md:text-xs text-slate-500 dark:text-gray-400">
                           <span className="capitalize">{item.disease?.cropType}</span>
                           <span>•</span>
                           <span>

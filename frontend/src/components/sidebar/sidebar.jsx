@@ -5,7 +5,7 @@ import { LogoIcon } from '../Logo';
 import { usePreferences } from '../../context/PreferencesContext';
 
 const menuItems = [
-    { id: 'dashboard', label: { en: 'Dashboard', id: 'Dashboard' }, path: '/dashboard', icon: Home, shortcut: 1 },
+    { id: 'dashboard', label: { en: 'Dashboard', id: 'Dasbor' }, path: '/dashboard', icon: Home, shortcut: 1 },
     { id: 'scan', label: { en: 'Scan', id: 'Pindai' }, path: '/scan', icon: ScanLine, shortcut: 2 },
     { id: 'history', label: { en: 'Scan History', id: 'Riwayat' }, path: '/history', icon: History, shortcut: 3 },
     { id: 'encyclopedia', label: { en: 'Encyclopedia', id: 'Ensiklopedia' }, path: '/encyclopedia-app', icon: BookOpen, shortcut: 4 },
@@ -73,7 +73,7 @@ export default function Sidebar({ isExpanded, setIsExpanded, onNavigate }) {
                         transition: 'opacity 200ms ease',
                 }}
                 >
-                <div className="shrink-0 bg-gray-800 text-white p-1 rounded-md">
+                <div className="shrink-0 dark:bg-gray-800 text-white p-1 rounded-md">
                     <LogoIcon />
                 </div>
                 <span className="font-semibold text-xl text-slate-800 dark:text-[#ffffff] whitespace-nowrap flex-1 overflow-hidden">

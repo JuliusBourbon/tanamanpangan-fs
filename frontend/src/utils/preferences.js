@@ -4,7 +4,7 @@ const defaultPreferences = {
     language: 'en',
     theme: 'system',
     saveHistory: true,
-    showConfidenceScore: false,
+    showConfidenceScore: true,
 }
 
 export const getPreferences = () => {

@@ -58,10 +58,10 @@ export default function EncyclopediaUser() {
     <div className="flex flex-col w-full h-full">
       <header className="mb-8 flex justify-between items-end">
         <div>
-          <h1 className="text-5xl font-bold tracking-tight mb-2 text-gray-900 dark:text-white">
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-2 text-gray-900 dark:text-white">
             {isId ? "Ensiklopedia" : "Encyclopedia"}
-          </h1>
-          <p className="text-slate-600 dark:text-gray-300">
+          </h2>
+          <p className="text-sm md:text-base text-slate-600 dark:text-gray-300">
             {isId 
               ? "Database komprehensif tentang penyakit tanaman tomat" 
               : "Comprehensive database of tomato plant diseases"
@@ -97,7 +97,7 @@ export default function EncyclopediaUser() {
               </div>
 
               <div className="flex p-1 rounded-xl w-full sm:w-auto overflow-x-auto">
-                {['all', 'none', 'low', 'medium', 'high'].map((severity) => (
+                {['all', 'low', 'medium', 'high'].map((severity) => (
                   <button
                     key={severity}
                     onClick={() => setSeverityFilter(severity)}
@@ -131,7 +131,7 @@ export default function EncyclopediaUser() {
                 className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm hover:shadow-md transition-all group flex flex-col p-6"
               >
                 <div className="flex justify-between items-start mb-4">
-                  <span className="text-[11px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 px-2.5 py-1 rounded-md">
+                  <span className="text-[11px] font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-600 px-2.5 py-1 rounded-md">
                     {disease.cropType}
                   </span>
                   {disease.severity && (

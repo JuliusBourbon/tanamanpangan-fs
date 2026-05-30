@@ -226,10 +226,10 @@ export default function UserProfile() {
   return (
     <div>
       <header className="mb-8">
-        <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-2 text-gray-900 dark:text-white">
+        <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-2 text-gray-900 dark:text-white">
           {isId ? 'Akun & Pengaturan' : 'Account & Settings'}
-        </h1>
-        <p className="text-lg text-slate-600 dark:text-gray-400">
+        </h2>
+        <p className="text-sm md:text-base text-slate-600 dark:text-gray-300">
           {isId ? 'Kelola Profil dan Pengaturan Anda' : 'Manage your Profile and Settings'}
         </p>
       </header>
