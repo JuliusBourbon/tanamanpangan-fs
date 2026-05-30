@@ -48,7 +48,7 @@ export const TEXT = {
           desc: 'No fees or complicated installation required. Simply open your browser, upload a photo, and get results in 3–5 seconds.',
         },
         {
-          title: 'Special Paddy & Tomato',
+          title: 'Special Tomato',
           desc: 'Trained with a dataset of diseases common in Indonesia, not irrelevant global data.',
         },
         {
