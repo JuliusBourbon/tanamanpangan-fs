@@ -357,6 +357,7 @@ export const TEXT = {
       causes: 'Causes & Conditions',
       prevention: 'Prevention',
       source: 'Source',
+      totalDetections: 'scan results that detect this disease',
     },
     sourceNote: 'Source references will be added soon.',
     notFound: 'No diseases found.',

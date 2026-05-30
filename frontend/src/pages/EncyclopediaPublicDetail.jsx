@@ -101,6 +101,11 @@ export default function EncyclopediaPublicDetail() {
             </Link>
 
             {/* Judul + badge */}
+            <h1 className="text-3xl font-bold text-[#2a7a53] mb-2">{disease.name}</h1>
+            <div className="flex items-center gap-3 mb-6">
+              {disease.severity } <div>proses pengerjaan</div>
+              <span className="text-gray-400 text-sm italic">{disease.scientificName}</span>
+            </div>
 
 
             {/* Gambar utama */}
@@ -116,14 +121,45 @@ export default function EncyclopediaPublicDetail() {
 
             {/* Grid 6 info card */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-              
+              {/* 1. Overview */}
+              <InfoCard icon="ℹ️" title={T.detailSections.overview}>
+                <div>proses pengerjaan</div>
+              </InfoCard>
 
+              {/* 2. Symptoms */}
+              <InfoCard icon="📋" title={T.detailSections.symptoms}>
+                <div>proses pengerjaan</div>
+              </InfoCard>
 
-              <div>proses pengerjaan</div>
+              {/* 3. Treatment */}
+              <InfoCard icon="🧪" title={T.detailSections.treatment}>
+                <div>proses pengerjaan</div>
+              </InfoCard>
+
+              {/* 4. Causes & Conditions */}
+              <InfoCard icon="🔬" title={T.detailSections.causes}>
+                <div>proses pengerjaan</div>
+              </InfoCard>
+
+              {/* 5. Prevention */}
+              <InfoCard icon="🛡️" title={T.detailSections.prevention}>
+                <div>proses pengerjaan</div>
+              </InfoCard>
+
+              {/* 6. Source — placeholder sampai API siap */}
+              <InfoCard icon="🌐" title={T.detailSections.source}>
+                <p className="text-gray-400 text-sm italic">{T.detailSections.sourceNote}</p>
+                  {/* TODO: ganti baris di atas dengan ini saat API sudah ada field source: <TextContent text={disease.source} /> */}
+                  <div>proses pengerjaan</div>
+              </InfoCard>
             </div>
 
             {/* Total detections */}
-            
+            {disease.totalDetections !== undefined && (
+                <p className="text-center text-gray-400 text-sm mt-10">
+                  {T.detailSections.totalDetections} : <span className="font-semibold text-gray-600">{disease.totalDetections}</span>
+                </p>
+            )}
           </>
         )}
       </div>
