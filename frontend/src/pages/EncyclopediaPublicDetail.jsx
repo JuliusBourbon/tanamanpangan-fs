@@ -10,9 +10,9 @@ const T = TEXT.encyclopedia
 // Badge severity
 function SeverityBadge({ severity }) {
   const styles = {
-    high:   'bg-yellow-100 text-yellow-700',
-    medium: 'bg-blue-100 text-blue-700',
-    low:    'bg-green-100 text-green-700',
+    high:   'bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400', 
+    medium: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400',
+    low:    'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400',
   }
   return (
     <span className={`text-xs font-semibold px-3 py-1 rounded-full ${styles[severity] ?? 'bg-gray-100 text-gray-600'}`}>
@@ -54,5 +54,81 @@ function TextContent({ text }) {
 }
 
 export default function EncyclopediaPublicDetail() {
-  return <div>proses pengerjaan</div>
+  const { slug } = useParams()
+  const [disease, setDisease] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    const fetchDisease = async () => {
+      try {
+        const res = await api.get(`/api/diseases/${slug}`)
+        setDisease(res.data.data)
+      } catch {
+        setError('Disease not found.')
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchDisease()
+  }, [slug])
+
+  return (
+    <div className="min-h-screen bg-gray-50 font-sans">
+      <NavbarPublic />
+
+      <div className="max-w-5xl mx-auto px-6 pt-28 pb-20">
+        {/* Loading */}
+        {loading && (
+          <div className="flex justify-center py-20">
+            <div className="w-8 h-8 border-4 border-[#2a7a53] border-t-transparent rounded-full animate-spin" />
+          </div>
+        )}
+
+        {/* Error */}
+        {!loading && error && (
+          <p className="text-center text-red-500 text-sm py-16">{error}</p>
+        )}
+
+        {!loading && !error && disease && (
+          <>
+            {/* Back link */}
+            <Link
+              to="/encyclopedia"
+              className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-[#2a7a53] transition-colors mb-6"
+            >
+              {T.backBtn}
+            </Link>
+
+            {/* Judul + badge */}
+
+
+            {/* Gambar utama */}
+            {disease.imageUrl && (
+              <div className="w-full h-72 rounded-2xl overflow-hidden mb-8 bg-gray-100">
+                <img
+                  src={disease.imageUrl}
+                  alt={disease.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
+
+            {/* Grid 6 info card */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+              
+
+
+              <div>proses pengerjaan</div>
+            </div>
+
+            {/* Total detections */}
+            
+          </>
+        )}
+      </div>
+
+      <Footer />
+    </div>
+  )
 }
