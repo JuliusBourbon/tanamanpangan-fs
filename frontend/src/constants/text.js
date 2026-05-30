@@ -362,6 +362,7 @@ export const TEXT = {
     sourceNote: 'Source references will be added soon.',
     notFound: 'No diseases found.',
     loadingError: 'Failed to load data. Please try again.',
+    generalSource: 'References compiled from botanical literature and agricultural experts. Detection results and treatment advice serve as general guidelines; always consult local agricultural extension officers for further action.',
   },
   profile: {
     

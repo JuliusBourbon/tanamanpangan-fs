@@ -40,11 +40,28 @@ function InfoCard({ icon, title, children }) {
 
 // Render teks yang mungkin berisi list (dipisah newline atau bullet)
 function TextContent({ text }) {
-  if (!text) return <p className="text-gray-500 text-sm">-</p>
+  if (!text || text.length === 0) return <p className="text-gray-500 text-sm">-</p>;
+
+  // Jika data dari API adalah Array (untuk symptoms, treatment, dll)
+  if (Array.isArray(text)) {
+    return (
+      <ul className="flex flex-col gap-1.5">
+        {text.map((item, i) => (
+          <li key={i} className="flex items-start gap-2 text-gray-500 text-sm leading-relaxed">
+            <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-gray-400 flex-shrink-0" />
+            {item}
+          </li>
+        ))}
+      </ul>
+    );
+  }
+
+  // Jika data dari API adalah String biasa (untuk description, rootCauses)
   const lines = text.split('\n').filter(Boolean)
   if (lines.length <= 1) {
     return <p className="text-gray-500 text-sm leading-relaxed">{text}</p>
   }
+
   return (
     <ul className="flex flex-col gap-1.5">
       {lines.map((line, i) => (
@@ -131,12 +148,12 @@ export default function EncyclopediaPublicDetail() {
 
               {/* 2. Symptoms */}
               <InfoCard icon="📋" title={T.detailSections.symptoms}>
-                <div>proses pengerjaan</div>
+                <TextContent text={disease.symptoms} />
               </InfoCard>
 
-              {/* 3. Treatment */}
-              <InfoCard icon="🧪" title={T.detailSections.treatment}>
-                <div>proses pengerjaan</div>
+              {/* 3. Prevention */}
+              <InfoCard icon="🛡️" title={T.detailSections.prevention}>
+                <TextContent text={disease.preventiveMeasures} />
               </InfoCard>
 
               {/* 4. Causes & Conditions */}
@@ -144,16 +161,14 @@ export default function EncyclopediaPublicDetail() {
                 <TextContent text={disease.rootCauses} />
               </InfoCard>
 
-              {/* 5. Prevention */}
-              <InfoCard icon="🛡️" title={T.detailSections.prevention}>
-                <div>proses pengerjaan</div>
+              {/* 5. Treatment */}
+              <InfoCard icon="🧪" title={T.detailSections.treatment}>
+                <TextContent text={disease.treatment} />
               </InfoCard>
 
               {/* 6. Source — placeholder sampai API siap */}
               <InfoCard icon="🌐" title={T.detailSections.source}>
-                <p className="text-gray-400 text-sm italic">{T.detailSections.sourceNote}</p>
-                  {/* TODO: ganti baris di atas dengan ini saat API sudah ada field source: <TextContent text={disease.source} /> */}
-                  <div>proses pengerjaan</div>
+                <TextContent text={disease.source || T.generalSource} />
               </InfoCard>
             </div>
 
