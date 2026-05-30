@@ -78,7 +78,7 @@ export default function DiseaseListSection({ diseases = [], basePath = '/encyclo
       ) : (
          <div className="flex flex-col gap-4">
           {paginated.map((disease) => (
-           <div>proses pengerjaan</div>
+           <DiseaseCard key={disease.slug} disease={disease} basePath={basePath} />
           ))}
          </div>
       )}
