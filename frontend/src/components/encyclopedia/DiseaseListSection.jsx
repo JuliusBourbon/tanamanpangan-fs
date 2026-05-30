@@ -83,9 +83,6 @@ export default function DiseaseListSection({ diseases = [], basePath = '/encyclo
          </div>
       )}
 
-
-
-
       {/* Pagination */}
       {totalPages > 1 && (
         <div className="flex items-center justify-center gap-2 mt-10">
