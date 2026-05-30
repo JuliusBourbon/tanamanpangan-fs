@@ -1,12 +1,16 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../api/axios';
+import { usePreferences } from '../context/PreferencesContext';
 
 export default function EncyclopediaUser() {
   const [diseases, setDiseases] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [severityFilter, setSeverityFilter] = useState('all');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { preferences } = usePreferences();
+  const isId = preferences.language === 'id';
 
   useEffect(() => {
     const fetchDiseases = async () => {
@@ -33,21 +37,36 @@ export default function EncyclopediaUser() {
   };
 
   const filteredDiseases = useMemo(() => {
-    if (!searchTerm.trim()) return diseases;
-    const lowercasedTerm = searchTerm.toLowerCase();
-    return diseases.filter((disease) => {
-      const diseaseName = disease.name?.toLowerCase() || '';
-      const scientificName = disease.scientificName?.toLowerCase() || '';
-      return diseaseName.includes(lowercasedTerm) || scientificName.includes(lowercasedTerm);
-    });
-  }, [diseases, searchTerm]);
+    let result = diseases;
+
+    if (severityFilter !== 'all') {
+      result = result.filter(disease => disease.severity?.toLowerCase() === severityFilter.toLowerCase());
+    }
+
+    if (searchTerm.trim()) {
+      const lowercasedTerm = searchTerm.toLowerCase();
+      result = result.filter((disease) => {
+        const diseaseName = disease.name?.toLowerCase() || '';
+        const scientificName = disease.scientificName?.toLowerCase() || '';
+        return diseaseName.includes(lowercasedTerm) || scientificName.includes(lowercasedTerm);
+      });
+    }
+    return result;
+  }, [diseases, searchTerm, severityFilter]);
 
   return (
     <div className="flex flex-col w-full h-full">
       <header className="mb-8 flex justify-between items-end">
         <div>
-          <h1 className="text-5xl font-bold tracking-tight mb-2 text-gray-900 dark:text-white">Encyclopedia</h1>
-          <p className="text-slate-600 dark:text-gray-300">Comprehensive database of plant diseases, pests, and deficiencies</p>
+          <h1 className="text-5xl font-bold tracking-tight mb-2 text-gray-900 dark:text-white">
+            {isId ? "Ensiklopedia" : "Encyclopedia"}
+          </h1>
+          <p className="text-slate-600 dark:text-gray-300">
+            {isId 
+              ? "Database komprehensif tentang penyakit tanaman tomat" 
+              : "Comprehensive database of tomato plant diseases"
+            }
+          </p>
         </div>
       </header>
 
@@ -63,23 +82,44 @@ export default function EncyclopediaUser() {
           </div>
         ) : (
           <div className="flex flex-col gap-2">
-            <div className="relative max-w-md mb-6">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            <div className="flex flex-col sm:flex-row gap-4 mb-6">
+              <div className="relative flex-1 max-w-md">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                </div>
+                <input
+                  type="text"
+                  placeholder={isId ? "Cari berdasarkan penyakit atau nama ilmiah..." : "Search by disease or scientific name..."}
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border bg-white border-gray-200 text-gray-800 focus:ring-2 focus:ring-[#1E6436] outline-none transition-shadow dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:focus:ring-emerald-500"
+                />
               </div>
-              <input
-                type="text"
-                placeholder="Search by disease or scientific name..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl border bg-white border-gray-200 text-gray-800 focus:ring-2 focus:ring-[#1E6436] outline-none transition-shadow dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:focus:ring-emerald-500"
-              />
+
+              <div className="flex p-1 rounded-xl w-full sm:w-auto overflow-x-auto">
+                {['all', 'none', 'low', 'medium', 'high'].map((severity) => (
+                  <button
+                    key={severity}
+                    onClick={() => setSeverityFilter(severity)}
+                    className={`flex-1 sm:flex-none px-4 py-2 rounded-lg text-sm font-medium capitalize whitespace-nowrap transition-colors ${
+                      severityFilter === severity
+                        ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm border border-gray-200/50 dark:border-gray-600'
+                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-200/50 dark:hover:bg-gray-700/50'
+                    }`}
+                  >
+                    {severity}
+                  </button>
+                ))}
+              </div>
             </div>
 
             {filteredDiseases.length === 0 ? (
-              <div className="text-center py-12 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+              <div className="text-center py-10">
                 <p className="text-gray-500 dark:text-gray-400 text-lg">
-                  No encyclopedia entries match your search.
+                  {isId 
+                    ? "Tidak ada entri ensiklopedia yang sesuai dengan pencarian Anda." 
+                    : "No encyclopedia entries match your search."
+                  }
                 </p>
               </div>
             ) : (
@@ -105,7 +145,7 @@ export default function EncyclopediaUser() {
                 <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-3 mb-6 flex-1 leading-relaxed">{disease.description}</p>
                 
                 <div className="mt-auto pt-4 border-t border-gray-100 dark:border-gray-700 flex justify-between items-center text-[#1E6436] dark:text-emerald-500 text-sm font-semibold">
-                  <span>View Details</span>
+                  <span>{isId ? "Lihat Detail" : "View Details"}</span>
                   <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
                 </div>
               </Link>
