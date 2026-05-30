@@ -96,6 +96,7 @@ export default function Sidebar({ isExpanded, setIsExpanded, onNavigate }) {
                     return (
                         <button
                             key={id}
+                            id={id}
                             onClick={() => handleNavigate(path)}
                             title={!isExpanded ? `${currentLabel} (${shortcut})` : ''}
                             className={`flex items-center gap-2 w-full rounded-2xl transition-colors duration-200 overflow-hidden ${

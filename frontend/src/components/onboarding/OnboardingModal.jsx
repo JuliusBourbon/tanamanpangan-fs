@@ -7,12 +7,12 @@ import { completeOnboarding } from '../../utils/onboarding'
 const { onboarding: { steps } } = TEXT
 
 function StepIcon({ type }) {
-  const base = 'w-[120px] h-[120px] rounded-2xl bg-[#2a7a53] flex items-center justify-center mx-auto mb-6'
+  const base = 'w-[120px] h-[120px] rounded-2xl flex items-center justify-center mx-auto mb-6'
 
   if (type === 'logo') {
     return (
       <div className={base}>
-        <LogoIcon className="w-16 h-16" />
+        <LogoIcon className="" />
       </div>
     )
   }
@@ -20,11 +20,7 @@ function StepIcon({ type }) {
   if (type === 'photo') {
     return (
       <div className={base}>
-        <svg className="w-14 h-14 text-white" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
-          <rect x="3" y="5" width="18" height="14" rx="2" />
-          <circle cx="12" cy="12" r="3" />
-          <path d="M12 8V5M12 5l-2 2M12 5l2 2" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="" height="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-scan-line-icon lucide-scan-line"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg>
       </div>
     )
   }
@@ -32,10 +28,7 @@ function StepIcon({ type }) {
   if (type === 'ai') {
     return (
       <div className={base}>
-        <svg className="w-14 h-14 text-white" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
-          <path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5L12 3z" strokeLinejoin="round" />
-          <path d="M19 15l.75 2.25L22 18l-2.25.75L19 21l-.75-2.25L16 18l2.25-.75L19 15z" strokeLinejoin="round" />
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="" height="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-astroid-icon lucide-astroid"><path d="M12.983 21.186a1 1 0 0 1-1.966 0 10 10 0 0 0-8.203-8.203 1 1 0 0 1 0-1.966 10 10 0 0 0 8.203-8.203 1 1 0 0 1 1.966 0 10 10 0 0 0 8.203 8.203 1 1 0 0 1 0 1.966 10 10 0 0 0-8.203 8.203"/></svg>
       </div>
     )
   }
@@ -43,11 +36,7 @@ function StepIcon({ type }) {
   if (type === 'result') {
     return (
       <div className={base}>
-        <svg className="w-14 h-14 text-white" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
-          <rect x="4" y="3" width="13" height="16" rx="2" />
-          <rect x="7" y="6" width="7" height="9" rx="1" />
-          <path d="M9 10l1.5 1.5 2.5-2.5" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="" height="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search-check-icon lucide-search-check"><path d="m8 11 2 2 4-4"/><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
       </div>
     )
   }
@@ -96,7 +85,7 @@ export default function OnboardingModal({ onFinish  }) {
   const handlePrev = () => setCurrentStep((s) => s - 1)
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/50">
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md px-10 py-10 relative">
         <button
           onClick={finish}

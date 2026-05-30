@@ -1,7 +1,7 @@
 const PREFERENCES_KEY = 'user_preferences'
 
 const defaultPreferences = {
-    language: 'id',
+    language: 'en',
     theme: 'system',
     saveHistory: true,
     showConfidenceScore: false,

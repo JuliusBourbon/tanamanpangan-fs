@@ -6,14 +6,15 @@ import { useOnboarding } from '../../hooks/onboarding';
 import OnboardingModal from '../onboarding/OnboardingModal';
 
 export default function AppLayout() {
-    const { showWelcome, finishWelcome } = useOnboarding()
-
-    // lg+: expanded by default | md: collapsed by default | sm: hidden by default
     const getInitialExpanded = () => window.innerWidth >= 1024;
 
     const [isExpanded, setIsExpanded] = useState(getInitialExpanded);
-    // Controls the mobile overlay drawer
     const [isMobileOpen, setIsMobileOpen] = useState(false);
+
+    const { showWelcome, finishWelcome } = useOnboarding({
+        setIsExpanded,
+        setIsMobileOpen
+    });
 
     useEffect(() => {
         const onResize = () => {
@@ -31,7 +32,6 @@ export default function AppLayout() {
         return () => window.removeEventListener('resize', onResize);
     }, []);
 
-    // Close drawer when navigating on mobile
     const handleMobileClose = () => setIsMobileOpen(false);
 
     return (
@@ -64,7 +64,6 @@ export default function AppLayout() {
                         className="text-slate-500 hover:text-slate-800 transition-colors p-1 rounded-md"
                         aria-label="Open menu"
                     >
-                        {/* Hamburger icon */}
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                             <line x1="3" y1="6" x2="21" y2="6" />
                             <line x1="3" y1="12" x2="21" y2="12" />
