@@ -6,7 +6,7 @@ const T = TEXT.encyclopedia
 // Badge severity — warna sesuai level
 function SeverityBadge({ severity }) {
   const styles = {
-    high:   'bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400', // Mengikuti standar warna teman Anda
+    high:   'bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400', 
     medium: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400',
     low:    'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400',
   }
