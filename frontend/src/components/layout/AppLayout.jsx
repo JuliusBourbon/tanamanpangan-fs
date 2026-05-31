@@ -58,7 +58,7 @@ export default function AppLayout() {
             {/*Main area*/}
             <div className="flex flex-col flex-1 min-w-0">
                 {/* Mobile top bar */}
-                <div className="flex items-center gap-3 px-4 py-3 bg-[#E4E4E4] dark:bg-gray-800 md:hidden">
+                <div className="flex items-center gap-3 px-4 py-3 bg-[#E4E4E4] dark:bg-gray-900 md:hidden">
                     <button
                         onClick={() => setIsMobileOpen(true)}
                         className="text-slate-500 hover:text-slate-800 transition-colors p-1 rounded-md"

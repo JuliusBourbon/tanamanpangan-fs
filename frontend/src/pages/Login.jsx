@@ -1,4 +1,5 @@
 import LoginForm from '../components/auth/LoginForm'
+import NavbarAuth from '../components/navbar/NavbarAuth'
 
 function BackgroundBlobs() {
   return (
@@ -19,6 +20,7 @@ function BackgroundBlobs() {
 export default function Login() {
   return (
     <div className="min-h-screen bg-gray-100 relative overflow-hidden flex flex-col">
+      <NavbarAuth />
       <div className="flex-1 flex items-center justify-center px-4 py-20 relative z-10">
         <LoginForm />
       </div>

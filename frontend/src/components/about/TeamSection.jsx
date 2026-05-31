@@ -33,14 +33,14 @@ export default function TeamSection() {
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-3">{T.team.heading}</h2>
-          <p className="text-gray-500 max-w-lg mx-auto text-sm leading-relaxed">{T.team.subheading}</p>
+          <p className="text-gray-500 max-w-lg mx-auto leading-relaxed">{T.team.subheading}</p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 text-center">
           {T.team.members.map((member) => (
             <div key={member.name} className="bg-white rounded-2xl overflow-hidden border border-gray-100">
 
-              <img src={member.photo} alt="Foto Tim" className="w-full aspect-4/4 object-cover" />
+              <img src={member?.photo || `https://ui-avatars.com/api/?name=${member?.name || 'User'}&background=fff&color=000&size=150`} alt="Foto Tim" className="w-full aspect-4/4 object-cover" />
 
               <div className="p-4">
                 <p className="font-bold text-gray-800">{member.name}</p>

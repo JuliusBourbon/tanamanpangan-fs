@@ -42,7 +42,7 @@ export const TEXT = {
       heading1: 'What Makes',
       brand: 'Chloris Garden',
       heading2: 'Different?',
-      desc1: 'Chloris Garden was built to be the most user-friendly and accurate Tomato disease detection platform.',
+      desc1: 'Chloris Garden was built to be the most user-friendly and accurate plant disease detection platform.',
       desc2: "It's free, easy to use, and based on academic research.",
       cards: [
         {
@@ -50,8 +50,8 @@ export const TEXT = {
           desc: 'No fees or complicated installation required. Simply open your browser, upload a photo, and get results in just a few seconds.',
         },
         {
-          title: 'Special Tomato',
-          desc: 'Trained specifically on tomato diseases, our AI provides more accurate and relevant results for tomato farmers compared to general plant disease detectors.',
+          title: 'Special Plant Focus',
+          desc: 'Trained specifically on plant diseases, our AI provides more accurate and relevant results for farmers',
         },
         {
           title: 'Diagnosis & Treatment',
@@ -92,7 +92,7 @@ export const TEXT = {
       note: 'No credit card required. Start for free now',
     },
     footer: {
-      brandDesc: 'An AI-based tomato disease detection platform. Developed by Coding Camp 2026 students.',
+      brandDesc: 'An AI-based plant disease detection platform. Developed by Coding Camp 2026 students.',
       products: 'Products',
       company: 'Organization',
       productLinks: [
@@ -139,30 +139,30 @@ export const TEXT = {
     ],
   },
 
-  // About Us 
+  // About Us
   about: {
     hero: {
       badge: 'OUR MISSION',
       heading: 'Empowering Sustainable Agriculture Through AI',
-      body: 'We believe every farmer deserves access to fast, accurate, and free plant disease diagnosis. Chloris Garden is here to help Indonesian farmers detect paddy and tomato diseases early, so they can prevent crop losses.',
+      body: 'We believe every farmer deserves access to fast, accurate, and free plant disease diagnosis. Chloris Garden is here to help farmers detect plant diseases early, so they can prevent crop losses.',
     },
     story: {
       heading: 'Capstone Project Story',
       paragraphs: [
         'Chloris Garden was developed to fulfill the final assignment as a capstone project for the Coding Camp by DBS program. In this project, we were directed to build an application themed \'Sustainable Living & Responsible Consumption',
-        'Through Chloris Garden, we aim to assist a wide range of users, from the general public to farmers, in identifying plant diseases specifically in tomatoes, using leaf imagery powered by AI technology. The identification results will also provide explanations, underlying causes, treatment recommendations, and other relevant information, ensuring that users gain valuable insights while using our application.',
+        'Through Chloris Garden, we aim to assist a wide range of users, from the general public to farmers, in identifying plant diseases, using leaf imagery powered by AI technology. The identification results will also provide explanations, underlying causes, treatment recommendations, and other relevant information, ensuring that users gain valuable insights while using our application.',
       ],
     },
     team: {
       heading: 'Meet The Capstone Team',
-      subheading: 'We are a multidisciplinary team of Coding Camp 2026 trainees passionate about bringing AI technology to help Indonesian farmers.',
+      subheading: 'We are a multidisciplinary team of Coding Camp 2026 trainees passionate about bringing AI technology to help farmers.',
       members: [
-        { name: 'Zacky',    photo: 'src/assets/profil/', role: 'AI Engineering',        bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', instagram: '#', linkedin: '#', github: '#' },
-        { name: 'Mario',    photo: 'src/assets/profil/', role: 'AI Engineering',        bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', instagram: '#', linkedin: '#', github: '#' },
-        { name: 'Raihan Fathir Muhammad',   photo: hheImage, role: 'FullStack Engineering', bio: 'Hidup seperti garis linear', instagram: 'https://www.instagram.com/sbjibo', linkedin: 'https://www.linkedin.com/in/naherr', github: 'https://github.com/juliusbourbon' },
-        { name: 'Rafhli',   photo: rafhliImage, role: 'FullStack Developer',   bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', instagram: 'https://www.instagram.com/ex_rafh?igsh=MXMxeXlyc2J6cDR1cQ==', linkedin: 'https://www.linkedin.com/in/muhammad-rafhli-alfarizi-103700326', github: 'https://github.com/muhammadrafhlialfarizi' },
-        { name: 'Tiara',    photo: 'src/assets/profil/', role: 'Data Science',          bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', instagram: '#', linkedin: '#', github: '#' },
-        { name: 'Katarina', photo: 'src/assets/profil/', role: 'Data Science',          bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', instagram: '#', linkedin: '#', github: '#' },
+        { name: 'Moch. Zacky Febrio',    photo: '', role: 'AI Engineering',        bio: '-', instagram: 'https://www.instagram.com/zacky.febrio', linkedin: 'https://www.linkedin.com/in/zacky-febrio-332724292', github: 'https://github.com/flutterBeat' },
+        { name: 'Mario Cristian Simatupang',    photo: '', role: 'AI Engineering',        bio: '-', instagram: 'https://www.instagram.com/mar.iocristian/', linkedin: 'https://www.linkedin.com/in/mariocristian22/', github: 'https://github.com/mariocristian22' },
+        { name: 'Raihan Fathir Muhammad',   photo: hheImage, role: 'FullStack Developer', bio: 'Hidup seperti garis linear', instagram: 'https://www.instagram.com/sbjibo', linkedin: 'https://www.linkedin.com/in/naherr', github: 'https://github.com/juliusbourbon' },
+        { name: 'Muhammad Rafhli Alfarizi',   photo: rafhliImage, role: 'FullStack Developer',   bio: '-', instagram: 'https://www.instagram.com/ex_rafh?igsh=MXMxeXlyc2J6cDR1cQ==', linkedin: 'https://www.linkedin.com/in/muhammad-rafhli-alfarizi-103700326', github: 'https://github.com/muhammadrafhlialfarizi' },
+        { name: 'Tiara Christiani Sinaga',    photo: '', role: 'Data Science',          bio: '-', instagram: 'https://www.instagram.com/tiaraasng?igsh=MTl4Y2cyYzF6aXdvbg%3D%3D&utm_source=qr', linkedin: 'https://www.linkedin.com/in/tiara-christiani-sinaga-7498b03ab?trk=contact-info', github: 'https://github.com/tiarachristianisinaga-sudo' },
+        { name: 'Katarina Susi Wulandari', photo: '', role: 'Data Science',          bio: '-', instagram: '#', linkedin: '#', github: '#' },
       ],
     },
   },
@@ -175,7 +175,7 @@ export const TEXT = {
       {
         title: 'About Services',
         type: 'paragraph',
-        content: 'The Chloris Garden Service is an AI-based educational platform to help identify diseases in paddy and tomato plants. This service was developed as a capstone project by students.',
+        content: 'The Chloris Garden Service is an AI-based educational platform to help identify plant diseases. This service was developed as a capstone project by students.',
       },
       {
         title: 'Permitted Use',
@@ -299,7 +299,7 @@ export const TEXT = {
         icon: 'logo',
         title: 'Welcome To Chloris Garden!',
         desc: `Welcome!
-        Chloris Garden helps you quickly detect diseases in paddy and tomato plants using AI.`,
+        Chloris Garden helps you quickly detect plant diseases using AI.`,
         nextBtn: 'Next →',
         skipBtn: 'Skip Intro',
       },
@@ -363,7 +363,11 @@ export const TEXT = {
     sourceNote: 'Source references will be added soon.',
     notFound: 'No diseases found.',
     loadingError: 'Failed to load data. Please try again.',
-    generalSource: 'References compiled from botanical literature and agricultural experts. Detection results and treatment advice serve as general guidelines; always consult local agricultural extension officers for further action.',
+    generalSource: [
+      'University of Minnesota Extension: "Early blight in tomato and potato"',
+      'University of Wisconsin-Madison (UW Vegetable Pathology): "Tomato Early Blight".',
+      'OISAT (Online Information Service for Non-Chemical Pest Management in the Tropics)'
+    ],
   },
   profile: {
     

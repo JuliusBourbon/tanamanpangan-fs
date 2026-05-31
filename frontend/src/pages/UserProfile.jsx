@@ -10,29 +10,23 @@ export default function UserProfile() {
   const { user, logout, updateUser } = useAuth()
   const isId = preferences.language === 'id'
 
-  // State untuk Foto Profil
   const fileInputRef = useRef(null)
   const [isUploadingImage, setIsUploadingImage] = useState(false)
   const [isDeletingImage, setIsDeletingImage] = useState(false)
 
-  // State untuk Ubah Nama
   const [isEditingName, setIsEditingName] = useState(false)
   const [newName, setNewName] = useState('')
   const [isUpdatingName, setIsUpdatingName] = useState(false)
   const [nameError, setNameError] = useState('')
 
-  // State untuk Modal Reset Password
   const [isResetModalOpen, setIsResetModalOpen] = useState(false)
 
-  // State untuk Hapus Akun
   const [isDeleting, setIsDeleting] = useState(false)
   const [isDeletingHistory, setIsDeletingHistory] = useState(false)
 
-  // State untuk Modal Konfirmasi Password
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false)
   const [deletePassword, setDeletePassword] = useState('')
 
-  // State untuk Dynamic Modal
   const [modalConfig, setModalConfig] = useState({
     isOpen: false,
     type: 'info',
@@ -47,7 +41,6 @@ export default function UserProfile() {
     setModalConfig(prev => ({ ...prev, isOpen: false }));
   };
 
-  // Handler Upload Foto
   const handleImageChange = async (e) => {
     const file = e.target.files[0]
     if (!file) return
@@ -69,7 +62,6 @@ export default function UserProfile() {
     }
   }
 
-  // Handler Hapus Foto
   const handleDeleteImage = () => {
     setModalConfig({
       isOpen: true,
@@ -101,7 +93,6 @@ export default function UserProfile() {
     });
   };
 
-  // Handler Ubah Nama
   const handleNameSubmit = async () => {
     if (!newName || newName.trim().length < 3) {
       setNameError(isId ? 'Nama minimal 3 karakter.' : 'Name must be at least 3 characters.');
@@ -115,7 +106,6 @@ export default function UserProfile() {
         name: newName.trim() 
       })
       
-      // Update state global/context user
       updateUser(data.user)
       setIsEditingName(false)
     } catch (err) {
@@ -134,7 +124,6 @@ export default function UserProfile() {
     setNewName('')
   }
 
-  // Handler Hapus Akun
   const handleDeleteAccount = () => {
     setModalConfig({
       isOpen: true,
@@ -184,7 +173,6 @@ export default function UserProfile() {
     }
   };
 
-  // Handler Hapus Riwayat
   const handleDeleteHistory = () => {
     setModalConfig({
       isOpen: true,
@@ -235,7 +223,6 @@ export default function UserProfile() {
       </header>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Profile Card */}
         <div className="col-span-1 p-8 rounded-3xl border flex flex-col items-center text-center shadow-sm transition-colors duration-300 bg-gray-50 border-gray-200 dark:bg-gray-800 dark:border-gray-700">
           <div className="relative mb-6 group">
             <img 
@@ -283,7 +270,6 @@ export default function UserProfile() {
             </button>
           </div>
 
-          {/* Section Edit Nama */}
           <div className="w-full mb-1 flex flex-col items-center min-h-10">
             {isEditingName ? (
               <div className="flex flex-col items-center w-full px-4">
@@ -344,7 +330,6 @@ export default function UserProfile() {
               </div>
             )}
           </div>
-          {/* Akhir Section Edit Nama */}
 
           <p className="text-sm mb-8 mt-1 text-gray-500 dark:text-gray-400">{user?.email}</p>
           
@@ -361,7 +346,6 @@ export default function UserProfile() {
           </div>
         </div>
 
-        {/* Settings */}
         <div className="col-span-1 lg:col-span-2 flex flex-col gap-6">
           <div className="p-8 rounded-3xl border shadow-sm transition-colors duration-300 bg-white border-gray-100 dark:bg-gray-800 dark:border-gray-700">
             <h3 className="text-xl font-bold mb-8 flex items-center gap-3">
@@ -372,7 +356,6 @@ export default function UserProfile() {
             </h3>
             
             <div className="space-y-6">
-              {/* Theme */}
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center pb-6 border-b border-gray-100 dark:border-gray-700 gap-4">
                 <div>
                   <h4 className="font-semibold text-lg">{isId ? 'Tema Tampilan' : 'Theme'}</h4>
@@ -389,7 +372,6 @@ export default function UserProfile() {
                 </select>
               </div>
 
-              {/* Language */}
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center pb-6 border-b border-gray-100 dark:border-gray-700 gap-4">
                 <div>
                   <h4 className="font-semibold text-lg">{isId ? 'Bahasa' : 'Language'}</h4>
@@ -405,7 +387,6 @@ export default function UserProfile() {
                 </select>
               </div>
 
-              {/* Save History */}
               <div className="flex justify-between items-center pb-6 border-b border-gray-100 dark:border-gray-700">
                 <div className="pr-4">
                   <h4 className="font-semibold text-lg">{isId ? 'Simpan Riwayat Scan' : 'Save Scan History'}</h4>
@@ -422,7 +403,6 @@ export default function UserProfile() {
                 </label>
               </div>
 
-              {/* Show Confidence Score */}
               <div className="flex justify-between items-center pb-2">
                 <div className="pr-4">
                   <h4 className="font-semibold text-lg">{isId ? 'Tampilkan Skor Kepercayaan' : 'Show Confidence Score'}</h4>

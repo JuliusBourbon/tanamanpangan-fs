@@ -37,13 +37,13 @@ function InfoCard({ icon, title, children }) {
 }
 
 function TextContent({ text }) {
-  if (!text || text.length === 0) return <p className="text-gray-500 text-sm">-</p>;
+  if (!text || text.length === 0) return <p className="text-gray-500">-</p>;
 
   if (Array.isArray(text)) {
     return (
       <ul className="flex flex-col gap-1.5">
         {text.map((item, i) => (
-          <li key={i} className="flex items-start gap-2 text-gray-500 text-sm leading-relaxed">
+          <li key={i} className="flex items-start gap-2 text-gray-500 leading-relaxed">
             <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-gray-400 shrink-0" />
             {item}
           </li>
@@ -54,7 +54,7 @@ function TextContent({ text }) {
 
   const lines = text.split('\n').filter(Boolean)
   if (lines.length <= 1) {
-    return <p className="text-gray-500 text-sm leading-relaxed">{text}</p>
+    return <p className="text-gray-500 leading-relaxed">{text}</p>
   }
 
   return (
