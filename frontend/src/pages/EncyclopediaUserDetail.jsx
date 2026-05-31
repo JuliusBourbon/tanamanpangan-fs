@@ -1,19 +1,22 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import api from '../api/axios';
+import { usePreferences } from '../context/PreferencesContext';
 
 export default function EncyclopediaUserDetail() {
   const { slug } = useParams();
   const [disease, setDisease] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { preferences } = usePreferences();
 
   useEffect(() => {
     const fetchDiseaseDetail = async () => {
       try {
-        // Membersihkan slug dari potensi prefix ':' akibat typo pada routing sebelumnya
         const actualSlug = slug.replace(/^:/, '');
-        const res = await api.get(`/api/diseases/${actualSlug}`);
+        const res = await api.get(`/api/diseases/${actualSlug}`, {
+          params: { lang: preferences.language }
+        });
         setDisease(res.data.data);
       } catch (err) {
         setError(err.response?.data?.message || 'Failed to load disease details.');
@@ -25,7 +28,7 @@ export default function EncyclopediaUserDetail() {
     if (slug) {
       fetchDiseaseDetail();
     }
-  }, [slug]);
+  }, [slug, preferences.language]);
 
   const getSeverityBadge = (severity) => {
     switch (severity?.toLowerCase()) {

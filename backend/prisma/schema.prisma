@@ -22,11 +22,12 @@ model User {
 
 model Disease {
   id                 Int              @id @default(autoincrement())
-  name               String           @unique
-  slug               String           @unique
+  language           String           @default("en")
+  name               String
+  slug               String
   scientificName     String?
   cropType           String
-  severity           String           // 'low' | 'medium' | 'high'
+  severity           String
   description        String           @db.Text
   symptoms           Json
   treatment          Json

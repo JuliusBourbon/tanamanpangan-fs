@@ -15,7 +15,9 @@ export default function EncyclopediaUser() {
   useEffect(() => {
     const fetchDiseases = async () => {
       try {
-        const res = await api.get('/api/diseases/');
+        const res = await api.get('/api/diseases/', {
+          params: { lang: preferences.language }
+        });
         setDiseases(res.data.data || []);
       } catch (err) {
         setError(err.response?.data?.message || 'Failed to load encyclopedia data. Please try again.');
@@ -25,7 +27,7 @@ export default function EncyclopediaUser() {
     };
 
     fetchDiseases();
-  }, []);
+  }, [preferences.language]);
 
   const getSeverityColor = (severity) => {
     switch (severity?.toLowerCase()) {

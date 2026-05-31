@@ -12,6 +12,7 @@ module.exports = prisma
 
 const diseases = [
   {
+    language: 'en',
     name: 'Bacterial Spot',
     slug: 'tomato-bacterial-spot',
     scientificName: 'Xanthomonas vesicatoria',
@@ -39,6 +40,7 @@ const diseases = [
     imageUrl: "https://d3qz1qhhp9wxfa.cloudfront.net/growingproduce/wp-content/uploads/2023/06/bacterial-spot_tomatoes_featured.jpg"
   },
   {
+    language: 'en',
     name: "Early Blight",
     slug: "tomato-early-blight",
     scientificName: "Alternaria solani, Alternaria tomatophila",
@@ -69,6 +71,7 @@ const diseases = [
     imageUrl: "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcS58CsxjIIk7g7viD_r2-znyA6XmLdBSutkqFm953ihDb_ypJvUq0T3yg8LX6An"
   },
   {
+    language: 'en',
     name: "Late Blight",
     slug: "tomato-late-blight",
     scientificName: "Phytophthora infestans",
@@ -99,6 +102,7 @@ const diseases = [
     imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSK8fHCxum_s_UXidLY7D2AlyDTNbZiWn_3lKi3vkIsU31ud-clnGEDPzxhnerZ"
   },
   {
+    language: 'en',
     name: 'Healthy',
     slug: 'tomato-healthy',
     scientificName: 'Solanum lycopersicum',
@@ -118,6 +122,120 @@ const diseases = [
       'Continue providing adequate water, sunlight, and nutrients.',
       'Maintain good air circulation around the plants.',
       'Routinely inspect for pests or early signs of disease.'
+    ],
+    imageUrl: 'https://thumbs.dreamstime.com/b/close-up-tomato-leaf-view-beautiful-young-green-tomatoes-plants-pots-concept-organic-food-farmer-s-vegetabes-health-245109677.jpg'
+  },
+  {
+    language: 'id',
+    name: 'Bacterial Spot (Bercak Bakteri)',
+    slug: 'tomato-bacterial-spot',
+    scientificName: 'Xanthomonas vesicatoria',
+    cropType: 'tomat',
+    severity: 'Medium',
+    description: 'Bercak bakteri adalah penyakit yang sangat merusak yang memengaruhi produksi tomat dan paprika di seluruh dunia. Penyakit ini menyebabkan lesi berwarna coklat tua hingga hitam pada semua jaringan tanaman di atas tanah, termasuk daun, batang, dan buah.',
+    symptoms: [
+      'Bintik-bintik kecil, tampak basah atau berminyak awalnya muncul di bagian bawah daun.',
+      'Bintik-bintik berkembang menjadi bagian tengah berwarna coklat muda dengan tepi gelap, terkadang dikelilingi oleh lingkaran cahaya kuning.',
+      'Bintik-bintik yang membesar menjadi cekung di permukaan atas daun, menggelap, dan bagian tengahnya dapat retak atau rontok.',
+      'Bintik-bintik daun yang menyatu menyebabkan menguning secara umum, nekrosis, dan akhirnya kerontokan daun prematur.',
+      'Pada buah, muncul bintik-bintik kecil berwarna coklat hingga hitam, yang kemudian membesar, menjadi sedikit menonjol, dan mengembangkan permukaan yang kasar atau berkeropeng.',
+      'Guratan atau lesi yang gelap dan memanjang juga dapat terbentuk pada batang dan tangkai bunga.'
+    ],
+    rootCauses: 'Infeksi oleh kompleks spesies bercak bakteri, yang mencakup empat spesies berbeda: Xanthomonas euvesicatoria, Xanthomonas vesicatoria, Xanthomonas perforans, dan Xanthomonas gardneri.',
+    treatment: [
+      'Aplikasi bahan kimia pertanian berbasis tembaga (meskipun kemanjuran komersial saat ini terbatas karena toleransi dan resistensi tembaga yang tersebar luas dalam populasi patogen).'
+    ],
+    preventiveMeasures: [
+      'Menerapkan kombinasi taktik manajemen budidaya yang baik.',
+      'Menggunakan kultivar tomat unggul yang dibiakkan dengan ketahanan genetik terhadap penyakit ini.',
+      'Menanam benih dan bibit bersertifikat yang bebas patogen.',
+      'Mempraktikkan rotasi tanaman dan menjaga sanitasi ladang untuk meminimalkan penyebaran bakteri akibat percikan air.'
+    ],
+    imageUrl: 'https://d3qz1qhhp9wxfa.cloudfront.net/growingproduce/wp-content/uploads/2023/06/bacterial-spot_tomatoes_featured.jpg'
+  },
+  {
+    language: 'id',
+    name: 'Early Blight (Hawar Awal)',
+    slug: 'tomato-early-blight',
+    scientificName: 'Alternaria solani, Alternaria tomatophila',
+    cropType: 'tomat',
+    severity: 'Medium',
+    description: 'Hawar awal adalah penyakit jamur yang sangat umum dan merusak yang menyerang tanaman tomat. Penyakit ini menyerang dedaunan, batang, dan buah. Infeksi biasanya dimulai pada daun yang lebih tua dan lebih rendah di dekat tanah lalu secara bertahap menyebar ke atas tanaman.',
+    symptoms: [
+      'Bintik-bintik gelap kecil awalnya muncul pada daun tua di dekat tanah.',
+      'Bintik-bintik membesar menjadi lesi melingkar (berdiameter hingga 1-1,5 cm), berubah warna menjadi coklat dan membentuk cincin konsentris khas yang menyerupai papan target atau mata sapi.',
+      'Jaringan daun di sekitar bintik-bintik sering berubah menjadi kuning (membentuk lingkaran cahaya kuning).',
+      'Daun yang terinfeksi parah berubah warna menjadi coklat, mengering, mati, dan akhirnya rontok (pengguguran daun prematur).',
+      'Pada batang bibit, infeksi di dekat pangkal tanah menyebabkan lesi berwarna gelap, cekung, dan kering (busuk leher/collar rot) yang dapat menyebabkan bibit layu dan mati.',
+      'Pada buah, muncul bintik-bintik gelap, kasar, dan sedikit cekung dengan pola cincin konsentris. Ini biasanya terjadi di dekat pangkal batang buah dan dapat menyebabkan kerontokan prematur.'
+    ],
+    rootCauses: 'Infeksi oleh patogen jamur Alternaria solani dan Alternaria tomatophila. Spora jamur bertahan melewati musim dingin di dalam tanah pada sisa-sisa tanaman yang terinfeksi, pada benih, atau pada gulma inang. Penyakit ini mudah menyebar melalui percikan air (hujan atau penyiraman dari atas) dan tumbuh subur pada suhu hangat dengan kelembapan tinggi atau embun yang lebat.',
+    treatment: [
+      'Pangkas atau buang daun bagian bawah yang pertama kali menunjukkan gejala (jangan membuang lebih dari sepertiga total dedaunan tanaman) untuk memperlambat penyebaran dan meningkatkan sirkulasi udara.',
+      'Gunakan fungisida khusus sayuran, seperti yang mengandung tembaga atau klorotalonil. Fungisida paling efektif jika diterapkan sedini mungkin setelah gejala pertama muncul atau sebagai tindakan pencegahan rutin.'
+    ],
+    preventiveMeasures: [
+      'Tanam varietas tomat yang resisten atau toleran terhadap hawar awal.',
+      'Praktikkan rotasi tanaman dengan menghindari penanaman anggota keluarga Solanaceae (tomat, kentang, terong, paprika) di lokasi yang sama selama setidaknya 2 tahun berturut-turut.',
+      'Pasang mulsa (plastik atau bahan organik) di atas permukaan tanah di bawah tanaman untuk menciptakan penghalang yang mencegah spora dari tanah memercik ke daun saat hujan.',
+      'Siram tanaman langsung di pangkalnya (sebaiknya gunakan irigasi tetes atau selang rembes) agar dedaunan tetap kering.',
+      'Berikan jarak yang cukup antar tanaman dan gunakan penyangga (ajir atau teralis) untuk memastikan sirkulasi udara yang baik.',
+      'Bersihkan, bakar, atau buang semua sisa tanaman yang terinfeksi jauh dari kebun pada akhir musim panen untuk mencegah jamur bertahan di dalam tanah.'
+    ],
+    imageUrl: 'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcS58CsxjIIk7g7viD_r2-znyA6XmLdBSutkqFm953ihDb_ypJvUq0T3yg8LX6An'
+  },
+  {
+    language: 'id',
+    name: 'Late Blight (Hawar Daun)',
+    slug: 'tomato-late-blight',
+    scientificName: 'Phytophthora infestans',
+    cropType: 'tomat',
+    severity: 'High',
+    description: 'Hawar daun adalah penyakit tanaman yang sangat merusak dan memengaruhi tomat serta kentang. Disebabkan oleh jamur air (oomycete), penyakit ini terkenal karena menyebabkan Bencana Kelaparan Kentang Irlandia (Irish Potato Famine) pada tahun 1840-an. Penyakit ini menyebar dengan cepat melalui udara dan dapat memusnahkan tanaman sehat hampir dalam semalam saat cuaca dingin dan basah.',
+    symptoms: [
+      'Lesi besar, tidak teratur, tampak basah, berwarna hijau pucat hingga coklat tua muncul pada daun, sering dimulai di dekat tepi atau ujung daun.',
+      'Selama kelembapan tinggi atau cuaca basah, pertumbuhan lapisan putih berbulu mirip jamur (spora) muncul di bagian bawah daun yang terinfeksi.',
+      'Lesi yang tidak teratur, menyebar, dan berwarna coklat tua hingga hitam berkembang pada batang dan tangkai daun, yang dapat menyebabkan tanaman layu dan roboh.',
+      'Pada buah tomat, muncul bintik-bintik padat, besar, tidak teratur, tampak berminyak, berwarna coklat zaitun hingga coklat tua.',
+      'Tidak seperti beberapa penyakit busuk buah lainnya, lesi hawar daun pada buah tetap terasa keras dan tidak menjadi lunak atau lembek (kecuali jika diserang patogen sekunder).',
+      'Seluruh tanaman dapat berubah warna menjadi coklat sepenuhnya, mengerut, dan mati dalam beberapa hari setelah gejala pertama muncul.'
+    ],
+    rootCauses: 'Infeksi oleh patogen oomycete (jamur air) Phytophthora infestans. Patogen menghasilkan sporangia (spora) yang dapat terbawa angin hingga bermil-mil jauhnya, terutama saat cuaca mendung dan berbadai. Patogen ini tumbuh subur dalam kondisi sejuk (15-21°C) dan kondisi yang sangat lembap atau basah. Jamur ini tidak dapat bertahan hidup pada jaringan tanaman yang mati; ia membutuhkan jaringan inang yang hidup (seperti sisa umbi kentang di tanah atau tanaman liar) untuk bertahan hidup.',
+    treatment: [
+      'Begitu tanaman terinfeksi parah, tidak ada obatnya; tanaman yang terinfeksi harus segera dicabut, dimasukkan ke dalam kantong, dan dibuang ke tempat sampah (jangan dikomposkan) untuk mencegah penyebaran ke tanaman dan lahan lain di sekitarnya.',
+      'Fungisida (seperti yang mengandung klorotalonil atau tembaga) dapat diterapkan, tetapi fungsinya benar-benar sebagai pelindung dan harus diterapkan sebelum penyakit menyebar atau pada saat gejala pertama kali muncul.'
+    ],
+    preventiveMeasures: [
+      'Tanam varietas tomat yang tahan terhadap hawar daun jika penyakit ini umum terjadi di daerah Anda.',
+      'Pantau laporan cuaca dan peringatan dari dinas pertanian setempat terkait wabah hawar daun di wilayah Anda.',
+      'Musnahkan sisa tanaman tomat atau kentang liar dari musim sebelumnya, karena mereka dapat menjadi sarang patogen yang bertahan hidup.',
+      'Pastikan sirkulasi udara yang sangat baik dengan memberi jarak antar tanaman yang tepat, memasang ajir penyangga, dan memangkas tanaman agar daun cepat mengering.',
+      'Siram pada pangkal tanaman menggunakan irigasi tetes atau selang rembes agar daun tetap benar-benar kering.',
+      'Gunakan fungisida pencegah selama periode cuaca dingin dan basah, terutama jika penyakit tersebut telah dilaporkan terjadi di sekitar wilayah Anda.'
+    ],
+    imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSK8fHCxum_s_UXidLY7D2AlyDTNbZiWn_3lKi3vkIsU31ud-clnGEDPzxhnerZ'
+  },
+  {
+    language: 'id',
+    name: 'Sehat',
+    slug: 'tomato-healthy',
+    scientificName: 'Solanum lycopersicum',
+    cropType: 'tomat',
+    severity: 'Low',
+    description: 'Tanaman tomat dalam keadaan sehat. Tidak ada tanda-tanda penyakit jamur, bakteri, atau virus yang terlihat pada daun.',
+    symptoms: [
+      'Daun berwarna hijau cerah dan warnanya merata.',
+      'Tidak ada bintik-bintik, lesi, atau menguning yang tidak wajar (klorosis).',
+      'Batang dan dedaunan tanaman secara struktural utuh dan tumbuh dengan kuat.'
+    ],
+    rootCauses: 'Kondisi pertumbuhan yang optimal, kesehatan tanah yang baik, dan tidak adanya patogen penyakit.',
+    treatment: [
+      'Tidak diperlukan perawatan atau pengobatan khusus. Pertahankan rutinitas perawatan saat ini.'
+    ],
+    preventiveMeasures: [
+      'Terus sediakan air, sinar matahari, dan nutrisi pupuk yang cukup.',
+      'Jaga sirkulasi udara yang baik di sekitar tanaman.',
+      'Lakukan inspeksi rutin terhadap kemungkinan adanya hama atau tanda-tanda awal penyakit.'
     ],
     imageUrl: 'https://thumbs.dreamstime.com/b/close-up-tomato-leaf-view-beautiful-young-green-tomatoes-plants-pots-concept-organic-food-farmer-s-vegetabes-health-245109677.jpg'
   }
