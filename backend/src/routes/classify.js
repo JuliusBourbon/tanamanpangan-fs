@@ -94,7 +94,7 @@ router.post('/', authenticate, upload.single('image'), async (req, res) => {
     try {
         const { slug, confidenceScore } = await classifyImage(imageUrl)
 
-        const disease = await prisma.disease.findUnique({ where: { slug } })
+        const disease = await prisma.disease.findFirst({ where: { slug } })
         if (!disease) {
             await deleteFromS3(imageUrl)
             return res.status(500).json({ message: 'Penyakit tidak ditemukan di database.' })
