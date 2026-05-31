@@ -37,8 +37,8 @@ export default function DifferentSection() {
             <span className="text-4xl"><GraduationCap size={36} /></span>
             <h3 className="text-xl font-bold text-gray-800">{different.academic.title}</h3>
           </div>
-          <p className="text-gray-600 mb-2">{different.academic.desc1}</p>
-          <p className="text-gray-500 text-sm">{different.academic.desc2}</p>
+          <p className="text-gray-600 text-sm md:text-base mb-2">{different.academic.desc1}</p>
+          <p className="text-gray-500 text-sm md:text-base">{different.academic.desc2}</p>
         </div>
       </div>
     </section>
