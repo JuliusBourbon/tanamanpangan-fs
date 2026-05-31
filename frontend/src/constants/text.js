@@ -15,7 +15,7 @@ export const TEXT = {
     },
     auth: {
       backToHome: 'Back to Home',
-      brand: 'Tommy Care',
+      brand: 'Chloris Garden',
     },
     app: {
       dashboard: 'Dashboard',
@@ -40,9 +40,9 @@ export const TEXT = {
     },
     different: {
       heading1: 'What Makes',
-      brand: 'Tommy Care',
+      brand: 'Chloris Garden',
       heading2: 'Different?',
-      desc1: 'Tommy Care was built to be the most user-friendly and accurate Tomato disease detection platform.',
+      desc1: 'Chloris Garden was built to be the most user-friendly and accurate Tomato disease detection platform.',
       desc2: "It's free, easy to use, and based on academic research.",
       cards: [
         {
@@ -60,7 +60,7 @@ export const TEXT = {
       ],
       academic: {
         title: 'Academic Research Project',
-        desc1: 'Tommy Care was developed as a final project by students, supported by the Coding Camp 2026 program supported by DBS Bank.',
+        desc1: 'Chloris Garden was developed as a final project by students, supported by the Coding Camp 2026 program supported by DBS Bank.',
         desc2: 'This platform was built for educational purposes and continues to be actively developed.',
       },
     },
@@ -106,15 +106,15 @@ export const TEXT = {
         { label: 'Capstone Team', to: '/about#team' },
         { label: 'Contact', to: '#' },
       ],
-      copyright: '© 2026 Tommy Care All Right reserved',
+      copyright: '© 2026 Chloris Garden All Right reserved',
       builtFor: 'Built to fulfill Coding Camp Capstone Project powered by Bank DBS capstone project',
     },
   },
 
   // How It Works 
   howItWorks: {    
-    heading: 'How Tommy Care Works',
-    subheading: "Tommy Care uses computer vision technology to analyze plant photos and automatically detect diseases. Here's how our system works.",
+    heading: 'How Chloris Garden Works',
+    subheading: "Chloris Garden uses computer vision technology to analyze plant photos and automatically detect diseases. Here's how our system works.",
     steps: [
       {
         num: 1,
@@ -144,13 +144,13 @@ export const TEXT = {
     hero: {
       badge: 'OUR MISSION',
       heading: 'Empowering Sustainable Agriculture Through AI',
-      body: 'We believe every farmer deserves access to fast, accurate, and free plant disease diagnosis. Tommy Care is here to help Indonesian farmers detect paddy and tomato diseases early, so they can prevent crop losses.',
+      body: 'We believe every farmer deserves access to fast, accurate, and free plant disease diagnosis. Chloris Garden is here to help Indonesian farmers detect paddy and tomato diseases early, so they can prevent crop losses.',
     },
     story: {
       heading: 'Capstone Project Story',
       paragraphs: [
-        'Tommy Care was developed to fulfill the final assignment as a capstone project for the Coding Camp by DBS program. In this project, we were directed to build an application themed \'Sustainable Living & Responsible Consumption',
-        'Through Tommy Care, we aim to assist a wide range of users, from the general public to farmers, in identifying plant diseases specifically in tomatoes, using leaf imagery powered by AI technology. The identification results will also provide explanations, underlying causes, treatment recommendations, and other relevant information, ensuring that users gain valuable insights while using our application.',
+        'Chloris Garden was developed to fulfill the final assignment as a capstone project for the Coding Camp by DBS program. In this project, we were directed to build an application themed \'Sustainable Living & Responsible Consumption',
+        'Through Chloris Garden, we aim to assist a wide range of users, from the general public to farmers, in identifying plant diseases specifically in tomatoes, using leaf imagery powered by AI technology. The identification results will also provide explanations, underlying causes, treatment recommendations, and other relevant information, ensuring that users gain valuable insights while using our application.',
       ],
     },
     team: {
@@ -175,7 +175,7 @@ export const TEXT = {
       {
         title: 'About Services',
         type: 'paragraph',
-        content: 'The Tommy Care Service is an AI-based educational platform to help identify diseases in paddy and tomato plants. This service was developed as a capstone project by students.',
+        content: 'The Chloris Garden Service is an AI-based educational platform to help identify diseases in paddy and tomato plants. This service was developed as a capstone project by students.',
       },
       {
         title: 'Permitted Use',
@@ -192,7 +192,7 @@ export const TEXT = {
         items: [
           'Diagnostic results are recommendations, not final decisions.',
           'For a definitive diagnosis, consult an agricultural extension officer or agronomist.',
-          'The Tommy Care Team is not responsible for any losses resulting from the use of diagnostic results.',
+          'The Chloris Garden Team is not responsible for any losses resulting from the use of diagnostic results.',
         ],
       },
       {
@@ -215,7 +215,7 @@ export const TEXT = {
       {
         title: 'Changes to Services',
         type: 'paragraph',
-        content: 'The Tommy Care Team reserves the right to change or discontinue services at any time without prior notice, as this is a time-limited project.',
+        content: 'The Chloris Garden Team reserves the right to change or discontinue services at any time without prior notice, as this is a time-limited project.',
       },
       {
         title: 'Contact',
@@ -297,9 +297,9 @@ export const TEXT = {
     steps: [
       {
         icon: 'logo',
-        title: 'Welcome To Tommy Care!',
+        title: 'Welcome To Chloris Garden!',
         desc: `Welcome!
-        Tommy Care helps you quickly detect diseases in paddy and tomato plants using AI.`,
+        Chloris Garden helps you quickly detect diseases in paddy and tomato plants using AI.`,
         nextBtn: 'Next →',
         skipBtn: 'Skip Intro',
       },

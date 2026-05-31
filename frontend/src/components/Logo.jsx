@@ -12,7 +12,7 @@ export function LogoBrand({ iconSize, textSize = 'text-xl' }) {
     <div className="flex items-center gap-2">
       <LogoIcon className={iconSize} />
       <span className={`text-[#000000] font-bold tracking-tight ${textSize}`}>
-        Tommy Care
+        Chloris Garden
       </span>
     </div>
   )
@@ -23,7 +23,7 @@ export function LogoBrandLight({ iconSize, textSize = 'text-lg' }) {
     <div className="flex items-center gap-2">
       <LogoIcon className={iconSize} />
       <span className={`text-white font-bold tracking-tight ${textSize}`}>
-        Tommy Care
+        Chloris Garden
       </span>
     </div>
   )
