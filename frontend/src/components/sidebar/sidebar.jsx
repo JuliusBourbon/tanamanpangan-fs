@@ -77,7 +77,7 @@ export default function Sidebar({ isExpanded, setIsExpanded, onNavigate }) {
                     <LogoIcon />
                 </div>
                 <span className="font-semibold text-xl text-slate-800 dark:text-[#ffffff] whitespace-nowrap flex-1 overflow-hidden">
-                    Tommy Care
+                    Chloris Garden
                 </span>
                 <button
                     onClick={() => setIsExpanded(false)}
