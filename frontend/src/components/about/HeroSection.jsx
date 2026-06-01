@@ -1,4 +1,5 @@
 import { TEXT } from '../../constants/text'
+import aubg from '../../assets/au-bg_section1.png'
 
 const { about: T } = TEXT
 
@@ -6,7 +7,7 @@ export default function AboutHeroSection() {
   return (
     <section className="relative min-h-screen md:min-h-[70vh] flex items-center justify-center text-center overflow-hidden">
       <img
-        src="/src/assets/au-bg_section1.png"
+        src={aubg}
         alt="Background sawah"
         className="absolute inset-0 w-full h-full object-cover object-center opacity-80 blur-xs"
       />

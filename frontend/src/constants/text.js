@@ -162,7 +162,7 @@ export const TEXT = {
         { name: 'Raihan Fathir Muhammad',   photo: hheImage, role: 'FullStack Developer', bio: 'Hidup seperti garis linear', instagram: 'https://www.instagram.com/sbjibo', linkedin: 'https://www.linkedin.com/in/naherr', github: 'https://github.com/juliusbourbon' },
         { name: 'Muhammad Rafhli Alfarizi',   photo: rafhliImage, role: 'FullStack Developer',   bio: '-', instagram: 'https://www.instagram.com/ex_rafh?igsh=MXMxeXlyc2J6cDR1cQ==', linkedin: 'https://www.linkedin.com/in/muhammad-rafhli-alfarizi-103700326', github: 'https://github.com/muhammadrafhlialfarizi' },
         { name: 'Tiara Christiani Sinaga',    photo: '', role: 'Data Science',          bio: '-', instagram: 'https://www.instagram.com/tiaraasng?igsh=MTl4Y2cyYzF6aXdvbg%3D%3D&utm_source=qr', linkedin: 'https://www.linkedin.com/in/tiara-christiani-sinaga-7498b03ab?trk=contact-info', github: 'https://github.com/tiarachristianisinaga-sudo' },
-        { name: 'Katarina Susi Wulandari', photo: '', role: 'Data Science',          bio: '-', instagram: '#', linkedin: '#', github: '#' },
+        { name: 'Katarina Susi Wulandari', photo: '', role: 'Data Science',          bio: '-', instagram: 'https://www.instagram.com/katarinasw_?igsh=ajl6N3JuZnk1MGwx', linkedin: 'https://www.linkedin.com/in/katarinasusi6?utm_source=share_via&utm_content=profile&utm_medium=member_android', github: 'https://github.com/cyhur0s' },
       ],
     },
   },
