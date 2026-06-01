@@ -70,7 +70,7 @@ export default function AppLayout() {
                             <line x1="3" y1="18" x2="21" y2="18" />
                         </svg>
                     </button>
-                    <span className="font-semibold text-[#19793F] dark:text-[#ffffff] whitespace-nowrap flex-1 overflow-hidden">Tommy Care</span>
+                    <span className="font-semibold text-[#19793F] dark:text-[#ffffff] whitespace-nowrap flex-1 overflow-hidden">Chloris Garden</span>
                 </div>
 
                 <MainContent>
