@@ -1,6 +1,7 @@
 // constants/text.js — Semua teks UI terpusat di sini
 import hheImage from '../assets/profil/hhe.jpeg'
 import rafhliImage from '../assets/profil/rafhli.jpg'
+import marioImage from '../assets/profil/mario.jpeg'
 
 export const TEXT = {
   // Shared / Navbar
@@ -158,7 +159,7 @@ export const TEXT = {
       subheading: 'We are a multidisciplinary team of Coding Camp 2026 trainees passionate about bringing AI technology to help farmers.',
       members: [
         { name: 'Moch. Zacky Febrio',    photo: '', role: 'AI Engineering',        bio: '-', instagram: 'https://www.instagram.com/zacky.febrio', linkedin: 'https://www.linkedin.com/in/zacky-febrio-332724292', github: 'https://github.com/flutterBeat' },
-        { name: 'Mario Cristian Simatupang',    photo: '', role: 'AI Engineering',        bio: '-', instagram: 'https://www.instagram.com/mar.iocristian/', linkedin: 'https://www.linkedin.com/in/mariocristian22/', github: 'https://github.com/mariocristian22' },
+        { name: 'Mario Cristian Simatupang',    photo: marioImage, role: 'AI Engineering',        bio: '-', instagram: 'https://www.instagram.com/mar.iocristian/', linkedin: 'https://www.linkedin.com/in/mariocristian22/', github: 'https://github.com/mariocristian22' },
         { name: 'Raihan Fathir Muhammad',   photo: hheImage, role: 'FullStack Developer', bio: 'Hidup seperti garis linear', instagram: 'https://www.instagram.com/sbjibo', linkedin: 'https://www.linkedin.com/in/naherr', github: 'https://github.com/juliusbourbon' },
         { name: 'Muhammad Rafhli Alfarizi',   photo: rafhliImage, role: 'FullStack Developer',   bio: '-', instagram: 'https://www.instagram.com/ex_rafh?igsh=MXMxeXlyc2J6cDR1cQ==', linkedin: 'https://www.linkedin.com/in/muhammad-rafhli-alfarizi-103700326', github: 'https://github.com/muhammadrafhlialfarizi' },
         { name: 'Tiara Christiani Sinaga',    photo: '', role: 'Data Science',          bio: '-', instagram: 'https://www.instagram.com/tiaraasng?igsh=MTl4Y2cyYzF6aXdvbg%3D%3D&utm_source=qr', linkedin: 'https://www.linkedin.com/in/tiara-christiani-sinaga-7498b03ab?trk=contact-info', github: 'https://github.com/tiarachristianisinaga-sudo' },
