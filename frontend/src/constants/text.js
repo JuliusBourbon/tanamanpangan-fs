@@ -2,6 +2,9 @@
 import hheImage from '../assets/profil/hhe.jpeg'
 import rafhliImage from '../assets/profil/rafhli.jpg'
 import marioImage from '../assets/profil/mario.jpeg'
+import jekiImage from '../assets/profil/jeki.jpeg'
+import katarinaImage from '../assets/profil/katarina.jpeg'
+import tiaraImage from '../assets/profil/tiara.jpeg'
 
 export const TEXT = {
   // Shared / Navbar
@@ -113,7 +116,7 @@ export const TEXT = {
   },
 
   // How It Works 
-  howItWorks: {    
+  howItWorks: {
     heading: 'How Chloris Garden Works',
     subheading: "Chloris Garden uses computer vision technology to analyze plant photos and automatically detect diseases. Here's how our system works.",
     steps: [
@@ -158,12 +161,12 @@ export const TEXT = {
       heading: 'Meet The Capstone Team',
       subheading: 'We are a multidisciplinary team of Coding Camp 2026 trainees passionate about bringing AI technology to help farmers.',
       members: [
-        { name: 'Moch. Zacky Febrio',    photo: '', role: 'AI Engineering',        bio: '-', instagram: 'https://www.instagram.com/zacky.febrio', linkedin: 'https://www.linkedin.com/in/zacky-febrio-332724292', github: 'https://github.com/flutterBeat' },
-        { name: 'Mario Cristian Simatupang',    photo: marioImage, role: 'AI Engineering',        bio: '-', instagram: 'https://www.instagram.com/mar.iocristian/', linkedin: 'https://www.linkedin.com/in/mariocristian22/', github: 'https://github.com/mariocristian22' },
-        { name: 'Raihan Fathir Muhammad',   photo: hheImage, role: 'FullStack Developer', bio: 'Hidup seperti garis linear', instagram: 'https://www.instagram.com/sbjibo', linkedin: 'https://www.linkedin.com/in/naherr', github: 'https://github.com/juliusbourbon' },
-        { name: 'Muhammad Rafhli Alfarizi',   photo: rafhliImage, role: 'FullStack Developer',   bio: '-', instagram: 'https://www.instagram.com/ex_rafh?igsh=MXMxeXlyc2J6cDR1cQ==', linkedin: 'https://www.linkedin.com/in/muhammad-rafhli-alfarizi-103700326', github: 'https://github.com/muhammadrafhlialfarizi' },
-        { name: 'Tiara Christiani Sinaga',    photo: '', role: 'Data Science',          bio: '-', instagram: 'https://www.instagram.com/tiaraasng?igsh=MTl4Y2cyYzF6aXdvbg%3D%3D&utm_source=qr', linkedin: 'https://www.linkedin.com/in/tiara-christiani-sinaga-7498b03ab?trk=contact-info', github: 'https://github.com/tiarachristianisinaga-sudo' },
-        { name: 'Katarina Susi Wulandari', photo: '', role: 'Data Science',          bio: '-', instagram: 'https://www.instagram.com/katarinasw_?igsh=ajl6N3JuZnk1MGwx', linkedin: 'https://www.linkedin.com/in/katarinasusi6?utm_source=share_via&utm_content=profile&utm_medium=member_android', github: 'https://github.com/cyhur0s' },
+        { name: 'Moch. Zacky Febrio', photo: jekiImage, role: 'AI Engineering', bio: '-', instagram: 'https://www.instagram.com/zacky.febrio', linkedin: 'https://www.linkedin.com/in/zacky-febrio-332724292', github: 'https://github.com/flutterBeat' },
+        { name: 'Mario Cristian Simatupang', photo: marioImage, role: 'AI Engineering', bio: '-', instagram: 'https://www.instagram.com/mar.iocristian/', linkedin: 'https://www.linkedin.com/in/mariocristian22/', github: 'https://github.com/mariocristian22' },
+        { name: 'Raihan Fathir Muhammad', photo: hheImage, role: 'FullStack Developer', bio: 'Hidup seperti garis linear', instagram: 'https://www.instagram.com/sbjibo', linkedin: 'https://www.linkedin.com/in/naherr', github: 'https://github.com/juliusbourbon' },
+        { name: 'Muhammad Rafhli Alfarizi', photo: rafhliImage, role: 'FullStack Developer', bio: '-', instagram: 'https://www.instagram.com/ex_rafh?igsh=MXMxeXlyc2J6cDR1cQ==', linkedin: 'https://www.linkedin.com/in/muhammad-rafhli-alfarizi-103700326', github: 'https://github.com/muhammadrafhlialfarizi' },
+        { name: 'Tiara Christiani Sinaga', photo: tiaraImage, role: 'Data Science', bio: '-', instagram: 'https://www.instagram.com/tiaraasng?igsh=MTl4Y2cyYzF6aXdvbg%3D%3D&utm_source=qr', linkedin: 'https://www.linkedin.com/in/tiara-christiani-sinaga-7498b03ab?trk=contact-info', github: 'https://github.com/tiarachristianisinaga-sudo' },
+        { name: 'Katarina Susi Wulandari', photo: katarinaImage, role: 'Data Science', bio: '-', instagram: 'https://www.instagram.com/katarinasw_?igsh=ajl6N3JuZnk1MGwx', linkedin: 'https://www.linkedin.com/in/katarinasusi6?utm_source=share_via&utm_content=profile&utm_medium=member_android', github: 'https://github.com/cyhur0s' },
       ],
     },
   },
@@ -252,10 +255,10 @@ export const TEXT = {
       confirmPasswordLabel: 'Confirm Password',
       confirmPasswordPlaceholder: '••••••••',
       passwordRules: [
-        { key: 'length',    label: 'At least 8 characters' },
-        { key: 'upper',     label: 'Uppercase and lowercase letters' },
-        { key: 'number',    label: 'A mixture of letters and numbers' },
-        { key: 'special',   label: 'Special characters (example: $, !, @, #, etc.)' },
+        { key: 'length', label: 'At least 8 characters' },
+        { key: 'upper', label: 'Uppercase and lowercase letters' },
+        { key: 'number', label: 'A mixture of letters and numbers' },
+        { key: 'special', label: 'Special characters (example: $, !, @, #, etc.)' },
       ],
       submitBtn: 'Create Account',
       submittingBtn: 'Processing...',
@@ -327,15 +330,15 @@ export const TEXT = {
       },
     ],
   },
-  
+
   dashboard: {
-    
+
   },
   scan: {
-    
+
   },
   history: {
-    
+
   },
   encyclopedia: {
     heading: 'Diseases Encyclopedia',
@@ -371,6 +374,6 @@ export const TEXT = {
     ],
   },
   profile: {
-    
+
   },
 }
